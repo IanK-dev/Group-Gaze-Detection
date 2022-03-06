@@ -6,4 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".SingleImageActivity">
 
+    <Button
+        android:id="@+id/find_sin_image_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="161dp"
+        android:layout_marginBottom="60dp"
+        android:text="Select Image"
+        android:onClick="selectImage"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/single_image_preview"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="212dp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
