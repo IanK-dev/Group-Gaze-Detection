@@ -14,10 +14,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import org.opencv.android.OpenCVLoader;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfRect;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
+import org.opencv.objdetect.CascadeClassifier;
+
 public class SingleImageActivity extends AppCompatActivity {
 
     Button select_sin_image_button;
     ImageView preview_sin_image;
+    private CascadeClassifier facedetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,5 +57,9 @@ public class SingleImageActivity extends AppCompatActivity {
         select_image.setType("image/*");
         select_image.setAction(Intent.ACTION_GET_CONTENT);
         imageSelection.launch(Intent.createChooser(select_image, "Select an Image"));
+    }
+
+    public void processImage(View view){
+        System.out.print("Begin image processing here");
     }
 }
