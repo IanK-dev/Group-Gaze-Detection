@@ -25,13 +25,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GroupGazeDetection">
         <activity
-            android:name=".MultiImageActivity"
+            android:name=".SingleImageActivity"
             android:exported="false" />
         <activity
-            android:name=".SingleImageActivity"
-            android:exported="false"
-            android:label="@string/title_activity_single_image"
-            android:theme="@style/Theme.GroupGazeDetection.NoActionBar" />
+            android:name=".MultiImageActivity"
+            android:exported="false" />
         <activity
             android:name=".LiveDetectionActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
