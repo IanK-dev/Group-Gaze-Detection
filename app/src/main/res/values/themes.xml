@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.GroupGazeDetection" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.GroupGazeDetection" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -16,7 +16,7 @@
 
     <style name="Theme.GroupGazeDetection.Fullscreen" parent="Theme.GroupGazeDetection">
         <item name="android:actionBarStyle">
-            @style/Widget.Theme.GroupGazeDetection.ActionBar.Fullscreen
+            @style/Widget.Theme.GroupGazeDetection
         </item>
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowBackground">@null</item>

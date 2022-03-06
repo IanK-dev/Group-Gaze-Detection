@@ -11,11 +11,11 @@
       "fieldsDescending": {}
     },
     "memoizedSize": -1,
-    "memoizedHashCode": 300237789
+    "memoizedHashCode": 1819121551
   },
   {
     "level_": 0,
-    "message_": "rebuilding JSON E:\\School Files\\Group-Gaze-Detection\\opencv455\\.cxx\\Debug\\1h155f3p\\x86\\android_gradle_build.json due to:",
+    "message_": "JSON \u0027E:\\School Files\\Group-Gaze-Detection\\opencv455\\.cxx\\Debug\\1h155f3p\\x86\\android_gradle_build.json\u0027 was up-to-date",
     "file_": "E:\\School Files\\Group-Gaze-Detection\\opencv455\\libcxx_helper\\CMakeLists.txt",
     "tag_": "debug|x86",
     "diagnosticCode_": 0,
@@ -25,133 +25,7 @@
       "fieldsDescending": {}
     },
     "memoizedSize": -1,
-    "memoizedHashCode": 405933046
-  },
-  {
-    "level_": 0,
-    "message_": "- expected json E:\\School Files\\Group-Gaze-Detection\\opencv455\\.cxx\\Debug\\1h155f3p\\x86\\android_gradle_build.json file is not present, will remove stale json folder",
-    "file_": "E:\\School Files\\Group-Gaze-Detection\\opencv455\\libcxx_helper\\CMakeLists.txt",
-    "tag_": "debug|x86",
-    "diagnosticCode_": 0,
-    "memoizedIsInitialized": 1,
-    "unknownFields": {
-      "fields": {},
-      "fieldsDescending": {}
-    },
-    "memoizedSize": -1,
-    "memoizedHashCode": -1638177820
-  },
-  {
-    "level_": 0,
-    "message_": "- missing previous command file E:\\School Files\\Group-Gaze-Detection\\opencv455\\.cxx\\Debug\\1h155f3p\\x86\\metadata_generation_command.txt, will remove stale json folder",
-    "file_": "E:\\School Files\\Group-Gaze-Detection\\opencv455\\libcxx_helper\\CMakeLists.txt",
-    "tag_": "debug|x86",
-    "diagnosticCode_": 0,
-    "memoizedIsInitialized": 1,
-    "unknownFields": {
-      "fields": {},
-      "fieldsDescending": {}
-    },
-    "memoizedSize": -1,
-    "memoizedHashCode": -745096862
-  },
-  {
-    "level_": 0,
-    "message_": "- command changed from previous, will remove stale json folder",
-    "file_": "E:\\School Files\\Group-Gaze-Detection\\opencv455\\libcxx_helper\\CMakeLists.txt",
-    "tag_": "debug|x86",
-    "diagnosticCode_": 0,
-    "memoizedIsInitialized": 1,
-    "unknownFields": {
-      "fields": {},
-      "fieldsDescending": {}
-    },
-    "memoizedSize": -1,
-    "memoizedHashCode": -1533599879
-  },
-  {
-    "level_": 0,
-    "message_": "created folder \u0027E:\\School Files\\Group-Gaze-Detection\\opencv455\\.cxx\\Debug\\1h155f3p\\x86\u0027",
-    "file_": "E:\\School Files\\Group-Gaze-Detection\\opencv455\\libcxx_helper\\CMakeLists.txt",
-    "tag_": "debug|x86",
-    "diagnosticCode_": 0,
-    "memoizedIsInitialized": 1,
-    "unknownFields": {
-      "fields": {},
-      "fieldsDescending": {}
-    },
-    "memoizedSize": -1,
-    "memoizedHashCode": -1999842028
-  },
-  {
-    "level_": 0,
-    "message_": "executing cmake Executable : C:\\Users\\ikerr\\AppData\\Local\\Android\\Sdk\\cmake\\3.18.1\\bin\\cmake.exe\narguments : \n-HE:\\School Files\\Group-Gaze-Detection\\opencv455\\libcxx_helper\n-DCMAKE_SYSTEM_NAME\u003dAndroid\n-DCMAKE_EXPORT_COMPILE_COMMANDS\u003dON\n-DCMAKE_SYSTEM_VERSION\u003d21\n-DANDROID_PLATFORM\u003dandroid-21\n-DANDROID_ABI\u003dx86\n-DCMAKE_ANDROID_ARCH_ABI\u003dx86\n-DANDROID_NDK\u003dC:\\Users\\ikerr\\AppData\\Local\\Android\\Sdk\\ndk\\21.4.7075529\n-DCMAKE_ANDROID_NDK\u003dC:\\Users\\ikerr\\AppData\\Local\\Android\\Sdk\\ndk\\21.4.7075529\n-DCMAKE_TOOLCHAIN_FILE\u003dC:\\Users\\ikerr\\AppData\\Local\\Android\\Sdk\\ndk\\21.4.7075529\\build\\cmake\\android.toolchain.cmake\n-DCMAKE_MAKE_PROGRAM\u003dC:\\Users\\ikerr\\AppData\\Local\\Android\\Sdk\\cmake\\3.18.1\\bin\\ninja.exe\n-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003dE:\\School Files\\Group-Gaze-Detection\\opencv455\\build\\intermediates\\cxx\\Debug\\1h155f3p\\obj\\x86\n-DCMAKE_RUNTIME_OUTPUT_DIRECTORY\u003dE:\\School Files\\Group-Gaze-Detection\\opencv455\\build\\intermediates\\cxx\\Debug\\1h155f3p\\obj\\x86\n-DCMAKE_BUILD_TYPE\u003dDebug\n-BE:\\School Files\\Group-Gaze-Detection\\opencv455\\.cxx\\Debug\\1h155f3p\\x86\n-GNinja\n-DANDROID_STL\u003dc++_shared\njvmArgs : \n\n",
-    "file_": "E:\\School Files\\Group-Gaze-Detection\\opencv455\\libcxx_helper\\CMakeLists.txt",
-    "tag_": "debug|x86",
-    "diagnosticCode_": 0,
-    "memoizedIsInitialized": 1,
-    "unknownFields": {
-      "fields": {},
-      "fieldsDescending": {}
-    },
-    "memoizedSize": -1,
-    "memoizedHashCode": 620882357
-  },
-  {
-    "level_": 0,
-    "message_": "Executable : C:\\Users\\ikerr\\AppData\\Local\\Android\\Sdk\\cmake\\3.18.1\\bin\\cmake.exe\narguments : \n-HE:\\School Files\\Group-Gaze-Detection\\opencv455\\libcxx_helper\n-DCMAKE_SYSTEM_NAME\u003dAndroid\n-DCMAKE_EXPORT_COMPILE_COMMANDS\u003dON\n-DCMAKE_SYSTEM_VERSION\u003d21\n-DANDROID_PLATFORM\u003dandroid-21\n-DANDROID_ABI\u003dx86\n-DCMAKE_ANDROID_ARCH_ABI\u003dx86\n-DANDROID_NDK\u003dC:\\Users\\ikerr\\AppData\\Local\\Android\\Sdk\\ndk\\21.4.7075529\n-DCMAKE_ANDROID_NDK\u003dC:\\Users\\ikerr\\AppData\\Local\\Android\\Sdk\\ndk\\21.4.7075529\n-DCMAKE_TOOLCHAIN_FILE\u003dC:\\Users\\ikerr\\AppData\\Local\\Android\\Sdk\\ndk\\21.4.7075529\\build\\cmake\\android.toolchain.cmake\n-DCMAKE_MAKE_PROGRAM\u003dC:\\Users\\ikerr\\AppData\\Local\\Android\\Sdk\\cmake\\3.18.1\\bin\\ninja.exe\n-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003dE:\\School Files\\Group-Gaze-Detection\\opencv455\\build\\intermediates\\cxx\\Debug\\1h155f3p\\obj\\x86\n-DCMAKE_RUNTIME_OUTPUT_DIRECTORY\u003dE:\\School Files\\Group-Gaze-Detection\\opencv455\\build\\intermediates\\cxx\\Debug\\1h155f3p\\obj\\x86\n-DCMAKE_BUILD_TYPE\u003dDebug\n-BE:\\School Files\\Group-Gaze-Detection\\opencv455\\.cxx\\Debug\\1h155f3p\\x86\n-GNinja\n-DANDROID_STL\u003dc++_shared\njvmArgs : \n\n",
-    "file_": "E:\\School Files\\Group-Gaze-Detection\\opencv455\\libcxx_helper\\CMakeLists.txt",
-    "tag_": "debug|x86",
-    "diagnosticCode_": 0,
-    "memoizedIsInitialized": 1,
-    "unknownFields": {
-      "fields": {},
-      "fieldsDescending": {}
-    },
-    "memoizedSize": -1,
-    "memoizedHashCode": 994769460
-  },
-  {
-    "level_": 0,
-    "message_": "Exiting generation of E:\\School Files\\Group-Gaze-Detection\\opencv455\\.cxx\\Debug\\1h155f3p\\x86\\compile_commands.json.bin normally",
-    "file_": "E:\\School Files\\Group-Gaze-Detection\\opencv455\\libcxx_helper\\CMakeLists.txt",
-    "tag_": "debug|x86",
-    "diagnosticCode_": 0,
-    "memoizedIsInitialized": 1,
-    "unknownFields": {
-      "fields": {},
-      "fieldsDescending": {}
-    },
-    "memoizedSize": -1,
-    "memoizedHashCode": -827999798
-  },
-  {
-    "level_": 0,
-    "message_": "done executing cmake",
-    "file_": "E:\\School Files\\Group-Gaze-Detection\\opencv455\\libcxx_helper\\CMakeLists.txt",
-    "tag_": "debug|x86",
-    "diagnosticCode_": 0,
-    "memoizedIsInitialized": 1,
-    "unknownFields": {
-      "fields": {},
-      "fieldsDescending": {}
-    },
-    "memoizedSize": -1,
-    "memoizedHashCode": -1845946130
-  },
-  {
-    "level_": 0,
-    "message_": "write command file E:\\School Files\\Group-Gaze-Detection\\opencv455\\.cxx\\Debug\\1h155f3p\\x86\\metadata_generation_command.txt",
-    "file_": "E:\\School Files\\Group-Gaze-Detection\\opencv455\\libcxx_helper\\CMakeLists.txt",
-    "tag_": "debug|x86",
-    "diagnosticCode_": 0,
-    "memoizedIsInitialized": 1,
-    "unknownFields": {
-      "fields": {},
-      "fieldsDescending": {}
-    },
-    "memoizedSize": -1,
-    "memoizedHashCode": 1283044800
+    "memoizedHashCode": -235484929
   },
   {
     "level_": 0,
@@ -165,6 +39,6 @@
       "fieldsDescending": {}
     },
     "memoizedSize": -1,
-    "memoizedHashCode": 92126954
+    "memoizedHashCode": 1611010716
   }
 ]
