@@ -6,4 +6,14 @@
 /captures
 .externalNativeBuild
 .cxx
-local.properties
+*.apk
+output.json
+.idea/
+misc.xml
+render.experimental.xml
+*.ap_
+*.dex
+*.class
+bin/
+gen/
+out/
