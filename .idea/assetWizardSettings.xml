@@ -29,8 +29,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_bluebuttonpressed" />
-                            <entry key="sourceFile" value="E:\GDAssetDesign\BlueButtonPressed.svg" />
+                            <entry key="outputName" value="ic_settings" />
+                            <entry key="sourceFile" value="E:\GDAssetDesign\settings.svg" />
                           </map>
                         </option>
                       </PersistentState>

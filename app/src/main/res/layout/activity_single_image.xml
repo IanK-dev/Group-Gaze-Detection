@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#1E1E1E"
     tools:context=".SingleImageActivity">
 
 
@@ -16,7 +17,8 @@
         android:background="@drawable/ic_bluebutton"
         android:onClick="selectImage"
         android:text="Select Image"
-        android:textColor="@android:color/background_light"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#1E1E1E"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -24,7 +26,7 @@
         android:id="@+id/single_image_preview"
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:layout_marginTop="132dp"
+        android:layout_marginTop="104dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,7 +35,7 @@
         android:layout_width="168dp"
         android:layout_height="48dp"
         android:layout_marginStart="120dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="44dp"
         android:background="@drawable/ic_bluebutton"
         android:onClick="processImage"
         android:text="Process Image"
@@ -41,15 +43,5 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/sin_preview_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="156dp"
-        android:layout_marginTop="2dp"
-        android:text="Image Preview"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/single_image_preview" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
