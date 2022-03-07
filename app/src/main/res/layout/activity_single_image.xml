@@ -9,31 +9,36 @@
 
     <Button
         android:id="@+id/find_sin_image_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="136dp"
-        android:layout_marginBottom="544dp"
+        android:layout_width="168dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginBottom="648dp"
+        android:background="@drawable/ic_bluebutton"
         android:onClick="selectImage"
         android:text="Select Image"
+        android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/single_image_preview"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginTop="244dp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
+        android:layout_height="500dp"
+        android:layout_marginTop="132dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/process_sin_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="136dp"
-        android:layout_marginBottom="72dp"
+        android:layout_width="168dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/ic_bluebutton"
         android:onClick="processImage"
         android:text="Process Image"
+        android:textColor="@android:color/background_light"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -42,9 +47,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="156dp"
-        android:layout_marginBottom="36dp"
+        android:layout_marginTop="2dp"
         android:text="Image Preview"
-        app:layout_constraintBottom_toTopOf="@+id/process_sin_image"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/single_image_preview" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
