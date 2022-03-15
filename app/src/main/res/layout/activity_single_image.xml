@@ -37,7 +37,7 @@
         android:layout_marginStart="120dp"
         android:layout_marginBottom="44dp"
         android:background="@drawable/ic_bluebutton"
-        android:onClick="processImage"
+        android:onClick="processDNN"
         android:text="Process Image"
         android:textColor="@android:color/background_light"
         android:textSize="14sp"

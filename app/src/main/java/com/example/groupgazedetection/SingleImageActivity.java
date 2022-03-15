@@ -1,5 +1,8 @@
 package com.example.groupgazedetection;
 
+import static org.opencv.dnn.Dnn.blobFromImage;
+import static org.opencv.dnn.Dnn.readNetFromCaffe;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -27,7 +30,8 @@ import org.opencv.core.MatOfRect;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
+import org.opencv.dnn.*;
+import org.opencv.imgproc.*;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.android.Utils;
 
@@ -46,13 +50,16 @@ public class SingleImageActivity extends AppCompatActivity {
     //OpenCV and Classifiers
     Mat faceMat;
     Mat eyeMat;
+    Mat outputDNN;
     MatOfRect faceDetections;
     MatOfRect eyeDetections;
     private File rawFaceFile;
     private File rawEyeFile;
+    private File rawCaffeFile;
+    private File rawProtoFile;
     private CascadeClassifier cvFaceClassifier;
     private CascadeClassifier cvEyeClassifier;
-
+    private Net dnnClassifier;
     //User content contract resolver
     ActivityResultLauncher<Intent> imageSelection = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -89,7 +96,35 @@ public class SingleImageActivity extends AppCompatActivity {
                         faceDetections = new MatOfRect();
                         eyeDetections = new MatOfRect();
                         //Load raw classifiers
+                        //Begin DNN Classifier
+                        InputStream readDNNCaffe = getResources().openRawResource(R.raw.itracker_iter_92000);
+                        File caffeDir = getDir("cascade", Context.MODE_PRIVATE);
+                        rawCaffeFile = new File(caffeDir, "itracker_iter_92000.caffemodel");
+                        FileOutputStream writeCaffeClassifier = new FileOutputStream(rawCaffeFile);
+                        byte[] buffer = new byte[4096];
+                        int bytesRead;
+                        while ((bytesRead = readDNNCaffe.read(buffer)) != -1) {
+                            writeCaffeClassifier.write(buffer, 0, bytesRead);
+                        }
+                        Arrays.fill(buffer, (byte)0);
+                        InputStream  readProto = getResources().openRawResource(R.raw.itracker_deploy);
+                        rawProtoFile = new File(caffeDir, "itracker_deploy.prototxt");
+                        FileOutputStream writeProto = new FileOutputStream(rawProtoFile);
+                        while ((bytesRead = readProto.read(buffer)) != -1) {
+                            writeProto.write(buffer, 0, bytesRead);
+                        }
+                        dnnClassifier = readNetFromCaffe(rawProtoFile.getAbsolutePath(), rawCaffeFile.getAbsolutePath());
+                        if (dnnClassifier.empty()) {
+                            dnnClassifier = null;
+                        }
+                        //Close and clear temporary files
+                        readDNNCaffe.close();
+                        writeCaffeClassifier.close();
+                        readProto.close();
+                        writeProto.close();
+                        caffeDir.delete();
                         //Begin face cascade generation
+                        /*
                         InputStream readFaceClassifier = getResources().openRawResource(R.raw.haarcascade_frontalface_alt2);
                         File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
                         rawFaceFile = new File(cascadeDir, "haarcascade_frontalface_alt2.xml");
@@ -121,6 +156,7 @@ public class SingleImageActivity extends AppCompatActivity {
                         readEyeClassifier.close();
                         writeEyeClassifier.close();
                         cascadeDir.delete();
+                         */
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -188,5 +224,14 @@ public class SingleImageActivity extends AppCompatActivity {
         }
         Utils.matToBitmap(faceMat, fixBit);
         preview_sin_image.setImageBitmap(fixBit);
+    }
+
+    public void processDNN(View view){
+        System.out.print("Attempting to process image by DNN");
+        Bitmap fixBit = selected_image.copy(Bitmap.Config.ARGB_8888, true);
+        Utils.bitmapToMat(fixBit, faceMat);
+        blobFromImage(faceMat);
+        dnnClassifier.setInput(faceMat);
+        outputDNN = dnnClassifier.forward();
     }
 }
