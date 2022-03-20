@@ -25,13 +25,10 @@ import android.content.Context;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfRect;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
+import org.opencv.core.*;
 import org.opencv.dnn.*;
 import org.opencv.imgproc.*;
+import org.opencv.core.CvType;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.android.Utils;
 
@@ -230,7 +227,8 @@ public class SingleImageActivity extends AppCompatActivity {
         System.out.print("Attempting to process image by DNN");
         Bitmap fixBit = selected_image.copy(Bitmap.Config.ARGB_8888, true);
         Utils.bitmapToMat(fixBit, faceMat);
-        blobFromImage(faceMat);
+        Imgproc.resize(faceMat, faceMat, new Size(224, 224));
+        blobFromImage(faceMat,  1.0, new Size(224, 224), new Scalar(104.0, 177.0, 123.0, 0), false, false, CvType.CV_32F);
         dnnClassifier.setInput(faceMat);
         outputDNN = dnnClassifier.forward();
     }
