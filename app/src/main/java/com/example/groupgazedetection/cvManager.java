@@ -85,8 +85,33 @@ public class cvManager extends AppCompatActivity{
             cascadeDir.delete();
         }
         //DNN
-        else if(classParams[2] == "dnn"){
-
+        else if(classParams[0] == "dnn"){
+            InputStream readDNNCaffe = appContext.getResources().openRawResource(R.raw.itracker_iter_92000);
+            File caffeDir = appContext.getDir("cascade", Context.MODE_PRIVATE);
+            rawCaffeFile = new File(caffeDir, "itracker_iter_92000.caffemodel");
+            FileOutputStream writeCaffeClassifier = new FileOutputStream(rawCaffeFile);
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = readDNNCaffe.read(buffer)) != -1) {
+                writeCaffeClassifier.write(buffer, 0, bytesRead);
+            }
+            Arrays.fill(buffer, (byte)0);
+            InputStream  readProto = appContext.getResources().openRawResource(R.raw.itracker_deploy);
+            rawProtoFile = new File(caffeDir, "itracker_deploy.prototxt");
+            FileOutputStream writeProto = new FileOutputStream(rawProtoFile);
+            while ((bytesRead = readProto.read(buffer)) != -1) {
+                writeProto.write(buffer, 0, bytesRead);
+            }
+            dnnClassifier = readNetFromCaffe(rawProtoFile.getAbsolutePath(), rawCaffeFile.getAbsolutePath());
+            if (dnnClassifier.empty()) {
+                dnnClassifier = null;
+            }
+            //Close and clear temporary files
+            readDNNCaffe.close();
+            writeCaffeClassifier.close();
+            readProto.close();
+            writeProto.close();
+            caffeDir.delete();
         }
         //Error Case
         else{
@@ -120,6 +145,15 @@ public class cvManager extends AppCompatActivity{
             }
             Utils.matToBitmap(faceMat, inputImage);
             return inputImage;
+        }
+        else if(classifierType == "dnn") {
+            System.out.print("Attempting to process image by DNN");
+            Utils.bitmapToMat(inputImage, faceMat);
+            Imgproc.resize(faceMat, faceMat, new Size(224, 224));
+            blobFromImage(faceMat,  1.0, new Size(224, 224), new Scalar(104.0, 177.0, 123.0, 0), false, false, CvType.CV_32F);
+            dnnClassifier.setInput(faceMat);
+            outputDNN = dnnClassifier.forward();
+            return null;
         }
         else{
             return null;
