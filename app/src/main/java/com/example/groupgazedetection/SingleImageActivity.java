@@ -44,7 +44,10 @@ public class SingleImageActivity extends AppCompatActivity {
     ContentResolver contentResolver;
     //Internal Variables
     Bitmap selected_image;
+    Context currentAppContext;
+    cvManager openManager;
     //OpenCV and Classifiers
+    /*
     Mat faceMat;
     Mat eyeMat;
     Mat outputDNN;
@@ -57,6 +60,7 @@ public class SingleImageActivity extends AppCompatActivity {
     private CascadeClassifier cvFaceClassifier;
     private CascadeClassifier cvEyeClassifier;
     private Net dnnClassifier;
+    */
     //User content contract resolver
     ActivityResultLauncher<Intent> imageSelection = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -87,7 +91,9 @@ public class SingleImageActivity extends AppCompatActivity {
                 case LoaderCallbackInterface.SUCCESS:
                 {
                     try {
+                        openManager = new cvManager(currentAppContext, "haar");
                         //Initialize CV dependent components
+                        /*
                         faceMat = new Mat();
                         eyeMat = new Mat();
                         faceDetections = new MatOfRect();
@@ -121,7 +127,6 @@ public class SingleImageActivity extends AppCompatActivity {
                         writeProto.close();
                         caffeDir.delete();
                         //Begin face cascade generation
-                        /*
                         InputStream readFaceClassifier = getResources().openRawResource(R.raw.haarcascade_frontalface_alt2);
                         File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
                         rawFaceFile = new File(cascadeDir, "haarcascade_frontalface_alt2.xml");
@@ -153,8 +158,7 @@ public class SingleImageActivity extends AppCompatActivity {
                         readEyeClassifier.close();
                         writeEyeClassifier.close();
                         cascadeDir.delete();
-                         */
-
+                        */
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -172,6 +176,7 @@ public class SingleImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_image);
         preview_sin_image = findViewById(R.id.single_image_preview);
+        currentAppContext = this;
         contentResolver = this.getContentResolver();
     }
 
@@ -196,7 +201,9 @@ public class SingleImageActivity extends AppCompatActivity {
     public void processImage(View view){
         System.out.print("Attempting to process image");
         Bitmap fixBit = selected_image.copy(Bitmap.Config.ARGB_8888, true);
-        Utils.bitmapToMat(fixBit, faceMat);
+        openManager.detect(fixBit);
+        /*
+        Utils.bitmapToMat(fixBit, cvManager.faceMat);
         cvFaceClassifier.detectMultiScale(faceMat, faceDetections);
         Rect[] theseFaces = faceDetections.toArray();
         for (Rect face : theseFaces) {
@@ -219,10 +226,10 @@ public class SingleImageActivity extends AppCompatActivity {
                     5
             );
         }
-        Utils.matToBitmap(faceMat, fixBit);
+        Utils.matToBitmap(faceMat, fixBit);*/
         preview_sin_image.setImageBitmap(fixBit);
     }
-
+    /*
     public void processDNN(View view){
         System.out.print("Attempting to process image by DNN");
         Bitmap fixBit = selected_image.copy(Bitmap.Config.ARGB_8888, true);
@@ -231,5 +238,5 @@ public class SingleImageActivity extends AppCompatActivity {
         blobFromImage(faceMat,  1.0, new Size(224, 224), new Scalar(104.0, 177.0, 123.0, 0), false, false, CvType.CV_32F);
         dnnClassifier.setInput(faceMat);
         outputDNN = dnnClassifier.forward();
-    }
+    }*/
 }
