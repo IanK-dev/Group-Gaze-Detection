@@ -7,4 +7,13 @@
     tools:context=".MainActivity"
     android:background="@drawable/ic_truesplashbase">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="231dp"
+        android:layout_height="270dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="228dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/app_icon_foreground" />
 </androidx.constraintlayout.widget.ConstraintLayout>
