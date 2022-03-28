@@ -47,4 +47,17 @@
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/settings_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="44dp"
+        android:background="@drawable/ic_settings"
+        android:backgroundTint="@color/light_blue_900"
+        android:contentDescription="Brings user to the settings menu"
+        android:onClick="gotoSettings"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

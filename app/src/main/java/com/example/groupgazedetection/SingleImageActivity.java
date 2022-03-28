@@ -109,4 +109,10 @@ public class SingleImageActivity extends AppCompatActivity {
         openManager.detect(fixBit);
         preview_sin_image.setImageBitmap(fixBit);
     }
+
+    public void gotoSettings(View view){
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
 }

@@ -8,27 +8,25 @@
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
+            app:defaultValue="Empty"
+            app:entries="@array/detection_list_pref_titles"
+            app:entryValues="@array/detection_list_pref_values"
+            app:summary="Click to show a list to choose from"
             app:key="reply"
             app:title="@string/reply_title"
+            app:dialogTitle="@string/dialog_title"
             app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreferenceCompat
+            app:key="sync"
+            app:title="@string/auto_light"
+            app:summary="The live detection will adjust to the current light levels" />
 
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/sync_header">
 
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
 
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
 
     </PreferenceCategory>
 
