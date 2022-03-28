@@ -96,4 +96,10 @@ public class MultiImageActivity extends AppCompatActivity {
             Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
         }
     }
+
+    public void gotoSettings(View view){
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
 }
