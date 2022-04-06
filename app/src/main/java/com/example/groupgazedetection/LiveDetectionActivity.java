@@ -13,8 +13,10 @@ import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
@@ -41,8 +43,13 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
 
     private float                  mRelativeFaceSize   = 0.2f;
     private int                    mAbsoluteFaceSize   = 0;
-
+    int frameLimiter = 0;
     private CameraBridgeViewBase   mOpenCvCameraView;
+    Context currentAppContext;
+    cvManager openManager;
+    private Mat grayscaleImage;
+    public Rect[] facesArray;
+    Rect[][] boxResults = new Rect[2][];
 
     private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -51,6 +58,11 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
                 case LoaderCallbackInterface.SUCCESS:
                 {
                     mOpenCvCameraView.enableView();
+                    try {
+                        openManager = new cvManager(currentAppContext, "haar");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 } break;
                 default:
                 {
@@ -68,11 +80,12 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
+        currentAppContext = this;
         setContentView(R.layout.activity_live_detection);
 
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.livedetection_surface_view);
         mOpenCvCameraView.setVisibility(CameraBridgeViewBase.VISIBLE);
+        mOpenCvCameraView.setCameraIndex(1);
         mOpenCvCameraView.setCvCameraViewListener(this);
     }
 
@@ -106,6 +119,7 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
     }
 
     public void onCameraViewStarted(int width, int height) {
+        grayscaleImage = new Mat(height, width, CvType.CV_8UC4);
         mGray = new Mat();
         mRgba = new Mat();
     }
@@ -114,10 +128,22 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
         mGray.release();
         mRgba.release();
     }
-
+    @Override
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
-        mRgba = inputFrame.rgba();
         mGray = inputFrame.gray();
+        mRgba = inputFrame.rgba();
+        Core.flip(mRgba, mRgba, 1);
+        Core.flip(mGray, mGray, 1);
+        if (frameLimiter == 15){
+            //Detecting face in the frame
+            mRgba = openManager.detect(mGray, mRgba);
+            frameLimiter = 0;
+            return mRgba;
+        }
+        else{
+            mRgba = openManager.reprintRecs(mRgba);
+            frameLimiter++;
+        }
         return mRgba;
     }
 
