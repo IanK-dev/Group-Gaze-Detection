@@ -156,32 +156,4 @@ public class liveManager extends AppCompatActivity {
             return null;
         }
     }
-
-    public Mat reprintRecs(Mat input) {
-        if (theseFaces != null) {
-            theseFaces = faceDetections.toArray();
-            for (Rect face : theseFaces) {
-                Imgproc.rectangle(
-                        input,
-                        new Point(face.x, face.y),
-                        new Point(face.x + face.width, face.y + face.height),
-                        new Scalar(0, 0, 255, 255),
-                        5
-                );
-            }
-        }
-        if (theseEyes != null) {
-            theseEyes = eyeDetections.toArray();
-            for (Rect eye : theseEyes) {
-                Imgproc.rectangle(
-                        input,
-                        new Point(eye.x, eye.y),
-                        new Point(eye.x + eye.width, eye.y + eye.height),
-                        new Scalar(0, 255, 0, 255),
-                        5
-                );
-            }
-        }
-        return input;
-    }
 }

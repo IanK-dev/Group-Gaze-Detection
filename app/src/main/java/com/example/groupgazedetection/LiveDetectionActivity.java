@@ -14,6 +14,8 @@ import android.view.View;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraActivity;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
+import org.opencv.android.JavaCamera2View;
+import org.opencv.android.JavaCameraView;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
@@ -49,8 +51,6 @@ import android.widget.ImageView;
 
 public class LiveDetectionActivity extends CameraActivity implements CvCameraViewListener2 {
 
-    public static final int JAVA_DETECTOR       = 0;
-    public static final int NATIVE_DETECTOR     = 1;
     private Mat mRgba;
     private Mat mGray;
     private boolean firstLoop;
@@ -61,12 +61,10 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
     private float mRelativeFaceSize   = 0.2f;
     private int mAbsoluteFaceSize   = 0;
     int frameLimiter = 0;
-    private CameraBridgeViewBase mOpenCvCameraView;
+    private FaceCameraView faceCameraView;
     Context currentAppContext;
     liveManager liveManager;
     private Mat grayscaleImage;
-    public Rect[] facesArray;
-    Rect[][] boxResults = new Rect[2][];
 
     private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -74,7 +72,7 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
             switch (status) {
                 case LoaderCallbackInterface.SUCCESS:
                 {
-                    mOpenCvCameraView.enableView();
+                    faceCameraView.enableView();
                     try {
                         liveManager = new liveManager(currentAppContext, "haar");
                     } catch (IOException e) {
@@ -104,18 +102,18 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
-        mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.livedetection_surface_view);
-        mOpenCvCameraView.setVisibility(CameraBridgeViewBase.VISIBLE);
-        mOpenCvCameraView.setCameraIndex(1);
-        mOpenCvCameraView.setCvCameraViewListener(this);
+        faceCameraView = (FaceCameraView) findViewById(R.id.livedetection_surface_view);
+        faceCameraView.setVisibility(CameraBridgeViewBase.VISIBLE);
+        faceCameraView.setCameraIndex(1);
+        faceCameraView.setCvCameraViewListener(this);
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
-        if (mOpenCvCameraView != null)
-            mOpenCvCameraView.disableView();
+        if (faceCameraView != null)
+            faceCameraView.disableView();
     }
 
     @Override
@@ -131,12 +129,12 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
 
     @Override
     protected List<? extends CameraBridgeViewBase> getCameraViewList() {
-        return Collections.singletonList(mOpenCvCameraView);
+        return Collections.singletonList(faceCameraView);
     }
 
     public void onDestroy() {
         super.onDestroy();
-        mOpenCvCameraView.disableView();
+        faceCameraView.disableView();
     }
 
     public void onCameraViewStarted(int width, int height) {
