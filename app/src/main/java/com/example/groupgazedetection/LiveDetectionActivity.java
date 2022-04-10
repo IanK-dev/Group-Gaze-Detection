@@ -12,6 +12,7 @@ import org.opencv.android.CameraActivity;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -27,6 +28,8 @@ import org.opencv.imgproc.Imgproc;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -38,13 +41,11 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
     public static final int        JAVA_DETECTOR       = 0;
     public static final int        NATIVE_DETECTOR     = 1;
 
-    private Mat                    mRgba;
-    private Mat                    mGray;
-
-    private float                  mRelativeFaceSize   = 0.2f;
-    private int                    mAbsoluteFaceSize   = 0;
+    private Mat mRgba;
+    private Mat mGray;
+    private asyncFaces findFaces;
     int frameLimiter = 0;
-    private CameraBridgeViewBase   mOpenCvCameraView;
+    private CameraBridgeViewBase mOpenCvCameraView;
     Context currentAppContext;
     cvManager openManager;
     private Mat grayscaleImage;
@@ -134,17 +135,32 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
         mRgba = inputFrame.rgba();
         Core.flip(mRgba, mRgba, 1);
         Core.flip(mGray, mGray, 1);
-        if (frameLimiter == 15){
+        if (frameLimiter == 5){
             //Detecting face in the frame
             mRgba = openManager.detect(mGray, mRgba);
+            findFaces = new asyncFaces();
+            findFaces.execute(mGray, mRgba);
             frameLimiter = 0;
-            return mRgba;
+            //return mRgba;
         }
         else{
             mRgba = openManager.reprintRecs(mRgba);
             frameLimiter++;
         }
         return mRgba;
+    }
+
+    private class asyncFaces extends AsyncTask<Mat, String, Mat> {
+        @Override
+        protected Mat doInBackground(Mat... mats) {
+            mRgba = openManager.detect(mats[0], mats[1]);
+            /*
+
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+            return Bitmap.createBitmap(presentOverlay, 0, 0, presentOverlay.getWidth(), presentOverlay.getHeight(), matrix, true);*/
+            return mRgba;
+        }
     }
 
 }
