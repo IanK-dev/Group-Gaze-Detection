@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.security.InvalidParameterException;
 import java.util.Arrays;
 
-public class cvManager extends AppCompatActivity {
+public class liveManager extends AppCompatActivity {
     private static String classifierType;
     //Global Variables
     //OpenCV and Classifiers
@@ -38,13 +38,15 @@ public class cvManager extends AppCompatActivity {
     private static CascadeClassifier cvEyeClassifier;
     private static Net dnnClassifier;
     public Mat overlay;
+    public Size overlaySize;
     Rect[] theseFaces;
     Rect[] theseEyes;
 
-    public cvManager(Context appContext, String... classParams) throws InvalidParameterException, IOException {
+    public liveManager(Context appContext, String... classParams) throws InvalidParameterException, IOException {
         //Initialize CV dependent components
         faceMat = new Mat();
         eyeMat = new Mat();
+        overlay = new Mat();
         faceDetections = new MatOfRect();
         eyeDetections = new MatOfRect();
         classifierType = classParams[0];
@@ -88,80 +90,11 @@ public class cvManager extends AppCompatActivity {
             writeEyeClassifier.close();
             cascadeDir.delete();
         }
-        //DNN
-        else if (classParams[0] == "dnn") {
-            InputStream readDNNCaffe = appContext.getResources().openRawResource(R.raw.itracker_iter_92000);
-            File caffeDir = appContext.getDir("cascade", Context.MODE_PRIVATE);
-            rawCaffeFile = new File(caffeDir, "itracker_iter_92000.caffemodel");
-            FileOutputStream writeCaffeClassifier = new FileOutputStream(rawCaffeFile);
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = readDNNCaffe.read(buffer)) != -1) {
-                writeCaffeClassifier.write(buffer, 0, bytesRead);
-            }
-            Arrays.fill(buffer, (byte) 0);
-            InputStream readProto = appContext.getResources().openRawResource(R.raw.itracker_deploy);
-            rawProtoFile = new File(caffeDir, "itracker_deploy.prototxt");
-            FileOutputStream writeProto = new FileOutputStream(rawProtoFile);
-            while ((bytesRead = readProto.read(buffer)) != -1) {
-                writeProto.write(buffer, 0, bytesRead);
-            }
-            dnnClassifier = readNetFromCaffe(rawProtoFile.getAbsolutePath(), rawCaffeFile.getAbsolutePath());
-            if (dnnClassifier.empty()) {
-                dnnClassifier = null;
-            }
-            //Close and clear temporary files
-            readDNNCaffe.close();
-            writeCaffeClassifier.close();
-            readProto.close();
-            writeProto.close();
-            caffeDir.delete();
-        }
         //Error Case
         else {
             throw new InvalidParameterException("Invalid Classifier Parameters Entered");
         }
     }
-
-    public Bitmap detect(Bitmap inputImage) {
-        if (classifierType == "haar") {
-            Utils.bitmapToMat(inputImage, cvManager.faceMat);
-            cvFaceClassifier.detectMultiScale(faceMat, faceDetections);
-            Rect[] theseFaces = faceDetections.toArray();
-            for (Rect face : theseFaces) {
-                Imgproc.rectangle(
-                        faceMat,
-                        new Point(face.x, face.y),
-                        new Point(face.x + face.width, face.y + face.height),
-                        new Scalar(0, 0, 255, 255),
-                        5
-                );
-            }
-            cvEyeClassifier.detectMultiScale(faceMat, eyeDetections);
-            Rect[] theseEyes = eyeDetections.toArray();
-            for (Rect eye : theseEyes) {
-                Imgproc.rectangle(
-                        faceMat,
-                        new Point(eye.x, eye.y),
-                        new Point(eye.x + eye.width, eye.y + eye.height),
-                        new Scalar(0, 255, 0, 255),
-                        5
-                );
-            }
-            return inputImage;
-        } else if (classifierType == "dnn") {
-            System.out.print("Attempting to process image by DNN");
-            Utils.bitmapToMat(inputImage, faceMat);
-            Imgproc.resize(faceMat, faceMat, new Size(224, 224));
-            blobFromImage(faceMat, 1.0, new Size(224, 224), new Scalar(104.0, 177.0, 123.0, 0), false, false, CvType.CV_32F);
-            dnnClassifier.setInput(faceMat);
-            outputDNN = dnnClassifier.forward();
-            return null;
-        } else {
-            return null;
-        }
-    }
-
     public Mat detect(Mat gImg, Mat rgbImg) {
         if (classifierType == "haar") {
             cvFaceClassifier.detectMultiScale(gImg, faceDetections);
@@ -187,15 +120,39 @@ public class cvManager extends AppCompatActivity {
                 );
             }
             return rgbImg;
-        } else if (classifierType == "dnn") {
-            System.out.print("Attempting to process image by DNN");
-            //Utils.bitmapToMat(inputImage, faceMat);
-            Imgproc.resize(faceMat, faceMat, new Size(224, 224));
-            blobFromImage(faceMat, 1.0, new Size(224, 224), new Scalar(104.0, 177.0, 123.0, 0), false, false, CvType.CV_32F);
-            dnnClassifier.setInput(faceMat);
-            outputDNN = dnnClassifier.forward();
-            return null;
         } else {
+            return null;
+        }
+    }
+
+    //Good One
+    public Mat detect(Mat gImg) {
+        if (classifierType == "haar") {
+            overlay = Mat.zeros(gImg.height(), gImg.width(), CvType.CV_8UC4);
+            cvFaceClassifier.detectMultiScale(gImg, faceDetections);
+            theseFaces = faceDetections.toArray();
+            for (Rect face : theseFaces) {
+                Imgproc.rectangle(
+                        overlay,
+                        new Point(face.x, face.y),
+                        new Point(face.x + face.width, face.y + face.height),
+                        new Scalar(0, 0, 255, 255),
+                        5
+                );
+            }
+            cvEyeClassifier.detectMultiScale(gImg, eyeDetections);
+            theseEyes = eyeDetections.toArray();
+            for (Rect eye : theseEyes) {
+                Imgproc.rectangle(
+                        overlay,
+                        new Point(eye.x, eye.y),
+                        new Point(eye.x + eye.width, eye.y + eye.height),
+                        new Scalar(0, 255, 0, 255),
+                        5
+                );
+            }
+            return overlay;
+        }  else {
             return null;
         }
     }
