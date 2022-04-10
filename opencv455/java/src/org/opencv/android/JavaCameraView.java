@@ -38,7 +38,7 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
     private Thread mThread;
     private boolean mStopThread;
 
-    protected Camera mCamera;
+    public Camera mCamera;
     protected JavaCameraFrame[] mCameraFrame;
     private SurfaceTexture mSurfaceTexture;
     private int mPreviewFormat = ImageFormat.NV21;

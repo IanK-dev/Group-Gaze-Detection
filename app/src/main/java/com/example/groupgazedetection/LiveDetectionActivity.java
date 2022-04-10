@@ -4,12 +4,18 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Camera;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.view.MotionEvent;
 import android.view.View;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraActivity;
@@ -50,7 +56,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 public class LiveDetectionActivity extends CameraActivity implements CvCameraViewListener2 {
-
+    private static final String TAG = "LiveDetection";
     private Mat mRgba;
     private Mat mGray;
     private boolean firstLoop;
@@ -103,7 +109,7 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
         faceCameraView = (FaceCameraView) findViewById(R.id.livedetection_surface_view);
-        faceCameraView.setVisibility(CameraBridgeViewBase.VISIBLE);
+        faceCameraView.setVisibility(FaceCameraView.VISIBLE);
         faceCameraView.setCameraIndex(1);
         faceCameraView.setCvCameraViewListener(this);
     }
@@ -138,6 +144,7 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
     }
 
     public void onCameraViewStarted(int width, int height) {
+        //faceCameraView.setFocusMode("FOCUS_MODE_AUTO");
         grayscaleImage = new Mat(height, width, CvType.CV_8UC4);
         mGray = new Mat();
         mRgba = new Mat();
@@ -189,5 +196,28 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
     public void gotoHome(View view){
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
+    }
+
+    public void activateFlash(View view){
+        faceCameraView.setFlashMode("FLASH_MODE_ON");
+    }
+
+    public void takePicture(View v) {
+        //.i(TAG,"onTouch event");
+        String fileName;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        String currentDateandTime = sdf.format(new Date());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD_MR1) {
+            //Later add code to make a new directory if one does not exist.
+            //Log.d(TAG, getExternalFilesDir(Environment.DIRECTORY_DCIM).toString());
+            //fileName = this.getExternalFilesDir(Environment.DIRECTORY_DCIM).getPath() + "/sample_picture_" + currentDateandTime + ".jpg";
+            fileName = "/storage/emulated/0/DCIM/sample_picture_" + currentDateandTime + ".jpg";
+        }
+        else
+        {
+            fileName = "/storage/emulated/0/DCIM/sample_picture_" + currentDateandTime + ".jpg";
+        }
+        faceCameraView.takePicture(fileName);
+        //Toast.makeText(this, fileName + " saved", Toast.LENGTH_SHORT).show();
     }
 }
