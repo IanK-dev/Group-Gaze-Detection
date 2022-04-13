@@ -199,7 +199,13 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
     }
 
     public void activateFlash(View view){
-        faceCameraView.setFlashMode("FLASH_MODE_ON");
+        Log.d(TAG, faceCameraView.getFlashMode());
+        faceCameraView.setFlashMode("on");
+        /*for(String res : faceCameraView.getFocusModes()){
+            Log.d(TAG, res);
+        }*/
+        Log.d(TAG, faceCameraView.getFlashMode());
+
     }
 
     public void takePicture(View v) {

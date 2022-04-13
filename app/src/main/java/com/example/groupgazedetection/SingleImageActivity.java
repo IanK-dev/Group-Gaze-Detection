@@ -24,7 +24,7 @@ import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import java.io.IOException;
 
-public class SingleImageActivity extends AppCompatActivity {
+public class  SingleImageActivity extends AppCompatActivity {
     //Visual Components
     ImageView preview_sin_image;
     ContentResolver contentResolver;
@@ -105,6 +105,7 @@ public class SingleImageActivity extends AppCompatActivity {
 
     public void processImage(View view){
         System.out.print("Attempting to process image");
+        Log.d("SingleImage", "Attempting to Process Image");
         Bitmap fixBit = selected_image.copy(Bitmap.Config.ARGB_8888, true);
         openManager.detect(fixBit);
         preview_sin_image.setImageBitmap(fixBit);

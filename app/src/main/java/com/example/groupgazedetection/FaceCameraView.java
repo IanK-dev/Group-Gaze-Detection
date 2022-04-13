@@ -23,14 +23,20 @@ public class FaceCameraView extends JavaCameraView implements Camera.PictureCall
         return mCamera.getParameters().getFocusMode();
     }
 
-    public void setFocusMode(String type) {
-        Camera.Parameters params = mCamera.getParameters();
-        params.setFocusMode(type);
-        mCamera.setParameters(params);
+    public List<String> getFocusModes() {
+        return mCamera.getParameters().getSupportedFocusModes();
+    }
+
+    public String getFlashMode() {
+        return mCamera.getParameters().getFlashMode();
+    }
+    public List<String> getFlashModes() {
+        return mCamera.getParameters().getSupportedFlashModes();
     }
 
     public void setFlashMode(String type) {
         Camera.Parameters params = mCamera.getParameters();
+        Log.i("PictureDemo", "Parameters path: " + params.toString());
         params.setFlashMode(type);
         mCamera.setParameters(params);
     }

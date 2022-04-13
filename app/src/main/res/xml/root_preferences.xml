@@ -7,16 +7,6 @@
             app:title="@string/signature_title"
             app:useSimpleSummaryProvider="true" />
 
-        <ListPreference
-            app:defaultValue="Empty"
-            app:entries="@array/detection_list_pref_titles"
-            app:entryValues="@array/detection_list_pref_values"
-            app:summary="Click to show a list to choose from"
-            app:key="reply"
-            app:title="@string/reply_title"
-            app:dialogTitle="@string/dialog_title"
-            app:useSimpleSummaryProvider="true" />
-
         <SwitchPreferenceCompat
             app:key="sync"
             app:title="@string/auto_light"
@@ -24,10 +14,25 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/sync_header">
-
-
-
+    <PreferenceCategory app:title="Classifier Settings">
+        <ListPreference
+            app:defaultValue="Empty"
+            app:entries="@array/detection_list_pref_titles"
+            app:entryValues="@array/detection_list_pref_values"
+            app:summary="Click to show a list to choose from"
+            app:key="reply"
+            app:title="Face Classifier Selection"
+            app:dialogTitle="@string/dialog_title"
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            app:defaultValue="Empty"
+            app:entries="@array/detection_list_pref_titles"
+            app:entryValues="@array/detection_list_pref_values"
+            app:summary="Click to show a list to choose from"
+            app:key="reply"
+            app:title="Eye Classifier Selection"
+            app:dialogTitle="@string/dialog_title"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
 </PreferenceScreen>

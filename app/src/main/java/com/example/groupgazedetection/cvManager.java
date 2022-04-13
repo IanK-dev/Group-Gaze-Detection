@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
 import android.content.Context;
+import android.util.Log;
 
 import org.opencv.core.*;
 import org.opencv.dnn.*;
@@ -124,11 +125,13 @@ public class cvManager extends AppCompatActivity {
     }
 
     public Bitmap detect(Bitmap inputImage) {
+        Log.d("OpenCV", "Attempting Detection");
         if (classifierType == "haar") {
             Utils.bitmapToMat(inputImage, cvManager.faceMat);
             cvFaceClassifier.detectMultiScale(faceMat, faceDetections);
             Rect[] theseFaces = faceDetections.toArray();
             for (Rect face : theseFaces) {
+                Log.d("OpenCV", "Face Detected");
                 Imgproc.rectangle(
                         faceMat,
                         new Point(face.x, face.y),
@@ -140,6 +143,7 @@ public class cvManager extends AppCompatActivity {
             cvEyeClassifier.detectMultiScale(faceMat, eyeDetections);
             Rect[] theseEyes = eyeDetections.toArray();
             for (Rect eye : theseEyes) {
+                Log.d("OpenCV", "Eye Detected");
                 Imgproc.rectangle(
                         faceMat,
                         new Point(eye.x, eye.y),
@@ -148,6 +152,7 @@ public class cvManager extends AppCompatActivity {
                         5
                 );
             }
+            Utils.matToBitmap(cvManager.faceMat, inputImage);
             return inputImage;
         } else if (classifierType == "dnn") {
             System.out.print("Attempting to process image by DNN");
@@ -160,71 +165,5 @@ public class cvManager extends AppCompatActivity {
         } else {
             return null;
         }
-    }
-
-    public Mat detect(Mat gImg, Mat rgbImg) {
-        if (classifierType == "haar") {
-            cvFaceClassifier.detectMultiScale(gImg, faceDetections);
-            theseFaces = faceDetections.toArray();
-            for (Rect face : theseFaces) {
-                Imgproc.rectangle(
-                        rgbImg,
-                        new Point(face.x, face.y),
-                        new Point(face.x + face.width, face.y + face.height),
-                        new Scalar(0, 0, 255, 255),
-                        5
-                );
-            }
-            cvEyeClassifier.detectMultiScale(gImg, eyeDetections);
-            theseEyes = eyeDetections.toArray();
-            for (Rect eye : theseEyes) {
-                Imgproc.rectangle(
-                        rgbImg,
-                        new Point(eye.x, eye.y),
-                        new Point(eye.x + eye.width, eye.y + eye.height),
-                        new Scalar(0, 255, 0, 255),
-                        5
-                );
-            }
-            return rgbImg;
-        } else if (classifierType == "dnn") {
-            System.out.print("Attempting to process image by DNN");
-            //Utils.bitmapToMat(inputImage, faceMat);
-            Imgproc.resize(faceMat, faceMat, new Size(224, 224));
-            blobFromImage(faceMat, 1.0, new Size(224, 224), new Scalar(104.0, 177.0, 123.0, 0), false, false, CvType.CV_32F);
-            dnnClassifier.setInput(faceMat);
-            outputDNN = dnnClassifier.forward();
-            return null;
-        } else {
-            return null;
-        }
-    }
-
-    public Mat reprintRecs(Mat input) {
-        if (theseFaces != null) {
-            theseFaces = faceDetections.toArray();
-            for (Rect face : theseFaces) {
-                Imgproc.rectangle(
-                        input,
-                        new Point(face.x, face.y),
-                        new Point(face.x + face.width, face.y + face.height),
-                        new Scalar(0, 0, 255, 255),
-                        5
-                );
-            }
-        }
-        if (theseEyes != null) {
-            theseEyes = eyeDetections.toArray();
-            for (Rect eye : theseEyes) {
-                Imgproc.rectangle(
-                        input,
-                        new Point(eye.x, eye.y),
-                        new Point(eye.x + eye.width, eye.y + eye.height),
-                        new Scalar(0, 255, 0, 255),
-                        5
-                );
-            }
-        }
-        return input;
     }
 }
