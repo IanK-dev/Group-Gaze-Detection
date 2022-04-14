@@ -9,9 +9,15 @@ public class detectedFace {
     Rect eyeLeftCords;
     Rect eyeRightCords;
     Rect pupilCenter;
+    boolean validGaze;
     Mat face;
     Mat eyeLeft;
     Mat eyeRight;
+
+    public detectedFace(Mat inputFace){
+        face = inputFace;
+        validGaze = true;
+    }
 
     public void start() {
 
@@ -28,12 +34,4 @@ public class detectedFace {
 
     }
 
-    public Mat createFaceCrop(Rect inputFaceCords){
-        faceCords = inputFaceCords;
-        return null;
-    }
-
-    public Mat createEyeCrop(Rect inputEyeCords){
-        return null;
-    }
 }

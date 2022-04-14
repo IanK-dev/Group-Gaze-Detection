@@ -104,7 +104,7 @@ public class  SingleImageActivity extends AppCompatActivity {
     }
 
     public void processImage(View view){
-        System.out.print("Attempting to process image");
+        //System.out.print("Attempting to process image");
         Log.d("SingleImage", "Attempting to Process Image");
         Bitmap fixBit = selected_image.copy(Bitmap.Config.ARGB_8888, true);
         openManager.detect(fixBit);
