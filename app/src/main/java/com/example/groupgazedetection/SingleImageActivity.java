@@ -107,6 +107,16 @@ public class  SingleImageActivity extends AppCompatActivity {
         //System.out.print("Attempting to process image");
         Log.d("SingleImage", "Attempting to Process Image");
         Bitmap fixBit = selected_image.copy(Bitmap.Config.ARGB_8888, true);
+        //Rescaling images that are too large to perform reasonable processing on
+        if(fixBit.getWidth() > 4000 || fixBit.getHeight() > 4000){
+            fixBit = Bitmap.createScaledBitmap(fixBit, fixBit.getWidth()/4, fixBit.getHeight()/4, true);
+        }
+        else if(fixBit.getWidth() > 3000 || fixBit.getHeight() > 3000){
+            fixBit = Bitmap.createScaledBitmap(fixBit, fixBit.getWidth()/3, fixBit.getHeight()/3, true);
+        }
+        else if(fixBit.getWidth() > 2000 || fixBit.getHeight() > 2000){
+            fixBit = Bitmap.createScaledBitmap(fixBit, fixBit.getWidth()/2, fixBit.getHeight()/2, true);
+        }
         openManager.detect(fixBit);
         preview_sin_image.setImageBitmap(fixBit);
     }
