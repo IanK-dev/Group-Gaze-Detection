@@ -13,25 +13,26 @@ public class detectedFace {
     Mat face;
     Mat eyeLeft;
     Mat eyeRight;
+    enum gazeDirection{
+        LEFT,
+        CENTER,
+        RIGHT,
+        INDETERMINATE
+    }
 
     public detectedFace(Mat inputFace){
         face = inputFace;
         validGaze = true;
     }
 
-    public void start() {
-
-    }
-    public void stop() {
-
-    }
-
-    public void setMinFaceSize(int size) {
+    public void getThreshold(){
+        //Determine what constitutes left right or center here.
 
     }
 
-    public void release() {
+    public gazeDirection determineGaze(){
+        //Gaze Direction Code Here
 
+        return gazeDirection.INDETERMINATE;
     }
-
 }

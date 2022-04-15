@@ -204,7 +204,9 @@ public class cvManager extends AppCompatActivity {
             int threshold = 50;
             for (detectedFace gFace : detectedFaces){
                 if(gFace.validGaze){
+                    //How to get mat/use for left eye
                     //gFace.eyeLeft
+                    //How to get/use mat for right eye
                     //gFace.eyeRight
                     //Color blob goes here
                 }
