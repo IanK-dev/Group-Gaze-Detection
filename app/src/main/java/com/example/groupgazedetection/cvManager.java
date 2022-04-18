@@ -4,13 +4,19 @@ import static org.opencv.dnn.Dnn.blobFromImage;
 import static org.opencv.dnn.Dnn.readNetFromCaffe;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.content.Context;
 import android.util.Log;
 
 import org.opencv.core.*;
 import org.opencv.dnn.*;
+import org.opencv.features2d.Feature2D;
+import org.opencv.features2d.Features2d;
+import org.opencv.features2d.SimpleBlobDetector;
+import org.opencv.features2d.SimpleBlobDetector_Params;
 import org.opencv.imgproc.*;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.android.Utils;
@@ -29,7 +35,10 @@ public class cvManager extends AppCompatActivity {
     //Global Variables
     //OpenCV and Classifiers
     public static Mat faceMat;
-    public static Mat eyeMat;
+    public static Mat greyMat;
+    private Mat subFace;
+    private MatOfKeyPoint pupilKeys;
+    public boolean testGaze = true;
     //public static Mat outputDNN;
     public static MatOfRect faceDetections;
     public List<detectedFace> detectedFaces;
@@ -40,16 +49,39 @@ public class cvManager extends AppCompatActivity {
     private static CascadeClassifier cvFaceClassifier;
     private static CascadeClassifier cvEyeClassifier;
     private static Net dnnClassifier;
+    private SimpleBlobDetector blobDetector;
+    private SimpleBlobDetector_Params blobParams;
     public Mat overlay;
     Rect[] theseFaces;
 
     public cvManager(Context appContext, String... classParams) throws InvalidParameterException, IOException {
         //Initialize CV dependent components
         faceMat = new Mat();
+        greyMat = new Mat();
+        subFace = new Mat();
         detectedFaces = new ArrayList<>();
         faceDetections = new MatOfRect();
         classifierType = classParams[0];
+        //Create color blob detection
+        blobParams = new SimpleBlobDetector_Params();
+        blobParams.set_filterByArea(true);
+        blobParams.set_minArea(100);
+        blobParams.set_maxArea(1000);
+        blobParams.set_filterByColor(false);
+        blobParams.set_filterByConvexity(false);
+        //blobParams.get_filterByCircularity();
+        Log.d("cvManager", "Circularity: " + blobParams.get_filterByCircularity());
+        Log.d("cvManager", "Color: " + blobParams.get_filterByColor());
+        Log.d("cvManager", "Convexity: " + blobParams.get_filterByConvexity());
+        Log.d("cvManager", "Inertia: " + blobParams.get_filterByInertia());
+        Log.d("cvManager", "Min Circularity: " + blobParams.get_minCircularity());
+        Log.d("cvManager", "Max Circularity: " + blobParams.get_maxCircularity());
+        blobDetector = SimpleBlobDetector.create(blobParams);
+        pupilKeys = new MatOfKeyPoint();
+        //Receive and update settings preferences from menu
+        SharedPreferences thesePreferences = PreferenceManager.getDefaultSharedPreferences(appContext);
         Rect[][] results;
+        Log.d("cvManager", "Preferences Result: " + thesePreferences.getString("signature", "0"));
         //Haars Cascade
         if (classParams[0] == "haar") {
             /*
@@ -57,7 +89,9 @@ public class cvManager extends AppCompatActivity {
                 throw new InvalidParameterException("Invalid Classifier Parameters Entered");
             }*/
             //Begin face cascade generation
-            InputStream readFaceClassifier = appContext.getResources().openRawResource(R.raw.haarcascade_frontalface_alt2);
+            String faceSelection = "haarcascade_frontalface_alt2";
+            int faceID = appContext.getResources().getIdentifier(faceSelection, "raw", appContext.getPackageName());
+            InputStream readFaceClassifier = appContext.getResources().openRawResource(faceID);
             File cascadeDir = appContext.getDir("cascade", Context.MODE_PRIVATE);
             rawFaceFile = new File(cascadeDir, "haarcascade_frontalface_alt2.xml");
             FileOutputStream writeFaceClassifier = new FileOutputStream(rawFaceFile);
@@ -90,66 +124,21 @@ public class cvManager extends AppCompatActivity {
             cascadeDir.delete();
         }
         //DNN
-        else if (classParams[0] == "dnn") {
-
-            InputStream readDNNCaffe = appContext.getResources().openRawResource(R.raw.itracker_iter_92000);
-            File caffeDir = appContext.getDir("cascade", Context.MODE_PRIVATE);
-            rawCaffeFile = new File(caffeDir, "itracker_iter_92000");
-            FileOutputStream writeCaffeClassifier = new FileOutputStream(rawCaffeFile);
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = readDNNCaffe.read(buffer)) != -1) {
-                writeCaffeClassifier.write(buffer, 0, bytesRead);
-            }
-            Arrays.fill(buffer, (byte) 0);
-            InputStream readProto = appContext.getResources().openRawResource(R.raw.itracker_deploy);
-            rawProtoFile = new File(caffeDir, "itracker_deploy.prototext");
-            FileOutputStream writeProto = new FileOutputStream(rawProtoFile);
-            while ((bytesRead = readProto.read(buffer)) != -1) {
-                writeProto.write(buffer, 0, bytesRead);
-            }
-            dnnClassifier = readNetFromCaffe(rawProtoFile.getAbsolutePath(), rawCaffeFile.getAbsolutePath());
-
-            /*
-            InputStream readDNNCaffe = appContext.getResources().openRawResource(R.raw.nn4small2);
-            File caffeDir = appContext.getDir("cascade", Context.MODE_PRIVATE);
-            rawCaffeFile = new File(caffeDir, "nn4small2.t7");
-            FileOutputStream writeCaffeClassifier = new FileOutputStream(rawCaffeFile);
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = readDNNCaffe.read(buffer)) != -1) {
-                writeCaffeClassifier.write(buffer, 0, bytesRead);
-            }
-            /*
-             */
-            //dnnClassifier = Dnn.readNetFromTorch(rawCaffeFile.getAbsolutePath());
-            //dnnClassifier = dnn.read
-            if (dnnClassifier.empty()) {
-                dnnClassifier = null;
-            }
-            //Close and clear temporary files
-            readDNNCaffe.close();
-            writeCaffeClassifier.close();
-            readProto.close();
-            writeProto.close();
-            caffeDir.delete();
-        }
-        //Error Case
-        else {
-            throw new InvalidParameterException("Invalid Classifier Parameters Entered");
-        }
     }
 
     public Bitmap detect(Bitmap inputImage) {
         Log.d("OpenCV", "Attempting Detection");
         if (classifierType == "haar") {
             Utils.bitmapToMat(inputImage, cvManager.faceMat);
-            cvFaceClassifier.detectMultiScale(faceMat, faceDetections);
+            Imgproc.cvtColor(cvManager.faceMat, greyMat, Imgproc.COLOR_BGR2GRAY);
+            cvFaceClassifier.detectMultiScale(greyMat, faceDetections);
             Rect[] theseFaces = faceDetections.toArray();
             int i = 0;
             for (Rect face : theseFaces) {
-                Mat inputFace = new Mat();
-                faceMat.submat(face).copyTo(inputFace);
+                //Mat inputFace = new Mat();
+                //Mat croppedFace = inputFace(Range(1, 1), Range(1, 1));
+                Mat inputFace = new Mat(greyMat, face);
+                //greyMat.submat(face).copyTo(inputFace);
                 detectedFace newFace = new detectedFace(inputFace);
                 newFace.faceCords = face;
                 detectedFaces.add(newFace);
@@ -172,8 +161,9 @@ public class cvManager extends AppCompatActivity {
                     for (Rect eye : theseEyes ){
                         if (eye.x < (dFace.faceCords.width/2)){
                             Log.d("cvManager", "Left eye detected");
-                            Mat inputEye = new Mat();
-                            dFace.face.submat(eye).copyTo(inputEye);
+                            //Mat inputEye = new Mat();
+                            Mat inputEye = new Mat(dFace.face, eye);
+                            //dFace.face.submat(eye).copyTo(inputEye);
                             dFace.eyeLeft = inputEye;
                             dFace.eyeLeftCords = eye;
                         }
@@ -200,55 +190,63 @@ public class cvManager extends AppCompatActivity {
                     dFace.validGaze = false;
                 }
             }
-            //Start Color Blob here
-            int threshold = 50;
+            //Modify this to change the threshholding amount
+            int athreshold = 40;
             for (detectedFace gFace : detectedFaces){
                 if(gFace.validGaze){
-                    //How to get mat/use for left eye
+                    Mat eyeLeftCopy = gFace.eyeLeft.clone() ;
+                    //Change this to modify the amount of erosion
+                    int eSize = 10;
+                    //Change this to modify the amount of dilation
+                    int dSize = 10;
+                    Log.d("cvManager", "Size of full mat given: " + greyMat.size());
+                    Log.d("cvManager", "Size of eye mat given: " + gFace.eyeLeft.size());
+                    Imgproc.threshold(eyeLeftCopy, eyeLeftCopy, athreshold, 255, Imgproc.THRESH_BINARY);
+                    Imgproc.erode(eyeLeftCopy, eyeLeftCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(eSize, eSize)));
+                    Imgproc.dilate(eyeLeftCopy, eyeLeftCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(dSize, dSize)));
+                    //gFace.eyeLeft
+                    blobDetector.detect(eyeLeftCopy, pupilKeys);
+                    Log.d("cvManager", "Number of keypoints: " + pupilKeys.toString());
+                    Log.d("cvManager", "Number of keypoints: " + pupilKeys.size());
+                    //Features2d.drawKeypoints(gFace.eyeLeft, pupilKeys, gFace.eyeLeft);
+                    Features2d.drawKeypoints(gFace.eyeLeft, pupilKeys, gFace.eyeLeft, new Scalar(10, 255, 0, 255), Features2d.DrawMatchesFlags_DRAW_RICH_KEYPOINTS);
+                    //Mat thisMat = new Mat(gFace.face, gFace.eyeLeftCords);
+                    //subFace = eyeMask;
+                    //Mat newImage = (gFace.face).submat(new Rect(gFace.eyeLeftCords.x, gFace.eyeLeftCords.y, gFace.eyeLeft.cols(), gFace.eyeLeft.rows()));
+                    //(gFace.eyeLeft).copyTo(gFace.face);
+                    //(gFace.face).copyTo(newImage);
+                    subFace = eyeLeftCopy;
+                    //eyeMask.copyTo(gFace.face);
+                    //(gFace.face).copyTo(greyMat);
+                    //mergeFace = greyMat.submat(new Rect(gFace.faceCords.x, gFace.faceCords.y, gFace.face.cols(), gFace.face.rows()));
+                    //(newImage).copyTo(mergeFace);
+                    //greyMat.copyTo(mergeFace);
+                    /*
+                    Mat newImage = gFace.face.submat(new Rect(gFace.eyeLeftCords.x, gFace.eyeLeftCords.y, gFace.eyeLeft.cols(), gFace.eyeLeft.rows()));
+                    (gFace.eyeLeft).copyTo(newImage);
+                    mergeFace = greyMat.submat(new Rect(gFace.faceCords.x, gFace.faceCords.y, gFace.face.cols(), gFace.face.rows()));
+                    (newImage).copyTo(mergeFace);
+                    /*
+                     */
+                    Log.d("cvManager", "Updated Greymat size: " + greyMat.size());
                     //gFace.eyeLeft
                     //How to get/use mat for right eye
                     //gFace.eyeRight
                     //Color blob goes here
                 }
             }
-            Utils.matToBitmap(cvManager.faceMat, inputImage);
-            return inputImage;
-        }
-        else if (classifierType == "dnn") {
-            Log.d("cvManager", "Starting DNN Detection");
-            Utils.bitmapToMat(inputImage, faceMat);
-            int cols = faceMat.cols();
-            int rows = faceMat.rows();
-            Log.d("cvManager", "Preprocessing Height " + faceMat.height() + " | Preprocessing Width: " + faceMat.width());
-            Imgproc.resize(faceMat, faceMat, new Size(224, 224));
-            Imgproc.cvtColor(faceMat, faceMat, Imgproc.COLOR_RGBA2RGB);
-            //blobFromImage(faceMat, 1/255, new Size(96, 96), new Scalar(0, 0, 0, 0 ), true, false);
-            Mat blob = blobFromImage(faceMat, 1.0, new Size(224, 224), new Scalar(104.0, 177.0, 123.0));//, false, false);
-            dnnClassifier.setInput(blob);
-            Mat outputDNN = dnnClassifier.forward();
-            Log.d("cvManager", "Postprocessing Height " + outputDNN.height() + " | Preprocessing Width: " + outputDNN.width());
-            Log.d("cvManager", "Total output: " + outputDNN.rows());
-            ///outputDNN.reshape(1, (int)outputDNN.total()/8);
-            for (int n = 0; n < outputDNN.rows(); n++){
-                double confidence = outputDNN.get(n, 2)[0];
-                Log.d("cvManager", "Confidence: " + confidence);
-                if (confidence > 0.1){
-                    Log.d("cvManager", "Found a face");
-                    //int classId = (int)outputDNN.get(n, 1)[0];
-                    int left   = (int)(outputDNN.get(n, 3)[0] * cols);
-                    int top    = (int)(outputDNN.get(n, 4)[0] * rows);
-                    int right  = (int)(outputDNN.get(n, 5)[0] * cols);
-                    int bottom = (int)(outputDNN.get(n, 6)[0] * rows);
-                    Imgproc.rectangle(faceMat, new Point(left, top), new Point(right, bottom),
-                            new Scalar(0, 255, 0));
-                }
+            if(testGaze == true){
+                Bitmap testingBitMap = Bitmap.createBitmap(subFace.width(), subFace.height(), Bitmap.Config.ARGB_8888);
+                Utils.matToBitmap(subFace, testingBitMap);
+                return testingBitMap;
             }
-            //Imgproc.resize(outputDNN, outputDNN, new Size(inputImage.getWidth(), inputImage.getHeight()));
-            //outputDNN.convertTo(outputDNN, CvType.CV_8UC2);
-            //Utils.matToBitmap(cvManager.faceMat, inputImage);
+            else{
+                Utils.matToBitmap(faceMat, inputImage);
+                return inputImage;
+            }
+        }
+        else{
             return inputImage;
-        } else {
-            return null;
         }
     }
 }

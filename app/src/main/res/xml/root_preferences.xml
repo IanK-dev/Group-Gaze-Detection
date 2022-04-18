@@ -5,7 +5,8 @@
         <EditTextPreference
             app:key="signature"
             app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue="0"/>
 
         <SwitchPreferenceCompat
             app:key="sync"

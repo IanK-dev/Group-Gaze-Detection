@@ -3,6 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/School Files/FinalWorking/app/src/main/res/layout/activity_home.xml" value="0.254981884057971" />
+        <entry key="..\:/School Files/FinalWorking/app/src/main/res/layout/activity_live_detection.xml" value="0.254981884057971" />
+        <entry key="..\:/School Files/FinalWorking/app/src/main/res/layout/activity_main.xml" value="0.254981884057971" />
+        <entry key="..\:/School Files/FinalWorking/app/src/main/res/layout/activity_multi_image.xml" value="0.254981884057971" />
+        <entry key="..\:/School Files/FinalWorking/app/src/main/res/layout/activity_single_image.xml" value="0.254981884057971" />
+        <entry key="..\:/School Files/FinalWorking/app/src/main/res/layout/settings_activity.xml" value="0.254981884057971" />
+        <entry key="..\:/School Files/FinalWorking/app/src/main/res/xml/root_preferences.xml" value="0.254981884057971" />
         <entry key="..\:/School Files/GazeLatestMain/app/src/main/res/drawable/ic_flash.xml" value="0.3675" />
         <entry key="..\:/School Files/GazeLatestMain/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.3215" />
         <entry key="..\:/School Files/GazeLatestMain/app/src/main/res/drawable/ic_photo.xml" value="0.3405" />
