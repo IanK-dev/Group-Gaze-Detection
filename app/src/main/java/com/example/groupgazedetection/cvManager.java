@@ -42,7 +42,7 @@ public class cvManager extends AppCompatActivity {
     private MatOfKeyPoint pupilLeftKeys;
     private MatOfKeyPoint pupilRightKeys;
     //Turn true if testing
-    public boolean testGaze = true;
+    public boolean testGaze = false;
     //public static Mat outputDNN;
     public static MatOfRect faceDetections;
     public List<detectedFace> detectedFaces;
@@ -56,6 +56,8 @@ public class cvManager extends AppCompatActivity {
     private SimpleBlobDetector blobDetector;
     private SimpleBlobDetector_Params blobParams;
     public Mat overlay;
+    KeyPoint[] keyLeftAr;
+    KeyPoint[] keyRightAr;
     Rect[] theseFaces;
 
     public cvManager(Context appContext, String... classParams) throws InvalidParameterException, IOException {
@@ -208,49 +210,65 @@ public class cvManager extends AppCompatActivity {
             int athreshold = 22;
             for (detectedFace gFace : detectedFaces){
                 if(gFace.validGaze){
-                    Mat eyeLeftCopy = gFace.eyeLeft.clone();
-                    Mat eyeRightCopy = gFace.eyeRight.clone();
+                    Mat eyeLeftCopy = new Mat();
+                    Mat eyeRightCopy = new Mat();
                     //Change this to modify the amount of erosion
                     int eSize = 10;
                     //Change this to modify the amount of dilation
                     int dSize = 10;
                     Log.d("cvManager", "Size of full mat given: " + greyMat.size());
+                    do {
+                        eyeLeftCopy = gFace.eyeLeft.clone();
+                        Imgproc.threshold(eyeLeftCopy, eyeLeftCopy, athreshold, 255, Imgproc.THRESH_BINARY);
+                        Imgproc.erode(eyeLeftCopy, eyeLeftCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(eSize, eSize)));
+                        Imgproc.dilate(eyeLeftCopy, eyeLeftCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(dSize, dSize)));
+                        blobDetector.detect(eyeLeftCopy, pupilLeftKeys);
+                        keyLeftAr = pupilLeftKeys.toArray();
+                        Log.d("cvManager", "Left Size " + pupilLeftKeys.size());
+                        Log.d("cvManager", "Left Width " + pupilLeftKeys.size().width);
+                        Log.d("cvManager", "Left Width " + pupilLeftKeys.size().height);
+                        athreshold = athreshold + 20;
+                        Log.d("cvManager", "Left New Threshold " + athreshold);
+                    }while(athreshold < 63 && keyLeftAr.length < 1);
+                    athreshold = 22;
+                    do{
+                        eyeRightCopy = gFace.eyeRight.clone();
+                        Imgproc.threshold(eyeRightCopy, eyeRightCopy, athreshold, 255, Imgproc.THRESH_BINARY);
+                        Imgproc.dilate(eyeRightCopy, eyeRightCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(dSize, dSize)));
+                        Imgproc.erode(eyeRightCopy, eyeRightCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(eSize, eSize)));
+                        blobDetector.detect(eyeRightCopy, pupilRightKeys);
+                        keyRightAr = pupilRightKeys.toArray();
+                        Log.d("cvManager", "Right Size " + pupilRightKeys.size());
+                        Log.d("cvManager", "Right Width " + pupilRightKeys.size().width);
+                        Log.d("cvManager", "Right Height " + pupilRightKeys.size().height);
+                        athreshold = athreshold + 20;
+                        Log.d("cvManager", "Right New Threshold " + athreshold);
+                    }while(athreshold < 63 && keyRightAr.length < 1);
+                    athreshold = 22;
 
-                    Imgproc.threshold(eyeLeftCopy, eyeLeftCopy, athreshold, 255, Imgproc.THRESH_BINARY);
-                    Imgproc.erode(eyeLeftCopy, eyeLeftCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(eSize, eSize)));
-                    Imgproc.dilate(eyeLeftCopy, eyeLeftCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(dSize, dSize)));
-                    blobDetector.detect(eyeLeftCopy, pupilLeftKeys);
-                    Log.d("cvManager", "Number detected " + pupilLeftKeys.size());
-
-                    Imgproc.threshold(eyeRightCopy, eyeRightCopy, athreshold, 255, Imgproc.THRESH_BINARY);
-                    Imgproc.dilate(eyeLeftCopy, eyeRightCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(dSize, dSize)));
-                    Imgproc.erode(eyeRightCopy, eyeRightCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(eSize, eSize)));
-
-                    blobDetector.detect(eyeRightCopy, pupilRightKeys);
-                    Log.d("cvManager", "Number detected " + pupilRightKeys.size());
                     //Log.d("cvManager", "Number of keypoints: " + pupilKeys.toString());
                     //Log.d("cvManager", "Number of keypoints: " + pupilKeys.size());
                     //Features2d.drawKeypoints(gFace.eyeLeft, pupilKeys, gFace.eyeLeft);
                     if(testGaze == false){
-                        KeyPoint[] keyLeftAr = pupilLeftKeys.toArray();
-                        KeyPoint[] keyRightAr = pupilRightKeys.toArray();
                         if(keyLeftAr.length > 0){
+                            Log.d("cvManager", "Left Key: " + keyLeftAr[0]);
                             keyLeftAr[0].pt.x = keyLeftAr[0].pt.x + gFace.eyeLeftCords.x + gFace.faceCords.x;
                             keyLeftAr[0].pt.y = keyLeftAr[0].pt.y + gFace.eyeLeftCords.y + gFace.faceCords.y;
                         }
                         if(keyRightAr.length > 0){
+                            Log.d("cvManager", "Right Key: " + keyRightAr[0]);
                             keyRightAr[0].pt.x = keyRightAr[0].pt.x + gFace.eyeRightCords.x + gFace.faceCords.x;
                             keyRightAr[0].pt.y = keyRightAr[0].pt.y + gFace.eyeRightCords.y + gFace.faceCords.y;
                         }
                         //Log.d("cvManager", "Keypoint X: " + keyAr[0].pt.x);
                         pupilLeftKeys.fromArray(keyLeftAr);
-                        pupilLeftKeys.fromArray(keyRightAr);
+                        pupilRightKeys.fromArray(keyRightAr);
                         Features2d.drawKeypoints(faceMat, pupilLeftKeys, faceMat, new Scalar(0, 255, 0, 255), Features2d.DrawMatchesFlags_DRAW_RICH_KEYPOINTS);
                         Features2d.drawKeypoints(faceMat, pupilRightKeys, faceMat, new Scalar(0, 255, 0, 255), Features2d.DrawMatchesFlags_DRAW_RICH_KEYPOINTS);
                     }
                     else{
-                        Features2d.drawKeypoints(eyeLeftCopy, pupilLeftKeys, eyeLeftCopy, new Scalar(0, 255, 0, 255), Features2d.DrawMatchesFlags_DRAW_RICH_KEYPOINTS);
-                        subFace = eyeLeftCopy;
+                        Features2d.drawKeypoints(eyeRightCopy, pupilRightKeys, eyeRightCopy, new Scalar(0, 255, 0, 255), Features2d.DrawMatchesFlags_DRAW_RICH_KEYPOINTS);
+                        subFace = eyeRightCopy;
                     }
                     Log.d("cvManager", "Updated Greymat size: " + greyMat.size());
                 }
