@@ -20,6 +20,8 @@ import org.opencv.features2d.SimpleBlobDetector_Params;
 import org.opencv.imgproc.*;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.android.Utils;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.File;
@@ -37,7 +39,9 @@ public class cvManager extends AppCompatActivity {
     public static Mat faceMat;
     public static Mat greyMat;
     private Mat subFace;
-    private MatOfKeyPoint pupilKeys;
+    private MatOfKeyPoint pupilLeftKeys;
+    private MatOfKeyPoint pupilRightKeys;
+    //Turn true if testing
     public boolean testGaze = true;
     //public static Mat outputDNN;
     public static MatOfRect faceDetections;
@@ -69,6 +73,14 @@ public class cvManager extends AppCompatActivity {
         blobParams.set_maxArea(1000);
         blobParams.set_filterByColor(false);
         blobParams.set_filterByConvexity(false);
+        blobParams.set_filterByCircularity(false);
+        //blobParams.set_minCircularity(0.2f);
+        //blobParams.set_maxCircularity(3.4f);
+        blobParams.set_filterByInertia(true);
+        //blobParams.set_minThreshold(28);
+        //blobParams.set_maxThreshold(68);
+        //blobParams.set_minRepeatability(2);
+        //blobParams.set_thresholdStep(20);
         //blobParams.get_filterByCircularity();
         Log.d("cvManager", "Circularity: " + blobParams.get_filterByCircularity());
         Log.d("cvManager", "Color: " + blobParams.get_filterByColor());
@@ -77,7 +89,8 @@ public class cvManager extends AppCompatActivity {
         Log.d("cvManager", "Min Circularity: " + blobParams.get_minCircularity());
         Log.d("cvManager", "Max Circularity: " + blobParams.get_maxCircularity());
         blobDetector = SimpleBlobDetector.create(blobParams);
-        pupilKeys = new MatOfKeyPoint();
+        pupilLeftKeys = new MatOfKeyPoint();
+        pupilRightKeys = new MatOfKeyPoint();
         //Receive and update settings preferences from menu
         SharedPreferences thesePreferences = PreferenceManager.getDefaultSharedPreferences(appContext);
         Rect[][] results;
@@ -147,7 +160,7 @@ public class cvManager extends AppCompatActivity {
                         faceMat,
                         new Point(face.x, face.y),
                         new Point(face.x + face.width, face.y + face.height),
-                        new Scalar(0, 0, 255, 255),
+                        new Scalar(255, 0, 0, 255),
                         2
                 );
             }
@@ -180,7 +193,7 @@ public class cvManager extends AppCompatActivity {
                                 //ADD previous rect dimensions when Drawing
                                 new Point((eye.x + dFace.faceCords.x), (eye.y + dFace.faceCords.y)),
                                 new Point((dFace.faceCords.x) + (eye.x + eye.width), (dFace.faceCords.y) + (eye.y + eye.height)),
-                                new Scalar(0, 255, 0, 255),
+                                new Scalar(0, 0, 255, 255),
                                 2
                         );
                     }
@@ -191,48 +204,55 @@ public class cvManager extends AppCompatActivity {
                 }
             }
             //Modify this to change the threshholding amount
-            int athreshold = 40;
+            //A good one is 22
+            int athreshold = 22;
             for (detectedFace gFace : detectedFaces){
                 if(gFace.validGaze){
-                    Mat eyeLeftCopy = gFace.eyeLeft.clone() ;
+                    Mat eyeLeftCopy = gFace.eyeLeft.clone();
+                    Mat eyeRightCopy = gFace.eyeRight.clone();
                     //Change this to modify the amount of erosion
                     int eSize = 10;
                     //Change this to modify the amount of dilation
                     int dSize = 10;
                     Log.d("cvManager", "Size of full mat given: " + greyMat.size());
-                    Log.d("cvManager", "Size of eye mat given: " + gFace.eyeLeft.size());
+
                     Imgproc.threshold(eyeLeftCopy, eyeLeftCopy, athreshold, 255, Imgproc.THRESH_BINARY);
                     Imgproc.erode(eyeLeftCopy, eyeLeftCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(eSize, eSize)));
                     Imgproc.dilate(eyeLeftCopy, eyeLeftCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(dSize, dSize)));
-                    //gFace.eyeLeft
-                    blobDetector.detect(eyeLeftCopy, pupilKeys);
-                    Log.d("cvManager", "Number of keypoints: " + pupilKeys.toString());
-                    Log.d("cvManager", "Number of keypoints: " + pupilKeys.size());
+                    blobDetector.detect(eyeLeftCopy, pupilLeftKeys);
+                    Log.d("cvManager", "Number detected " + pupilLeftKeys.size());
+
+                    Imgproc.threshold(eyeRightCopy, eyeRightCopy, athreshold, 255, Imgproc.THRESH_BINARY);
+                    Imgproc.dilate(eyeLeftCopy, eyeRightCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(dSize, dSize)));
+                    Imgproc.erode(eyeRightCopy, eyeRightCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(eSize, eSize)));
+
+                    blobDetector.detect(eyeRightCopy, pupilRightKeys);
+                    Log.d("cvManager", "Number detected " + pupilRightKeys.size());
+                    //Log.d("cvManager", "Number of keypoints: " + pupilKeys.toString());
+                    //Log.d("cvManager", "Number of keypoints: " + pupilKeys.size());
                     //Features2d.drawKeypoints(gFace.eyeLeft, pupilKeys, gFace.eyeLeft);
-                    Features2d.drawKeypoints(gFace.eyeLeft, pupilKeys, gFace.eyeLeft, new Scalar(10, 255, 0, 255), Features2d.DrawMatchesFlags_DRAW_RICH_KEYPOINTS);
-                    //Mat thisMat = new Mat(gFace.face, gFace.eyeLeftCords);
-                    //subFace = eyeMask;
-                    //Mat newImage = (gFace.face).submat(new Rect(gFace.eyeLeftCords.x, gFace.eyeLeftCords.y, gFace.eyeLeft.cols(), gFace.eyeLeft.rows()));
-                    //(gFace.eyeLeft).copyTo(gFace.face);
-                    //(gFace.face).copyTo(newImage);
-                    subFace = eyeLeftCopy;
-                    //eyeMask.copyTo(gFace.face);
-                    //(gFace.face).copyTo(greyMat);
-                    //mergeFace = greyMat.submat(new Rect(gFace.faceCords.x, gFace.faceCords.y, gFace.face.cols(), gFace.face.rows()));
-                    //(newImage).copyTo(mergeFace);
-                    //greyMat.copyTo(mergeFace);
-                    /*
-                    Mat newImage = gFace.face.submat(new Rect(gFace.eyeLeftCords.x, gFace.eyeLeftCords.y, gFace.eyeLeft.cols(), gFace.eyeLeft.rows()));
-                    (gFace.eyeLeft).copyTo(newImage);
-                    mergeFace = greyMat.submat(new Rect(gFace.faceCords.x, gFace.faceCords.y, gFace.face.cols(), gFace.face.rows()));
-                    (newImage).copyTo(mergeFace);
-                    /*
-                     */
+                    if(testGaze == false){
+                        KeyPoint[] keyLeftAr = pupilLeftKeys.toArray();
+                        KeyPoint[] keyRightAr = pupilRightKeys.toArray();
+                        if(keyLeftAr.length > 0){
+                            keyLeftAr[0].pt.x = keyLeftAr[0].pt.x + gFace.eyeLeftCords.x + gFace.faceCords.x;
+                            keyLeftAr[0].pt.y = keyLeftAr[0].pt.y + gFace.eyeLeftCords.y + gFace.faceCords.y;
+                        }
+                        if(keyRightAr.length > 0){
+                            keyRightAr[0].pt.x = keyRightAr[0].pt.x + gFace.eyeRightCords.x + gFace.faceCords.x;
+                            keyRightAr[0].pt.y = keyRightAr[0].pt.y + gFace.eyeRightCords.y + gFace.faceCords.y;
+                        }
+                        //Log.d("cvManager", "Keypoint X: " + keyAr[0].pt.x);
+                        pupilLeftKeys.fromArray(keyLeftAr);
+                        pupilLeftKeys.fromArray(keyRightAr);
+                        Features2d.drawKeypoints(faceMat, pupilLeftKeys, faceMat, new Scalar(0, 255, 0, 255), Features2d.DrawMatchesFlags_DRAW_RICH_KEYPOINTS);
+                        Features2d.drawKeypoints(faceMat, pupilRightKeys, faceMat, new Scalar(0, 255, 0, 255), Features2d.DrawMatchesFlags_DRAW_RICH_KEYPOINTS);
+                    }
+                    else{
+                        Features2d.drawKeypoints(eyeLeftCopy, pupilLeftKeys, eyeLeftCopy, new Scalar(0, 255, 0, 255), Features2d.DrawMatchesFlags_DRAW_RICH_KEYPOINTS);
+                        subFace = eyeLeftCopy;
+                    }
                     Log.d("cvManager", "Updated Greymat size: " + greyMat.size());
-                    //gFace.eyeLeft
-                    //How to get/use mat for right eye
-                    //gFace.eyeRight
-                    //Color blob goes here
                 }
             }
             if(testGaze == true){
