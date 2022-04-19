@@ -29,7 +29,10 @@
     "intermediatesFolder": "E:\\School Files\\FinalWorking\\opencv455\\build\\intermediates\\cxx\\Debug\\5h572d5g",
     "isDebuggableEnabled": true,
     "validAbiList": [
-      "X86"
+      "ARMEABI_V7A",
+      "ARM64_V8A",
+      "X86",
+      "X86_64"
     ],
     "buildTargetSet": [
       "opencv_jni_shared"
@@ -130,7 +133,6 @@
         "rootBuildGradleFolder": "E:\\School Files\\FinalWorking",
         "sdkFolder": "C:\\Users\\ikerr\\AppData\\Local\\Android\\Sdk",
         "isBuildOnlyTargetAbiEnabled": true,
-        "ideBuildTargetAbi": "x86",
         "isCmakeBuildCohabitationEnabled": false,
         "isPrefabEnabled": false
       },

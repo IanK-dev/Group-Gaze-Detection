@@ -38,34 +38,30 @@ public class detectedFace {
         leftPupilCenter = new double[2];
     }
 
-    public void getThreshold(){
+    public gazeDirection determineGaze(){
+        //Gaze Direction Code Here
         double elLeftLook = eyeLeft.width()*0.25;
         double elRightLook = eyeLeft.width()*0.75;
         if(leftPupilCenter[0] < elLeftLook){
-            //Left Eye Looking Left
+            //Left Eye is Looking Left
         }
         else if(leftPupilCenter[0] > elRightLook){
-            //Left Eye Looking Left
+            //Left Eye is Looking Left
         }
         else{
-            //Left Eye Looking Center
+            //Left Eye is Looking Center
         }
         double erLeftLook = eyeRight.width()*0.25;
         double erRightLook = eyeRight.width()*0.75;
         if(rightPupilCenter[0] < erLeftLook){
-            //Right Eye Looking Left
+            //Right Eye is Looking Left
         }
         else if(leftPupilCenter[0] > erRightLook){
-            //Right Eye Looking Right
+            //Right Eye is Looking Right
         }
         else{
-            //Right Eye Looking Center
+            //Right Eye is Looking Center
         }
-    }
-
-    public gazeDirection determineGaze(){
-        //Gaze Direction Code Here
-
         return gazeDirection.INDETERMINATE;
     }
 }

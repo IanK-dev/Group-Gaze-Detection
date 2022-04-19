@@ -48,6 +48,14 @@ public class cvManager extends AppCompatActivity {
     KeyPoint[] keyRightAr;
     Rect[] theseFaces;
 
+    //To-Do for Sal
+    //TODO Make it so eyes are only searched for in the top half of the face Rect
+    //TODO Trim the top 25% off the top of the eye Rect to account for eyebrows
+    //TODO Generally hone pupil detection for edge and standard cases
+    //TODO More scalable testing, settings variables to adjust threshold/iteration limits
+    //TODO Explore adjustableThreshold as an option in settings.
+    //TODO ADD TEST IMAGES TO "GazeTestImages" FOLDER AND PUSH (I think we said we'd have like 20 of each type LOL)
+
     public cvManager(Context appContext, String... classParams) throws InvalidParameterException, IOException {
         //Initialize CV dependent components
         faceMat = new Mat();
