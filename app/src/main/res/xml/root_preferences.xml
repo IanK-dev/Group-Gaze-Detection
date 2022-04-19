@@ -17,22 +17,23 @@
 
     <PreferenceCategory app:title="Classifier Settings">
         <ListPreference
-            app:defaultValue="Empty"
-            app:entries="@array/detection_list_pref_titles"
-            app:entryValues="@array/detection_list_pref_values"
+            app:defaultValue="haarcascade_frontalface_alt2"
+            app:entries="@array/face_detection_options"
+            app:entryValues="@array/face_detection_xml"
             app:summary="Click to show a list to choose from"
-            app:key="reply"
+            app:key="facedetection"
             app:title="Face Classifier Selection"
-            app:dialogTitle="@string/dialog_title"
+            app:dialogTitle="@string/face_title"
             app:useSimpleSummaryProvider="true" />
+
         <ListPreference
-            app:defaultValue="Empty"
-            app:entries="@array/detection_list_pref_titles"
-            app:entryValues="@array/detection_list_pref_values"
+            app:defaultValue="haarcascade_eye_tree_eyeglasses"
+            app:entries="@array/eye_detection_options"
+            app:entryValues="@array/eye_detection_xml"
             app:summary="Click to show a list to choose from"
-            app:key="reply"
+            app:key="eyedetection"
             app:title="Eye Classifier Selection"
-            app:dialogTitle="@string/dialog_title"
+            app:dialogTitle="@string/eye_title"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 

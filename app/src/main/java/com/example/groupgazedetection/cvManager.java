@@ -96,7 +96,7 @@ public class cvManager extends AppCompatActivity {
         //Receive and update settings preferences from menu
         SharedPreferences thesePreferences = PreferenceManager.getDefaultSharedPreferences(appContext);
         Rect[][] results;
-        Log.d("cvManager", "Preferences Result: " + thesePreferences.getString("signature", "0"));
+        Log.d("cvManager", "Preferences Result: " + thesePreferences.getString("facedetection", "0"));
         //Haars Cascade
         if (classParams[0] == "haar") {
             /*
@@ -104,11 +104,11 @@ public class cvManager extends AppCompatActivity {
                 throw new InvalidParameterException("Invalid Classifier Parameters Entered");
             }*/
             //Begin face cascade generation
-            String faceSelection = "haarcascade_frontalface_alt2";
+            String faceSelection = thesePreferences.getString("facedetection", "haarcascade_frontalface_alt2");
             int faceID = appContext.getResources().getIdentifier(faceSelection, "raw", appContext.getPackageName());
             InputStream readFaceClassifier = appContext.getResources().openRawResource(faceID);
             File cascadeDir = appContext.getDir("cascade", Context.MODE_PRIVATE);
-            rawFaceFile = new File(cascadeDir, "haarcascade_frontalface_alt2.xml");
+            rawFaceFile = new File(cascadeDir, thesePreferences.getString("facedetection", "haarcascade_frontalface_alt2") + ".xml");
             FileOutputStream writeFaceClassifier = new FileOutputStream(rawFaceFile);
             byte[] buffer = new byte[4096];
             int bytesRead;
@@ -124,7 +124,9 @@ public class cvManager extends AppCompatActivity {
             //Begin eye cascade generation
             Arrays.fill(buffer, (byte) 0);
             InputStream readEyeClassifier = appContext.getResources().openRawResource(R.raw.haarcascade_eye_tree_eyeglasses);
-            rawEyeFile = new File(cascadeDir, "haarcascade_eye_tree_eyeglasses.xml");
+            String eyeSelection = thesePreferences.getString("eyedetection", "haarcascade_eye_tree_eyeglasses");
+            int eyeID = appContext.getResources().getIdentifier(eyeSelection, "raw", appContext.getPackageName());
+            rawEyeFile = new File(cascadeDir, thesePreferences.getString("eyedetection", "haarcascade_eye_tree_eyeglasses") + ".xml");
             FileOutputStream writeEyeClassifier = new FileOutputStream(rawEyeFile);
             while ((bytesRead = readEyeClassifier.read(buffer)) != -1) {
                 writeEyeClassifier.write(buffer, 0, bytesRead);

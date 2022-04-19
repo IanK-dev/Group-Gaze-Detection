@@ -6,9 +6,27 @@
         <item>Manual Detection</item>
     </string-array>
 
-    <string-array name="detection_list_pref_values">
-        <item>head_count</item>
-        <item>timer_detect</item>
-        <item>manual_detect</item>
+    <string-array name="face_detection_options">
+        <item>Haar Cascade Face A</item>
+        <item>Haar Cascade Face B</item>
+        <item>Haar Cascade Face C</item>
+        <item>Haar Cascade Face D</item>
+    </string-array>
+
+    <string-array name="face_detection_xml">
+        <item>haarcascade_frontalface_default</item>
+        <item>haarcascade_frontalface_alt</item>
+        <item>haarcascade_frontalface_alt2</item>
+        <item>haarcascade_frontalface_alt_tree</item>
+    </string-array>
+
+    <string-array name="eye_detection_options">
+        <item>Haar Cascade Eye A</item>
+        <item>Haar Cascade Eye B</item>
+    </string-array>
+
+    <string-array name="eye_detection_xml">
+        <item>haarcascade_eye</item>
+        <item>haarcascade_eye_tree_eyeglasses</item>
     </string-array>
 </resources>

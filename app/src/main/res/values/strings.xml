@@ -14,7 +14,8 @@
     <string name="signature_title">Max Person Count</string>
     <string name="reply_title">Detection Type</string>
     <string name="auto_light">Automatically Adjust to Light</string>
-    <string name="dialog_title">Select detection type</string>
+    <string name="face_title">Select Facial Detection Type</string>
+    <string name="eye_title">Select Eye Detection Type</string>
 
     <!-- Sync Preferences -->>
     <string name="title_activity_live_detection">LiveDetectionActivity</string>
