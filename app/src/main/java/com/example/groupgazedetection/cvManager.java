@@ -213,37 +213,45 @@ public class cvManager extends AppCompatActivity {
                     Mat eyeLeftCopy = new Mat();
                     Mat eyeRightCopy = new Mat();
                     //Change this to modify the amount of erosion
-                    int eSize = 10;
+                    int eSize = 5;
                     //Change this to modify the amount of dilation
-                    int dSize = 10;
+                    int dSize = 5;
                     Log.d("cvManager", "Size of full mat given: " + greyMat.size());
                     do {
-                        eyeLeftCopy = gFace.eyeLeft.clone();
-                        Imgproc.threshold(eyeLeftCopy, eyeLeftCopy, athreshold, 255, Imgproc.THRESH_BINARY);
-                        Imgproc.erode(eyeLeftCopy, eyeLeftCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(eSize, eSize)));
-                        Imgproc.dilate(eyeLeftCopy, eyeLeftCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(dSize, dSize)));
-                        blobDetector.detect(eyeLeftCopy, pupilLeftKeys);
-                        keyLeftAr = pupilLeftKeys.toArray();
-                        Log.d("cvManager", "Left Size " + pupilLeftKeys.size());
-                        Log.d("cvManager", "Left Width " + pupilLeftKeys.size().width);
-                        Log.d("cvManager", "Left Width " + pupilLeftKeys.size().height);
-                        athreshold = athreshold + 20;
-                        Log.d("cvManager", "Left New Threshold " + athreshold);
-                    }while(athreshold < 63 && keyLeftAr.length < 1);
+                        do {
+                            eyeLeftCopy = gFace.eyeLeft.clone();
+                            Imgproc.threshold(eyeLeftCopy, eyeLeftCopy, athreshold, 255, Imgproc.THRESH_BINARY);
+                            Imgproc.erode(eyeLeftCopy, eyeLeftCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(eSize, eSize)));
+                            Imgproc.dilate(eyeLeftCopy, eyeLeftCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(dSize, dSize)));
+                            blobDetector.detect(eyeLeftCopy, pupilLeftKeys);
+                            keyLeftAr = pupilLeftKeys.toArray();
+                            Log.d("cvManager", "Left Size " + pupilLeftKeys.size());
+                            Log.d("cvManager", "Left Width " + pupilLeftKeys.size().width);
+                            Log.d("cvManager", "Left Width " + pupilLeftKeys.size().height);
+                            athreshold = athreshold + 10;
+                            Log.d("cvManager", "Left New Threshold " + athreshold);
+                        } while (athreshold < 83 && keyLeftAr.length < 1);
+                    }while(eSize < 20 && keyLeftAr.length < 1);
+                    eSize = 5;
                     athreshold = 22;
-                    do{
-                        eyeRightCopy = gFace.eyeRight.clone();
-                        Imgproc.threshold(eyeRightCopy, eyeRightCopy, athreshold, 255, Imgproc.THRESH_BINARY);
-                        Imgproc.dilate(eyeRightCopy, eyeRightCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(dSize, dSize)));
-                        Imgproc.erode(eyeRightCopy, eyeRightCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(eSize, eSize)));
-                        blobDetector.detect(eyeRightCopy, pupilRightKeys);
-                        keyRightAr = pupilRightKeys.toArray();
-                        Log.d("cvManager", "Right Size " + pupilRightKeys.size());
-                        Log.d("cvManager", "Right Width " + pupilRightKeys.size().width);
-                        Log.d("cvManager", "Right Height " + pupilRightKeys.size().height);
-                        athreshold = athreshold + 20;
-                        Log.d("cvManager", "Right New Threshold " + athreshold);
-                    }while(athreshold < 63 && keyRightAr.length < 1);
+
+                    do {
+                        do {
+                            eyeRightCopy = gFace.eyeRight.clone();
+                            Imgproc.threshold(eyeRightCopy, eyeRightCopy, athreshold, 255, Imgproc.THRESH_BINARY);
+                            Imgproc.dilate(eyeRightCopy, eyeRightCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(dSize, dSize)));
+                            Imgproc.erode(eyeRightCopy, eyeRightCopy, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(eSize, eSize)));
+                            blobDetector.detect(eyeRightCopy, pupilRightKeys);
+                            keyRightAr = pupilRightKeys.toArray();
+                            Log.d("cvManager", "Right Size " + pupilRightKeys.size());
+                            Log.d("cvManager", "Right Width " + pupilRightKeys.size().width);
+                            Log.d("cvManager", "Right Height " + pupilRightKeys.size().height);
+                            athreshold = athreshold + 10;
+                            Log.d("cvManager", "Right New Threshold " + athreshold);
+                        } while (athreshold < 83 && keyRightAr.length < 1);
+                        eSize = eSize + 5;
+                    }while(eSize < 20 && keyRightAr.length < 1);
+                    eSize = 5;
                     athreshold = 22;
 
                     //Log.d("cvManager", "Number of keypoints: " + pupilKeys.toString());

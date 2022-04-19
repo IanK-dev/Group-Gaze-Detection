@@ -117,6 +117,9 @@ public class  SingleImageActivity extends AppCompatActivity {
         else if(fixBit.getWidth() > 2000 || fixBit.getHeight() > 2000){
             fixBit = Bitmap.createScaledBitmap(fixBit, fixBit.getWidth()/2, fixBit.getHeight()/2, true);
         }
+        else if(fixBit.getWidth() < 500 || fixBit.getHeight() < 500){
+            fixBit = Bitmap.createScaledBitmap(fixBit, fixBit.getWidth()*2, fixBit.getHeight()*2, true);
+        }
         fixBit = openManager.detect(fixBit);
         preview_sin_image.setImageBitmap(fixBit);
     }
