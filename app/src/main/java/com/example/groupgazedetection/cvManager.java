@@ -1,8 +1,5 @@
 package com.example.groupgazedetection;
 
-import static org.opencv.dnn.Dnn.blobFromImage;
-import static org.opencv.dnn.Dnn.readNetFromCaffe;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
@@ -13,15 +10,12 @@ import android.util.Log;
 
 import org.opencv.core.*;
 import org.opencv.dnn.*;
-import org.opencv.features2d.Feature2D;
 import org.opencv.features2d.Features2d;
 import org.opencv.features2d.SimpleBlobDetector;
 import org.opencv.features2d.SimpleBlobDetector_Params;
 import org.opencv.imgproc.*;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.android.Utils;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.File;
@@ -29,7 +23,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidParameterException;
-import java.sql.Blob;
 import java.util.Arrays;
 
 public class cvManager extends AppCompatActivity {
@@ -43,19 +36,14 @@ public class cvManager extends AppCompatActivity {
     private MatOfKeyPoint pupilRightKeys;
     //Turn true if testing
     public boolean testGaze = false;
-    //public static Mat outputDNN;
     public static MatOfRect faceDetections;
     public List<detectedFace> detectedFaces;
     private File rawFaceFile;
     private File rawEyeFile;
-    private File rawCaffeFile;
-    private File rawProtoFile;
     private static CascadeClassifier cvFaceClassifier;
     private static CascadeClassifier cvEyeClassifier;
-    private static Net dnnClassifier;
     private SimpleBlobDetector blobDetector;
     private SimpleBlobDetector_Params blobParams;
-    public Mat overlay;
     KeyPoint[] keyLeftAr;
     KeyPoint[] keyRightAr;
     Rect[] theseFaces;

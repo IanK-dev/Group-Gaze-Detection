@@ -1,57 +1,30 @@
 package com.example.groupgazedetection;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Camera;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.view.MotionEvent;
 import android.view.View;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraActivity;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
-import org.opencv.android.JavaCamera2View;
-import org.opencv.android.JavaCameraView;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfRect;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.core.Size;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
-import org.opencv.objdetect.CascadeClassifier;
-import org.opencv.imgproc.Imgproc;
-
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.SurfaceView;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
@@ -224,6 +197,5 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
             fileName = "/storage/emulated/0/DCIM/sample_picture_" + currentDateandTime + ".jpg";
         }
         faceCameraView.takePicture(fileName);
-        //Toast.makeText(this, fileName + " saved", Toast.LENGTH_SHORT).show();
     }
 }

@@ -1,18 +1,12 @@
 package com.example.groupgazedetection;
 
-import static org.opencv.dnn.Dnn.blobFromImage;
-import static org.opencv.dnn.Dnn.readNetFromCaffe;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Bitmap;
 import android.content.Context;
 
 import org.opencv.core.*;
-import org.opencv.dnn.*;
 import org.opencv.imgproc.*;
 import org.opencv.objdetect.CascadeClassifier;
-import org.opencv.android.Utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,18 +21,13 @@ public class liveManager extends AppCompatActivity {
     //OpenCV and Classifiers
     public static Mat faceMat;
     public static Mat eyeMat;
-    public static Mat outputDNN;
     public static MatOfRect faceDetections;
     public static MatOfRect eyeDetections;
     private File rawFaceFile;
     private File rawEyeFile;
-    private File rawCaffeFile;
-    private File rawProtoFile;
     private static CascadeClassifier cvFaceClassifier;
     private static CascadeClassifier cvEyeClassifier;
-    private static Net dnnClassifier;
     public Mat overlay;
-    public Size overlaySize;
     Rect[] theseFaces;
     Rect[] theseEyes;
 

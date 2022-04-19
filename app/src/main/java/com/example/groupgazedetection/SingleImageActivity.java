@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.content.Context;
 
@@ -41,7 +40,10 @@ public class  SingleImageActivity extends AppCompatActivity {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        Uri selectedImageUri = data.getData();
+                        Uri selectedImageUri = null;
+                        if (data != null) {
+                            selectedImageUri = data.getData();
+                        }
                         if (null != selectedImageUri) {
                             try {
                                 selected_image = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri);
@@ -59,19 +61,14 @@ public class  SingleImageActivity extends AppCompatActivity {
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
-            switch (status) {
-                case LoaderCallbackInterface.SUCCESS:
-                {
-                    try {
-                        openManager = new cvManager(currentAppContext, "haar");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } break;
-                default:
-                {
-                    super.onManagerConnected(status);
-                } break;
+            if (status == LoaderCallbackInterface.SUCCESS) {
+                try {
+                    openManager = new cvManager(currentAppContext, "haar");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                super.onManagerConnected(status);
             }
         }
     };

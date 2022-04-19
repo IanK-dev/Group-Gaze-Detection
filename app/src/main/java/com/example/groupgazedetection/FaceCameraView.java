@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
-import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -44,8 +43,6 @@ public class FaceCameraView extends JavaCameraView implements Camera.PictureCall
     public void takePicture(final String fileName) {
         Log.i("PictureDemo", "Picture path: " + fileName);
         this.mFileName = fileName;
-        // Postview and jpeg are sent in the same buffers if the queue is not empty when performing a capture.
-        // Clear up buffers to avoid mCamera.takePicture to be stuck because of a memory issue
         mCamera.setPreviewCallback(null);
 
         // PictureCallback is implemented by the current class
@@ -55,7 +52,6 @@ public class FaceCameraView extends JavaCameraView implements Camera.PictureCall
     @Override
     public void onPictureTaken(byte[] data, Camera camera) {
         Log.i("PictureDemo", "Saving a bitmap to file");
-        // The camera preview was automatically stopped. Start it again.
         mCamera.startPreview();
         mCamera.setPreviewCallback(this);
 

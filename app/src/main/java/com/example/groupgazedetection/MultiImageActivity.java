@@ -2,7 +2,6 @@ package com.example.groupgazedetection;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentResolver;
 import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
