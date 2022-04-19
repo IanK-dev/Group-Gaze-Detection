@@ -250,11 +250,15 @@ public class cvManager extends AppCompatActivity {
                     if(testGaze == false){
                         if(keyLeftAr.length > 0){
                             Log.d("cvManager", "Left Key: " + keyLeftAr[0]);
+                            gFace.leftPupilCenter[0] = keyLeftAr[0].pt.x;
+                            gFace.leftPupilCenter[1] = keyLeftAr[0].pt.y;
                             keyLeftAr[0].pt.x = keyLeftAr[0].pt.x + gFace.eyeLeftCords.x + gFace.faceCords.x;
                             keyLeftAr[0].pt.y = keyLeftAr[0].pt.y + gFace.eyeLeftCords.y + gFace.faceCords.y;
                         }
                         if(keyRightAr.length > 0){
                             Log.d("cvManager", "Right Key: " + keyRightAr[0]);
+                            gFace.rightPupilCenter[0] = keyRightAr[0].pt.x;
+                            gFace.rightPupilCenter[1] = keyRightAr[0].pt.y;
                             keyRightAr[0].pt.x = keyRightAr[0].pt.x + gFace.eyeRightCords.x + gFace.faceCords.x;
                             keyRightAr[0].pt.y = keyRightAr[0].pt.y + gFace.eyeRightCords.y + gFace.faceCords.y;
                         }
@@ -268,7 +272,7 @@ public class cvManager extends AppCompatActivity {
                         Features2d.drawKeypoints(eyeRightCopy, pupilRightKeys, eyeRightCopy, new Scalar(0, 255, 0, 255), Features2d.DrawMatchesFlags_DRAW_RICH_KEYPOINTS);
                         subFace = eyeRightCopy;
                     }
-                    Log.d("cvManager", "Updated Greymat size: " + greyMat.size());
+                    Log.d("cvManager", "Right Gaze Coordinates: " + gFace.rightPupilCenter[0]);
                 }
             }
             if(testGaze == true){
