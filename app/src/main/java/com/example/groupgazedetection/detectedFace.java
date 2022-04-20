@@ -25,6 +25,8 @@ public class detectedFace {
     Mat eyeDown;
     Mat eyeLeftUp;
     Mat eyeLeftDown;
+    //Assign this variable to the text you want to be on the label
+    String outputLabel;
     enum gazeDirection{
         LEFT,
         CENTER,
@@ -189,6 +191,13 @@ public class detectedFace {
                 break;
         }
         return stat;
+    }
+
+    public  String printDirection(){
+        //Temp testing text
+        outputLabel = "Gaze: Inconclusive";
+        //Return
+        return outputLabel;
     }
 
 
