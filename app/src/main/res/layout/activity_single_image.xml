@@ -57,19 +57,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Attempted to make a textview box and send over variable Strings to make it change
-         After each process -->
-    <TextView
-        android:id="@+id/singleImageTextViewEyes"
-        android:layout_width="118dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="2dp"
-        android:background="@color/light_blue_A200"
-        android:text=""
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/single_image_preview"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.673" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
