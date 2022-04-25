@@ -280,7 +280,16 @@ public class cvManager extends AppCompatActivity {
                         Features2d.drawKeypoints(eyeRightCopy, pupilRightKeys, eyeRightCopy, new Scalar(0, 255, 0, 255), Features2d.DrawMatchesFlags_DRAW_RICH_KEYPOINTS);
                         subFace = eyeRightCopy;
                     }
-                    Log.d("cvManager", "Right Gaze Coordinates: " + gFace.rightPupilCenter[0]);
+                    //Print direction on face
+                    gFace.printDirection();
+                    float scaleFactor = ((float)((faceMat.width() + faceMat.height())/2)/1000f);
+                    Log.d("cvManager", "Scale Factor " + scaleFactor);
+                    float fontScale = (1.8f*scaleFactor);
+                    int fontThickness = (int) Math.round(5*scaleFactor);
+                    String outputLabel = gFace.printDirection();
+                    Size textSize = Imgproc.getTextSize(outputLabel, Imgproc.FONT_HERSHEY_SIMPLEX, fontScale, fontThickness, null);
+                    Imgproc.rectangle(faceMat, new Point(gFace.faceCords.x, gFace.faceCords.y + gFace.faceCords.height+ textSize.height + 30), new Point(gFace.faceCords.x + textSize.width + 30, gFace.faceCords.y+ gFace.faceCords.height), new Scalar(255, 0, 0, 255), -1);
+                    Imgproc.putText(faceMat, outputLabel, new Point(gFace.faceCords.x + 15, gFace.faceCords.y + gFace.faceCords.height+ textSize.height + 15), Imgproc.FONT_HERSHEY_SIMPLEX, fontScale, new Scalar(255, 255, 255, 255), fontThickness);
                 }
             }
             if(testGaze == true){
