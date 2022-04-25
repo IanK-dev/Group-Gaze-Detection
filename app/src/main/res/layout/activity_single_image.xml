@@ -8,6 +8,20 @@
     tools:context=".SingleImageActivity">
 
 
+    <ImageButton
+        android:id="@+id/returnCamButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="44dp"
+        android:background="@drawable/ic_undo"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:onClick="gotoHome"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_undo"
+        tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
     <Button
         android:id="@+id/find_sin_image_button"

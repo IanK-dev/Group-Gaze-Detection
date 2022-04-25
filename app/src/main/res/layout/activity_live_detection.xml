@@ -4,6 +4,7 @@
     android:id="@+id/stackedLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <com.example.groupgazedetection.FaceCameraView
         android:id="@+id/livedetection_surface_view"
         android:layout_width="fill_parent"
@@ -23,31 +24,44 @@
             android:id="@+id/pictureButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="332dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/ic_photo"
             android:minWidth="60dp"
             android:minHeight="60dp"
             android:onClick="takePicture"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_photo"
-            android:background="@drawable/ic_photo"
             tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
-        <ImageButton
-            android:id="@+id/flashButton"
+        <ToggleButton
+            android:id="@+id/toggleFlashButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
+            android:background="@drawable/ic_flash"
             android:minWidth="48dp"
             android:minHeight="48dp"
             android:onClick="activateFlash"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_flash"
-            android:background="@drawable/ic_flash"
             tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/tempCameraSettings"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/ic_settings"
+            android:backgroundTint="@color/light_blue_900"
+            android:contentDescription="Brings user to the camera settings menu"
+            android:onClick="gotoSettings"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/returnCamButton"
@@ -55,14 +69,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
+            android:background="@drawable/ic_undo"
             android:minWidth="48dp"
             android:minHeight="48dp"
             android:onClick="gotoHome"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/ic_undo"
-            android:background="@drawable/ic_undo"
             tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

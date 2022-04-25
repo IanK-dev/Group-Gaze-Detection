@@ -27,6 +27,11 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.ImageButton;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
+import android.widget.ToggleButton;
+import androidx.annotation.RequiresApi;
 
 public class LiveDetectionActivity extends CameraActivity implements CvCameraViewListener2 {
     private static final String TAG = "LiveDetection";
@@ -44,6 +49,10 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
     Context currentAppContext;
     liveManager liveManager;
     private Mat grayscaleImage;
+
+    private ToggleButton toggleFlashLightOnOff;
+    private CameraManager cameraManager;
+    private String getCameraID;
 
     private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -85,6 +94,9 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
         faceCameraView.setVisibility(FaceCameraView.VISIBLE);
         faceCameraView.setCameraIndex(1);
         faceCameraView.setCvCameraViewListener(this);
+
+        toggleFlashLightOnOff = findViewById(R.id.toggleFlashButton);
+        cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
     }
 
     @Override
@@ -111,9 +123,15 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
         return Collections.singletonList(faceCameraView);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void onDestroy() {
         super.onDestroy();
         faceCameraView.disableView();
+        try {
+            cameraManager.setTorchMode(getCameraID, false);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onCameraViewStarted(int width, int height) {
@@ -167,17 +185,31 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
         }
     }
     public void gotoHome(View view){
-            Intent intent = new Intent(this, HomeActivity.class);
-            startActivity(intent);
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
     }
-
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void activateFlash(View view){
-        Log.d(TAG, faceCameraView.getFlashMode());
-        faceCameraView.setFlashMode("on");
+
+        if(toggleFlashLightOnOff.isChecked()) {
+            try {
+                cameraManager.setTorchMode(getCameraID, true);
+            } catch (CameraAccessException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                cameraManager.setTorchMode(getCameraID, false);
+            } catch (CameraAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        //Log.d(TAG, faceCameraView.getFlashMode());
+        //faceCameraView.setFlashMode("on");
         /*for(String res : faceCameraView.getFocusModes()){
             Log.d(TAG, res);
         }*/
-        Log.d(TAG, faceCameraView.getFlashMode());
+        //Log.d(TAG, faceCameraView.getFlashMode());
 
     }
 
@@ -198,4 +230,15 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
         }
         faceCameraView.takePicture(fileName);
     }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void finish() {
+        super.finish();
+        try {
+            cameraManager.setTorchMode(getCameraID, false);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
