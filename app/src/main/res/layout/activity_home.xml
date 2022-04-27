@@ -73,7 +73,7 @@
         android:layout_height="120dp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="76dp"
-        android:text="Group Gaze Detection"
+        android:text="Gaze-Ex"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="48sp"

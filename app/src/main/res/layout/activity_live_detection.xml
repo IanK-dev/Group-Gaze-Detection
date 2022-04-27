@@ -51,7 +51,7 @@
             tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
         <Button
-            android:id="@+id/tempCameraSettings"
+            android:id="@+id/LiveDetectionSettingsButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginTop="8dp"
