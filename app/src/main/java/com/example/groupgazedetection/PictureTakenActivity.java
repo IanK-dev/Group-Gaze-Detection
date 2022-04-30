@@ -31,6 +31,8 @@ public class PictureTakenActivity extends AppCompatActivity {
     ContentResolver contentResolver;
     cvManager openManager;
     Context currentAppContext;
+    boolean alreadyProcessed = false;
+    Bitmap bitGaze;
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -99,7 +101,7 @@ public class PictureTakenActivity extends AppCompatActivity {
         Log.d("PictureTaken", "Image Successfully Saved");
     }
 
-    public void previewGaze(View view) throws IOException {
+    private void processGaze() throws IOException {
         Bitmap fixBit = (MediaStore.Images.Media.getBitmap(contentResolver, pictureFrame)).copy(Bitmap.Config.ARGB_8888, true);
         if(fixBit.getWidth() > 4000 || fixBit.getHeight() > 4000){
             fixBit = Bitmap.createScaledBitmap(fixBit, fixBit.getWidth()/4, fixBit.getHeight()/4, true);
@@ -113,8 +115,15 @@ public class PictureTakenActivity extends AppCompatActivity {
         else if(fixBit.getWidth() < 500 || fixBit.getHeight() < 500){
             fixBit = Bitmap.createScaledBitmap(fixBit, fixBit.getWidth()*2, fixBit.getHeight()*2, true);
         }
-        fixBit = openManager.detect(fixBit);
-        preview_Gaze.setImageBitmap(fixBit);
+        bitGaze = openManager.detect(fixBit);
+        alreadyProcessed = true;
+    }
+
+    public void previewGaze(View view) throws IOException {
+        if(alreadyProcessed == false){
+            processGaze();
+        }
+        preview_Gaze.setImageBitmap(bitGaze);
         preview_Image.setVisibility(View.INVISIBLE);
         preview_Gaze.setVisibility(View.VISIBLE);
         button_Gaze.setVisibility(View.GONE);
