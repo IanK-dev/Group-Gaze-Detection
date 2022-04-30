@@ -29,8 +29,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_undo" />
-                            <entry key="sourceFile" value="E:\School Files\undo.svg" />
+                            <entry key="outputName" value="ic_video" />
+                            <entry key="sourceFile" value="E:\GDAssetDesign\video.svg" />
                           </map>
                         </option>
                       </PersistentState>

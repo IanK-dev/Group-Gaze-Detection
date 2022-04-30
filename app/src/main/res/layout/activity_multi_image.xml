@@ -16,7 +16,7 @@
         android:background="@drawable/ic_undo"
         android:minWidth="48dp"
         android:minHeight="48dp"
-        android:onClick="gotoHome"
+        android:onClick="goToHome"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_undo"

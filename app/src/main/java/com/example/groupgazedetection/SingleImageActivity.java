@@ -126,4 +126,8 @@ public class  SingleImageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void goToHome(View view) {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+    }
 }
