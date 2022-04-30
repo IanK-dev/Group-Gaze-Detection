@@ -23,6 +23,7 @@ import java.io.IOException;
 
 public class PictureTakenActivity extends AppCompatActivity {
     ImageView preview_Image;
+    ImageView preview_Gaze;
     Uri pictureFrame;
     ContentResolver contentResolver;
     cvManager openManager;
@@ -49,6 +50,7 @@ public class PictureTakenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_picture_taken);
         currentAppContext = this;
         preview_Image = findViewById(R.id.demoPicture);
+        preview_Gaze = findViewById(R.id.demoGaze);
         Bundle extras = getIntent().getExtras();
         pictureFrame = Uri.parse(extras.getString("picture"));
         preview_Image.setImageURI(pictureFrame);
@@ -92,7 +94,22 @@ public class PictureTakenActivity extends AppCompatActivity {
     }
 
     public void previewGaze(View view) throws IOException {
-        Bitmap bitmapPhoto = MediaStore.Images.Media.getBitmap(contentResolver, pictureFrame);
-
+        Bitmap fixBit = (MediaStore.Images.Media.getBitmap(contentResolver, pictureFrame)).copy(Bitmap.Config.ARGB_8888, true);
+        if(fixBit.getWidth() > 4000 || fixBit.getHeight() > 4000){
+            fixBit = Bitmap.createScaledBitmap(fixBit, fixBit.getWidth()/4, fixBit.getHeight()/4, true);
+        }
+        else if(fixBit.getWidth() > 3000 || fixBit.getHeight() > 3000){
+            fixBit = Bitmap.createScaledBitmap(fixBit, fixBit.getWidth()/3, fixBit.getHeight()/3, true);
+        }
+        else if(fixBit.getWidth() > 2000 || fixBit.getHeight() > 2000){
+            fixBit = Bitmap.createScaledBitmap(fixBit, fixBit.getWidth()/2, fixBit.getHeight()/2, true);
+        }
+        else if(fixBit.getWidth() < 500 || fixBit.getHeight() < 500){
+            fixBit = Bitmap.createScaledBitmap(fixBit, fixBit.getWidth()*2, fixBit.getHeight()*2, true);
+        }
+        fixBit = openManager.detect(fixBit);
+        preview_Gaze.setImageBitmap(fixBit);
+        preview_Image.setVisibility(View.INVISIBLE);
+        preview_Gaze.setVisibility(View.VISIBLE);
     }
 }
