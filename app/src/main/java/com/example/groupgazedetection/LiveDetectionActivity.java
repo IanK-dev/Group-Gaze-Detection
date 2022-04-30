@@ -176,7 +176,10 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
         @Override
         protected Bitmap doInBackground(Mat... mats) {
             overlaySize = liveManager.detect(mats[0]);
-            Utils.matToBitmap(overlaySize, presentOverlay);
+            try {
+                Utils.matToBitmap(overlaySize, presentOverlay);
+            }catch (Exception e){
+            };
             return presentOverlay;
         }
         @Override
@@ -230,6 +233,7 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
         }
         faceCameraView.takePicture(fileName);
     }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void finish() {

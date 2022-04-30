@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#202020"
+    tools:context=".PictureTakenActivity">
+
+    <ImageView
+        android:id="@+id/demoPicture"
+        android:layout_width="707dp"
+        android:layout_height="323dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageButton
+        android:id="@+id/returnCamButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/ic_undo"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:onClick="returnToLive"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_undo"
+        tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/save_picture"
+        android:layout_width="168dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/ic_bluebutton"
+        android:onClick="saveImage"
+        android:text="Save Image"
+        android:textColor="@android:color/background_light"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/delete_picture"
+        android:layout_width="168dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="544dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/ic_bluebutton"
+        android:onClick="deleteImage"
+        android:text="Delete Image"
+        android:textColor="@android:color/background_light"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/preview_gaze"
+        android:layout_width="168dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="312dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/ic_bluebutton"
+        android:onClick="previewGaze"
+        android:text="Preview Gaze"
+        android:textColor="@android:color/background_light"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
