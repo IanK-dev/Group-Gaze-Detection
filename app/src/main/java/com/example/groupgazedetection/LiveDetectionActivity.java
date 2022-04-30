@@ -49,10 +49,12 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
     Context currentAppContext;
     liveManager liveManager;
     private Mat grayscaleImage;
-
+    ImageButton takePicture;
+    ImageButton recordGaze;
     private ToggleButton toggleFlashLightOnOff;
     private CameraManager cameraManager;
     private String getCameraID;
+    private boolean camState = false;
 
     private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -94,7 +96,9 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
         faceCameraView.setVisibility(FaceCameraView.VISIBLE);
         faceCameraView.setCameraIndex(1);
         faceCameraView.setCvCameraViewListener(this);
-
+        takePicture = findViewById(R.id.pictureButton);
+        recordGaze = findViewById(R.id.videoButton);
+        recordGaze.setVisibility(View.GONE);
         toggleFlashLightOnOff = findViewById(R.id.toggleFlashButton);
         cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
     }
@@ -197,6 +201,23 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }
+
+    public void toggleRecord(View view) {
+        if(camState == false){
+            takePicture.setVisibility(View.GONE);
+            recordGaze.setVisibility(View.VISIBLE);
+            camState = true;
+        }else{
+            takePicture.setVisibility(View.VISIBLE);
+            recordGaze.setVisibility(View.GONE);
+            camState = false;
+        }
+    }
+
+    public void takeVideo(View view){
+
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void activateFlash(View view){
 

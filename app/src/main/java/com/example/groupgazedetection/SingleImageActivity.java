@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.content.Context;
 
@@ -31,7 +33,6 @@ public class  SingleImageActivity extends AppCompatActivity {
     Bitmap selected_image;
     Context currentAppContext;
     cvManager openManager;
-
     //User content contract resolver
     ActivityResultLauncher<Intent> imageSelection = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),

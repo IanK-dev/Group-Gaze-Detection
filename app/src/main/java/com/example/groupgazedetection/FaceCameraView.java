@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.util.AttributeSet;
@@ -67,23 +68,11 @@ public class FaceCameraView extends JavaCameraView implements Camera.PictureCall
         mCamera.setPreviewCallback(this);
         Intent intent = new Intent(thisContext, PictureTakenActivity.class);
         Log.d("PictureDemo", "Size of Picture Byte Array:" + data.length);
-        /*
-        File cachePath = new File(thisContext.getApplicationContext().getCacheDir(), "images");
-        cachePath.mkdirs();
-        Bitmap tempPic = BitmapFactory.decodeByteArray(data, 0, data.length);
-        try {
-            FileOutputStream cacheStream = new FileOutputStream(cachePath + "/" + mFileName);
-            tempPic.compress(Bitmap.CompressFormat.JPEG, 90, cacheStream);
-            tempPic.recycle();
-            cacheStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        File sendLocal = new File(cachePath, mFileName);
-        Log.i("PictureDemo", "Context: " + thisContext.toString());
-        Log.i("PictureDemo", "Co: " + thisContext.toString());
-        */
         Bitmap picture = BitmapFactory.decodeByteArray(data, 0, data.length);
+        //Flip the BitMap to be preview accurate
+        Matrix flip = new Matrix();
+        flip.setScale(-1, 1);
+        picture = Bitmap.createBitmap(picture, 0, 0, picture.getWidth(), picture.getHeight(), flip, true);
         try {
             FileOutputStream fos = new FileOutputStream(mFileName);
             picture.compress(Bitmap.CompressFormat.JPEG, 90, fos);
@@ -96,19 +85,5 @@ public class FaceCameraView extends JavaCameraView implements Camera.PictureCall
         intent.putExtra("picture", sendURI.toString());
         intent.putExtra("filename", mFileName);
         thisContext.startActivity(intent);
-        // Write the image in a file (in jpeg format)
-        /*
-        Bitmap picture = BitmapFactory.decodeByteArray(data, 0, data.length);
-        try {
-            FileOutputStream fos = new FileOutputStream(mFileName);
-            picture.compress(Bitmap.CompressFormat.JPEG, 90, fos);
-            picture.recycle();
-            fos.close();
-        } catch (java.io.IOException e) {
-            Log.e("PictureDemo", "Exception in photoCallback", e);
-        }
-        */
-
     }
-
 }
