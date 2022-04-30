@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -24,6 +25,8 @@ import java.io.IOException;
 public class PictureTakenActivity extends AppCompatActivity {
     ImageView preview_Image;
     ImageView preview_Gaze;
+    Button button_Gaze;
+    Button button_Photo;
     Uri pictureFrame;
     ContentResolver contentResolver;
     cvManager openManager;
@@ -51,6 +54,9 @@ public class PictureTakenActivity extends AppCompatActivity {
         currentAppContext = this;
         preview_Image = findViewById(R.id.demoPicture);
         preview_Gaze = findViewById(R.id.demoGaze);
+        button_Photo = findViewById(R.id.preview_photo);
+        button_Photo.setVisibility(View.GONE);
+        button_Gaze = findViewById(R.id.preview_gaze);
         Bundle extras = getIntent().getExtras();
         pictureFrame = Uri.parse(extras.getString("picture"));
         preview_Image.setImageURI(pictureFrame);
@@ -111,5 +117,15 @@ public class PictureTakenActivity extends AppCompatActivity {
         preview_Gaze.setImageBitmap(fixBit);
         preview_Image.setVisibility(View.INVISIBLE);
         preview_Gaze.setVisibility(View.VISIBLE);
+        button_Gaze.setVisibility(View.GONE);
+        button_Photo.setVisibility(View.VISIBLE);
+    }
+
+    public void previewPhoto(View view){
+        Intent intent = new Intent(this, LiveDetectionActivity.class);
+        preview_Image.setVisibility(View.VISIBLE);
+        preview_Gaze.setVisibility(View.INVISIBLE);
+        button_Gaze.setVisibility(View.VISIBLE);
+        button_Photo.setVisibility(View.GONE);
     }
 }
