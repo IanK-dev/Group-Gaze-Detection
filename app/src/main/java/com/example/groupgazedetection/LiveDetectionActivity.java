@@ -1,10 +1,14 @@
 package com.example.groupgazedetection;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.content.Intent;
 import android.os.Build;
@@ -34,27 +38,35 @@ import android.widget.ToggleButton;
 import androidx.annotation.RequiresApi;
 
 public class LiveDetectionActivity extends CameraActivity implements CvCameraViewListener2 {
-    private static final String TAG = "LiveDetection";
+    //Global Objects
     private Mat mRgba;
     private Mat mGray;
-    private boolean firstLoop;
+    private List<Mat> collectedFrames = new ArrayList<Mat>();
+    private Mat grayscaleImage;
     private Mat overlaySize;
     private Bitmap presentOverlay;
     private asyncFaces findFaces;
-    public ImageView overlay;
-    private float mRelativeFaceSize   = 0.2f;
-    private int mAbsoluteFaceSize   = 0;
-    int frameLimiter = 0;
+    private Timer takeVideoTimer;
+    //Global Components
     private FaceCameraView faceCameraView;
     Context currentAppContext;
     liveManager liveManager;
-    private Mat grayscaleImage;
+    public ImageView overlay;
     ImageButton takePicture;
     ImageButton recordGaze;
     private ToggleButton toggleFlashLightOnOff;
     private CameraManager cameraManager;
+    //Global Basic Values
+    private static final String TAG = "LiveDetection";
     private String getCameraID;
     private boolean camState = false;
+    private boolean videoCaptureState = false;
+    private int frameIndex = 0;
+    private float mRelativeFaceSize   = 0.2f;
+    private int mAbsoluteFaceSize   = 0;
+    int frameLimiter = 0;
+    private boolean firstLoop;
+    private int videoDuration;
 
     private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -88,6 +100,8 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
         currentAppContext = this;
         setContentView(R.layout.activity_live_detection);
         firstLoop = true;
+        videoDuration = 2;
+        takeVideoTimer = new Timer();
         overlay = findViewById(R.id.liveOverlay);
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
@@ -168,12 +182,15 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
             frameLimiter = 0;
             findFaces = new asyncFaces();
             findFaces.execute(mGray);
+            if(videoCaptureState == true){
+                collectedFrames.add(mRgba.clone());
+                frameIndex = frameIndex + 1;
+            }
             return mRgba;
         }
         else{
             frameLimiter++;
         }
-
         return mRgba;
     }
 
@@ -215,12 +232,22 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
     }
 
     public void takeVideo(View view){
-
+        videoCaptureState = true;
+        Intent videoIntent = new Intent(this, PictureTakenActivity.class);
+        takeVideoTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Log.d("LiveDetectionActivity", "Finished Timer");
+                Log.d("LiveDetectionActivity", "Number of Frames Collected: " + collectedFrames.size());
+                Log.d("LiveDetectionActivity", "First Frame Size: " + (collectedFrames.get(0)).size());
+                //videoIntent.putExtra("listframes", (Serializable) collectedFrames);
+                //this.startActivity(intent);
+            }
+        }, videoDuration*1000);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void activateFlash(View view){
-
         if(toggleFlashLightOnOff.isChecked()) {
             try {
                 cameraManager.setTorchMode(getCameraID, true);
@@ -271,5 +298,4 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
             e.printStackTrace();
         }
     }
-
 }

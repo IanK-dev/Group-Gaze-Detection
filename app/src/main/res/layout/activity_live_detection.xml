@@ -97,12 +97,10 @@
             android:layout_width="46dp"
             android:layout_height="55dp"
             android:layout_marginStart="535dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/ic_next"
             android:onClick="toggleRecord"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/pictureButton"
             app:layout_constraintStart_toEndOf="@+id/returnCamButton"
             tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
