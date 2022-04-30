@@ -172,6 +172,12 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
 
         return mRgba;
     }
+
+    public void gotoSettings(View view){
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
     private class asyncFaces extends AsyncTask<Mat, String, Bitmap>{
         @Override
         protected Bitmap doInBackground(Mat... mats) {
