@@ -29,12 +29,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GroupGazeDetection">
         <activity
+            android:name=".VideoAnalysisActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.GroupGazeDetection.Fullscreen"
+            tools:ignore="LockedOrientationActivity"/>
+        <activity
             android:name=".PictureTakenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
             android:screenOrientation="landscape"
-            tools:ignore="LockedOrientationActivity"
             android:theme="@style/Theme.GroupGazeDetection.Fullscreen"
-            android:exported="false" />
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".SingleImageActivity"
             android:exported="false"
@@ -76,6 +83,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

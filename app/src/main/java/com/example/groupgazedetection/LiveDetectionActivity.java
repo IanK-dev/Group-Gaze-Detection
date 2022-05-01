@@ -42,6 +42,7 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
     private Mat mRgba;
     private Mat mGray;
     private List<Mat> collectedFrames = new ArrayList<Mat>();
+    private long[] collectedLongs = new long[50];
     private Mat grayscaleImage;
     private Mat overlaySize;
     private Bitmap presentOverlay;
@@ -184,7 +185,7 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
             findFaces.execute(mGray);
             if(videoCaptureState == true){
                 collectedFrames.add(mRgba.clone());
-                frameIndex = frameIndex + 1;
+                //frameIndex = frameIndex + 1;
             }
             return mRgba;
         }
@@ -233,15 +234,22 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
 
     public void takeVideo(View view){
         videoCaptureState = true;
-        Intent videoIntent = new Intent(this, PictureTakenActivity.class);
+        Intent videoIntent = new Intent(this, VideoAnalysisActivity.class);
         takeVideoTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 Log.d("LiveDetectionActivity", "Finished Timer");
                 Log.d("LiveDetectionActivity", "Number of Frames Collected: " + collectedFrames.size());
-                Log.d("LiveDetectionActivity", "First Frame Size: " + (collectedFrames.get(0)).size());
-                //videoIntent.putExtra("listframes", (Serializable) collectedFrames);
-                //this.startActivity(intent);
+                //Log.d("LiveDetectionActivity", "Frame One: " + collectedFrames[0]);
+                //Log.d("LiveDetectionActivity", "Frame Two: " + collectedFrames[1]);
+                //Log.d("LiveDetectionActivity", "Frame One: " + collectedFrames[0]);
+                //Log.d("LiveDetectionActivity", "First Frame Size: " + (collectedFrames.get(0)));
+                for(int i = 0; i < collectedFrames.size(); i++){
+                    Log.d("LiveDetectionActivity", "Loop: " + i);
+                    collectedLongs[i] = collectedFrames.get(i).getNativeObjAddr();
+                }
+                videoIntent.putExtra("listframes", collectedLongs);
+                startActivity(videoIntent);
             }
         }, videoDuration*1000);
     }
