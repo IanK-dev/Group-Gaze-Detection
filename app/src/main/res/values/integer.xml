@@ -1,0 +1,5 @@
+<resources>
+    <integer name="thresh_default">8</integer>
+    <integer name="thresh_max">10</integer>
+    <integer name="thresh_min">1</integer>
+</resources>

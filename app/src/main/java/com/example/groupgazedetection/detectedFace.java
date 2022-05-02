@@ -1,6 +1,11 @@
 package com.example.groupgazedetection;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.TextView;
+
+import androidx.preference.PreferenceManager;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
@@ -28,6 +33,7 @@ public class detectedFace {
     String leftEyeStatusText;
     String rightEyeStatusText;
     private double thresholdIntensity;
+    SharedPreferences thesePreferences;
 
     enum gazeDirection{
         LEFT,
@@ -40,7 +46,7 @@ public class detectedFace {
     //Add Forward Group
     //Tune Intervals because they're always wrong right now.
 
-    public detectedFace(Mat inputFace){
+    public detectedFace(Mat inputFace, Context calledContext){
         face = inputFace;
         validGaze = true;
         rightPupilCenter = new double[2];
@@ -48,6 +54,7 @@ public class detectedFace {
         leftEyeRes = new String[2];
         rightEyeRes = new String[2];
         thresholdIntensity = 0.4;
+        thesePreferences = PreferenceManager.getDefaultSharedPreferences(calledContext);
     }
 
     public gazeDirection determineGaze(){
@@ -101,10 +108,10 @@ public class detectedFace {
         }
         //Determine Vertical Results
         if(leftPupilCenter[1] < (eyeLeft.height()*thresholdIntensity)){
-            leftEyeRes[1] = "Down";
+            leftEyeRes[1] = "Up";
         }
         else if(leftPupilCenter[1] > (eyeLeft.height()*(1 - thresholdIntensity))){
-            leftEyeRes[1] = "Up";
+            leftEyeRes[1] = "Down";
         }
         else{
             leftEyeRes[1] = "Center";
@@ -124,10 +131,10 @@ public class detectedFace {
         }
         //Determine Vertical Results
         if(rightPupilCenter[1] < (eyeRight.height()*thresholdIntensity)){
-            rightEyeRes[1] = "Down";
+            rightEyeRes[1] = "Up";
         }
         else if(rightPupilCenter[1] > (eyeRight.height()*(1 - thresholdIntensity))){
-            rightEyeRes[1] = "Up";
+            rightEyeRes[1] = "Down";
         }
         else{
             rightEyeRes[1] = "Center";
@@ -135,6 +142,8 @@ public class detectedFace {
     }
 
     private String confirmGaze(){
+        thresholdIntensity = 0.45 * (double) thesePreferences.getInt("gaze_threshold", 8)/(10.0);
+        Log.d("detectedFace", "Threshold Result: " + thresholdIntensity);
         leftEyeResults(); rightEyeResults();
         String direction = "Gaze: ";
         if(leftEyeRes[0].equals(rightEyeRes[0])){

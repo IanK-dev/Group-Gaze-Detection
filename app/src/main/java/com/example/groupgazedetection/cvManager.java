@@ -44,6 +44,7 @@ public class cvManager extends AppCompatActivity {
     private static CascadeClassifier cvEyeClassifier;
     private SimpleBlobDetector blobDetector;
     private SimpleBlobDetector_Params blobParams;
+    private Context passedContext;
     KeyPoint[] keyLeftAr;
     KeyPoint[] keyRightAr;
     Rect[] theseFaces;
@@ -61,6 +62,7 @@ public class cvManager extends AppCompatActivity {
         faceMat = new Mat();
         greyMat = new Mat();
         subFace = new Mat();
+        passedContext = appContext;
         faceDetections = new MatOfRect();
         classifierType = classParams[0];
         //Create color blob detection
@@ -152,7 +154,7 @@ public class cvManager extends AppCompatActivity {
                 //Mat croppedFace = inputFace(Range(1, 1), Range(1, 1));
                 Mat inputFace = new Mat(greyMat, face);
                 //greyMat.submat(face).copyTo(inputFace);
-                detectedFace newFace = new detectedFace(inputFace);
+                detectedFace newFace = new detectedFace(inputFace, passedContext);
                 newFace.faceCords = face;
                 detectedFaces.add(newFace);
                 Log.d("OpenCV", "Face Detected");
@@ -284,7 +286,7 @@ public class cvManager extends AppCompatActivity {
                     gFace.printDirection();
                     float scaleFactor = ((float)((faceMat.width() + faceMat.height())/2)/1000f);
                     Log.d("cvManager", "Scale Factor " + scaleFactor);
-                    float fontScale = (1.8f*scaleFactor);
+                    float fontScale = (1.2f*scaleFactor);
                     int fontThickness = (int) Math.round(5*scaleFactor);
                     String outputLabel = gFace.printDirection();
                     Size textSize = Imgproc.getTextSize(outputLabel, Imgproc.FONT_HERSHEY_SIMPLEX, fontScale, fontThickness, null);

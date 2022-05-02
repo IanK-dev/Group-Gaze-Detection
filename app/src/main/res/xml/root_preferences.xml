@@ -1,4 +1,6 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/messages_header">
 
@@ -7,7 +9,13 @@
             app:title="@string/signature_title"
             app:useSimpleSummaryProvider="true"
             app:defaultValue="0"/>
-
+        <SeekBarPreference
+            app:key="gaze_threshold"
+            app:title="Gaze Threshold"
+            app:defaultValue="@integer/thresh_default"
+            android:max="@integer/thresh_max"
+            app:min="@integer/thresh_min"
+            />
         <SwitchPreferenceCompat
             app:key="sync"
             app:title="@string/auto_light"
