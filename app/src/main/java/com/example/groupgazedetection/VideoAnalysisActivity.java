@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
@@ -27,6 +28,7 @@ public class VideoAnalysisActivity extends AppCompatActivity {
     ArrayList<Mat> recievedMats = new ArrayList<Mat>();
     ArrayList<Bitmap> convertedFrames = new ArrayList<Bitmap>();
     ImageView frameDisplay;
+    TextView frameNumber;
     cvManager openManager;
     Context currentAppContext;
     private int currentImageIndex;
@@ -55,6 +57,7 @@ public class VideoAnalysisActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_analysis);
         currentAppContext = this;
+        frameNumber = findViewById(R.id.frameNumber);
         /*
         Bundle extras = getIntent().getExtras();
         frames = extras.getLongArray("listframes");
@@ -91,6 +94,7 @@ public class VideoAnalysisActivity extends AppCompatActivity {
                 if(currentImageIndex > 0){
                     currentImageIndex = currentImageIndex - 1;
                     frameDisplay.setImageBitmap(convertedFrames.get(currentImageIndex));
+                    frameNumber.setText("Frame:" + (currentImageIndex + 1));
                 }
                 Log.d("LiveDetectionActivity", "Swiped right");
             }
@@ -99,6 +103,7 @@ public class VideoAnalysisActivity extends AppCompatActivity {
                 if(currentImageIndex < convertedFrames.size() - 1){
                     currentImageIndex = currentImageIndex + 1;
                     frameDisplay.setImageBitmap(convertedFrames.get(currentImageIndex));
+                    frameNumber.setText("Frame:" + (currentImageIndex + 1));
                 }
                 Log.d("LiveDetectionActivity", "Swiped left");
             }

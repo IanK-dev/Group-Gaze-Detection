@@ -14,7 +14,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginBottom="92dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
+
     <ImageButton
         android:id="@+id/returnVideoButton"
         android:layout_width="wrap_content"
@@ -29,6 +30,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_undo"
         tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/frameNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="92dp"
+        android:text="Frame:1"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
