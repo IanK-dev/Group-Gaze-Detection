@@ -26,6 +26,14 @@
         <item>Large</item>
     </string-array>
 
+    <string-array name="live_photo_duration">
+        <item>1.0</item>
+        <item>1.5</item>
+        <item>2.0</item>
+        <item>2.5</item>
+        <item>3.0</item>
+    </string-array>
+
     <string-array name="eye_detection_options">
         <item>Haar Cascade Eye A</item>
         <item>Haar Cascade Eye B</item>

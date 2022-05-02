@@ -24,6 +24,15 @@
             android:max="@integer/thresh_max"
             app:min="@integer/thresh_min"
             />
+        <ListPreference
+            app:defaultValue="1.5"
+            app:entries="@array/live_photo_duration"
+            app:entryValues="@array/live_photo_duration"
+            app:summary="Click to show a list of possible durations for the live photo mode"
+            app:key="livephoto"
+            app:title="Live Photo Duration"
+            app:dialogTitle="@string/live_title"
+            app:useSimpleSummaryProvider="true" />
         <SwitchPreferenceCompat
             app:key="sync"
             app:title="@string/auto_light"

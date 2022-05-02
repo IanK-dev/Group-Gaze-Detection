@@ -11,6 +11,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -36,6 +37,7 @@ import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
 import android.widget.ToggleButton;
 import androidx.annotation.RequiresApi;
+import androidx.preference.PreferenceManager;
 
 public class LiveDetectionActivity extends CameraActivity implements CvCameraViewListener2 {
     //Global Objects
@@ -67,7 +69,7 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
     private int mAbsoluteFaceSize   = 0;
     int frameLimiter = 0;
     private boolean firstLoop;
-    private int videoDuration;
+    private double videoDuration;
 
     private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -100,8 +102,9 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         currentAppContext = this;
         setContentView(R.layout.activity_live_detection);
+        SharedPreferences thesePreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        videoDuration = Double.parseDouble(thesePreferences.getString("livephoto", "2.0"));
         firstLoop = true;
-        videoDuration = 2;
         takeVideoTimer = new Timer();
         overlay = findViewById(R.id.liveOverlay);
         View decorView = getWindow().getDecorView();
@@ -242,17 +245,10 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
                 Log.d("LiveDetectionActivity", "Finished Timer");
                 Log.d("LiveDetectionActivity", "Number of Frames Collected: " + collectedFrames.size());
                 saveFrames.compareFrames = collectedFrames;
-                /*
-                for(int i = 0; i < collectedFrames.size(); i++){
-                    Log.d("LiveDetectionActivity", "Loop: " + i);
-                    collectedLongs[i] = collectedFrames.get(i).getNativeObjAddr();
-                }
-                faceCameraView.disableView();
-                videoIntent.putExtra("listframes", collectedLongs);*/
                 faceCameraView.disableView();
                 startActivity(videoIntent);
             }
-        }, videoDuration*1000);
+        }, (long) (videoDuration*1000));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
