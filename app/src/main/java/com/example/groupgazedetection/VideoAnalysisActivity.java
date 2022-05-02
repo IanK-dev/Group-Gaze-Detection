@@ -153,6 +153,8 @@ public class VideoAnalysisActivity extends AppCompatActivity {
 
     public void viewStats(View view){
         frameDisplay.setVisibility(View.GONE);
+        frameNumber.setVisibility(View.GONE);
+
     }
 
     public void returnToLive(View view) {
