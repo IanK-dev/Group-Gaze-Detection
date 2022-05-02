@@ -22,11 +22,13 @@ import org.opencv.core.Mat;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class VideoAnalysisActivity extends AppCompatActivity {
     long[] frames = new long[50];
     ArrayList<Mat> recievedMats = new ArrayList<Mat>();
     ArrayList<Bitmap> convertedFrames = new ArrayList<Bitmap>();
+    ArrayList<List<detectedFace>> faceInformation = new ArrayList<List<detectedFace>>();
     ImageView frameDisplay;
     TextView frameNumber;
     cvManager openManager;
@@ -138,6 +140,7 @@ public class VideoAnalysisActivity extends AppCompatActivity {
             for(int i = 0; i < inputBitmaps.size(); i++){
                 Log.d("VideoAnalysisActivity", "Looping Detection: " + i);
                 inputBitmaps.set(i, openManager.detect(inputBitmaps.get(i)));
+                faceInformation.add(openManager.detectedFaces);
             }
             return inputBitmaps;
         }
