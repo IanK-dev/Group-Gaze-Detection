@@ -15,6 +15,7 @@
     <string name="reply_title">Detection Type</string>
     <string name="auto_light">Automatically Adjust to Light</string>
     <string name="face_title">Select Facial Detection Type</string>
+    <string name="font_title">Select Font Size For Gaze Results</string>
     <string name="eye_title">Select Eye Detection Type</string>
 
     <!-- Sync Preferences -->>

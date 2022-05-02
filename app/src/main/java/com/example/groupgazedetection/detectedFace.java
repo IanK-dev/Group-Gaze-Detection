@@ -41,10 +41,6 @@ public class detectedFace {
         RIGHT,
         INDETERMINATE
     }
-    //Alright some of this is pretty rough and needs to be rewritten
-    //Group Right Eye and Left Eye, actually discern if they are different, don't try to calculate seperately
-    //Add Forward Group
-    //Tune Intervals because they're always wrong right now.
 
     public detectedFace(Mat inputFace, Context calledContext){
         face = inputFace;

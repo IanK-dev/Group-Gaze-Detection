@@ -3,7 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/messages_header">
-
+        <ListPreference
+            app:defaultValue="Medium"
+            app:entries="@array/font_sizes"
+            app:entryValues="@array/font_sizes"
+            app:summary="Click to show a list of font size options to choose from"
+            app:key="fontsize"
+            app:title="Gaze Result Font Size"
+            app:dialogTitle="@string/font_title"
+            app:useSimpleSummaryProvider="true" />
         <EditTextPreference
             app:key="signature"
             app:title="@string/signature_title"

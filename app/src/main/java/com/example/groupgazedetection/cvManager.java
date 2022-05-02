@@ -45,6 +45,7 @@ public class cvManager extends AppCompatActivity {
     private SimpleBlobDetector blobDetector;
     private SimpleBlobDetector_Params blobParams;
     private Context passedContext;
+    private float fontSize;
     KeyPoint[] keyLeftAr;
     KeyPoint[] keyRightAr;
     Rect[] theseFaces;
@@ -81,17 +82,21 @@ public class cvManager extends AppCompatActivity {
         //blobParams.set_minRepeatability(2);
         //blobParams.set_thresholdStep(20);
         //blobParams.get_filterByCircularity();
-        Log.d("cvManager", "Circularity: " + blobParams.get_filterByCircularity());
-        Log.d("cvManager", "Color: " + blobParams.get_filterByColor());
-        Log.d("cvManager", "Convexity: " + blobParams.get_filterByConvexity());
-        Log.d("cvManager", "Inertia: " + blobParams.get_filterByInertia());
-        Log.d("cvManager", "Min Circularity: " + blobParams.get_minCircularity());
-        Log.d("cvManager", "Max Circularity: " + blobParams.get_maxCircularity());
+        //Log.d("cvManager", "Circularity: " + blobParams.get_filterByCircularity());
+        //Log.d("cvManager", "Color: " + blobParams.get_filterByColor());
+        //Log.d("cvManager", "Convexity: " + blobParams.get_filterByConvexity());
+        //Log.d("cvManager", "Inertia: " + blobParams.get_filterByInertia());
+        //Log.d("cvManager", "Min Circularity: " + blobParams.get_minCircularity());
+        //Log.d("cvManager", "Max Circularity: " + blobParams.get_maxCircularity());
         blobDetector = SimpleBlobDetector.create(blobParams);
         //Receive and update settings preferences from menu
         SharedPreferences thesePreferences = PreferenceManager.getDefaultSharedPreferences(appContext);
         Rect[][] results;
-        Log.d("cvManager", "Preferences Result: " + thesePreferences.getString("facedetection", "0"));
+        String findFont = thesePreferences.getString("fontsize", "Medium");
+        if(findFont.equals("Small")){ fontSize = 1.0f;}
+        else if(findFont.equals("Medium")){ fontSize = 1.2f;}
+        else{ fontSize = 1.4f;}
+        //Log.d("cvManager", "Preferences Result: " + thesePreferences.getString("facedetection", "0"));
         //Haars Cascade
         if (classParams[0] == "haar") {
             /*
@@ -286,7 +291,7 @@ public class cvManager extends AppCompatActivity {
                     gFace.printDirection();
                     float scaleFactor = ((float)((faceMat.width() + faceMat.height())/2)/1000f);
                     Log.d("cvManager", "Scale Factor " + scaleFactor);
-                    float fontScale = (1.2f*scaleFactor);
+                    float fontScale = (fontSize*scaleFactor);
                     int fontThickness = (int) Math.round(5*scaleFactor);
                     String outputLabel = gFace.printDirection();
                     Size textSize = Imgproc.getTextSize(outputLabel, Imgproc.FONT_HERSHEY_SIMPLEX, fontScale, fontThickness, null);
