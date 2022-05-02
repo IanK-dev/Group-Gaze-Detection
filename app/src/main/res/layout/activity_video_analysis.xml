@@ -49,11 +49,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:layout_marginBottom="348dp"
+        android:layout_marginBottom="336dp"
         android:text="Total Frames: 0"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:visible="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -67,6 +68,67 @@
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:visible="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/leftEyeXRes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginBottom="288dp"
+        android:maxLines="3"
+        android:text="Results Here"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visible="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/rightEyeXRes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="400dp"
+        android:layout_marginBottom="288dp"
+        android:maxLines="3"
+        android:text="Results Here"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visible="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/rightEyeYRes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="400dp"
+        android:layout_marginBottom="168dp"
+        android:maxLines="3"
+        android:text="Results Here"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visible="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/leftEyeYRes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginBottom="168dp"
+        android:maxLines="3"
+        android:text="Results Here"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visible="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -80,6 +142,7 @@
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:visible="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -88,11 +151,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="400dp"
-        android:layout_marginBottom="212dp"
+        android:layout_marginBottom="192dp"
         android:text="Right Eye Vertical Direction: "
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:visible="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -101,11 +165,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:layout_marginBottom="212dp"
+        android:layout_marginBottom="192dp"
         android:text="Left Eye Vertical  Direction: "
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:visible="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -120,18 +185,26 @@
         android:text="Average Gaze Stats"
         android:textColor="@android:color/background_light"
         android:textSize="14sp"
+        android:visible="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="DuplicateClickableBoundsCheck" />
 
-    <TextureView
-        android:id="@+id/statBackground"
-        android:layout_width="698dp"
-        android:layout_height="301dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/returnToImages"
+        android:layout_width="168dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="280dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/ic_bluebutton"
+        android:onClick="viewFrames"
+        android:text="Return to Frames"
+        android:textColor="@android:color/background_light"
+        android:textSize="14sp"
+        android:visible="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="DuplicateClickableBoundsCheck" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

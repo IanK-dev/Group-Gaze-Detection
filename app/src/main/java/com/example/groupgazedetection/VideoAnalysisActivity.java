@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,7 +31,12 @@ public class VideoAnalysisActivity extends AppCompatActivity {
     ArrayList<Bitmap> convertedFrames = new ArrayList<Bitmap>();
     ArrayList<List<detectedFace>> faceInformation = new ArrayList<List<detectedFace>>();
     ImageView frameDisplay;
-    TextView frameNumber;
+    TextView frameNumber; TextView totalFrames;
+    TextView leftEyeX; TextView leftEyeY;
+    TextView leftEyeXRes; TextView leftEyeYRes;
+    TextView rightEyeX; TextView rightEyeY;
+    TextView rightEyeXRes; TextView rightEyeYRes;
+    Button gazeStats; Button frameInspector;
     cvManager openManager;
     Context currentAppContext;
     private int currentImageIndex;
@@ -59,27 +65,19 @@ public class VideoAnalysisActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_analysis);
         currentAppContext = this;
-        frameNumber = findViewById(R.id.frameNumber);
-        /*
-        Bundle extras = getIntent().getExtras();
-        frames = extras.getLongArray("listframes");
-        int frameIndex = 0;
-        currentImageIndex = 0;
-
-        Mat refMat = new Mat(frames[0]);
-
-        while(frames[frameIndex] != 0){
-            Mat tempMat = new Mat(frames[frameIndex]);
-            Bitmap iterMap = Bitmap.createBitmap(refMat.width(), refMat.height(), Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(tempMat, iterMap);
-            convertedFrames.add(iterMap);
-            Log.d("LiveDetectionActivity", "Current Index: " + frameIndex);
-            Log.d("LiveDetectionActivity", "Current Val: " + frames[frameIndex]);
-            frameIndex = frameIndex + 1;
-            //tempMat.release();
-        }
-        System.gc();
-        */
+        //ID initialization
+        frameNumber = findViewById(R.id.frameNumber); totalFrames = findViewById(R.id.totalFrames);
+        leftEyeX = findViewById(R.id.leftEyeX); leftEyeY = findViewById(R.id.leftEyeY);
+        leftEyeXRes = findViewById(R.id.leftEyeXRes); leftEyeYRes = findViewById(R.id.leftEyeYRes);
+        rightEyeX = findViewById(R.id.rightEyeX); rightEyeY = findViewById(R.id.rightEyeY);
+        rightEyeXRes = findViewById(R.id.rightEyeXRes); rightEyeYRes = findViewById(R.id.rightEyeYRes);
+        gazeStats = findViewById(R.id.gazeDirectionStats); frameInspector = findViewById(R.id.returnToImages);
+        //Visibility Declaration
+        totalFrames.setVisibility(View.GONE); frameInspector.setVisibility(View.GONE);
+        leftEyeX.setVisibility(View.GONE); leftEyeY.setVisibility(View.GONE);
+        leftEyeXRes.setVisibility(View.GONE); leftEyeYRes.setVisibility(View.GONE);
+        rightEyeX.setVisibility(View.GONE); rightEyeY.setVisibility(View.GONE);
+        rightEyeXRes.setVisibility(View.GONE); rightEyeYRes.setVisibility(View.GONE);
         globalStorage getFaces = (globalStorage) getApplication();
         recievedMats = getFaces.compareFrames;
         Mat refMat = recievedMats.get(0);
@@ -147,14 +145,46 @@ public class VideoAnalysisActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ArrayList<Bitmap> inputBitmaps) {
             convertedFrames = inputBitmaps;
+            for(List<detectedFace> faceList : faceInformation){
+                for(detectedFace face : faceList){
+                    //LEFT EYE HORIZONTAL RESULTS
+                    if(face.leftEyeRes[0].equals("Left")){}
+                    else if(face.leftEyeRes[0].equals("Right")){}
+                    else{}
+                    //LEFT EYE VERTICAL RESULTS
+                    if(face.leftEyeRes[1].equals("Up")){}
+                    else if(face.leftEyeRes[1].equals("Down")){}
+                    else{}
+                    //RIGHT EYE HORIZONTAL RESULTS
+                    if(face.rightEyeRes[0].equals("Left")){}
+                    else if(face.rightEyeRes[0].equals("Right")){}
+                    else{}
+                    //RIGHT EYE VERTICAL RESULTS
+                    if(face.rightEyeRes[1].equals("Up")){}
+                    else if(face.rightEyeRes[1].equals("Down")){}
+                    else{}
+                }
+            }
             Log.d("LiveDetectionActivity", "Completed Detection");
         }
     }
 
     public void viewStats(View view){
-        frameDisplay.setVisibility(View.GONE);
-        frameNumber.setVisibility(View.GONE);
+        frameDisplay.setVisibility(View.GONE); frameNumber.setVisibility(View.GONE); gazeStats.setVisibility(View.GONE);
+        totalFrames.setVisibility(View.VISIBLE); frameInspector.setVisibility(View.VISIBLE);
+        leftEyeX.setVisibility(View.VISIBLE); leftEyeY.setVisibility(View.VISIBLE);
+        leftEyeXRes.setVisibility(View.VISIBLE); leftEyeYRes.setVisibility(View.VISIBLE);
+        rightEyeX.setVisibility(View.VISIBLE); rightEyeY.setVisibility(View.VISIBLE);
+        rightEyeXRes.setVisibility(View.VISIBLE); rightEyeYRes.setVisibility(View.VISIBLE);
+    }
 
+    public void viewFrames(View view){
+        frameDisplay.setVisibility(View.VISIBLE); frameNumber.setVisibility(View.VISIBLE); gazeStats.setVisibility(View.VISIBLE);
+        totalFrames.setVisibility(View.GONE); frameInspector.setVisibility(View.GONE);
+        leftEyeX.setVisibility(View.GONE); leftEyeY.setVisibility(View.GONE);
+        leftEyeXRes.setVisibility(View.GONE); leftEyeYRes.setVisibility(View.GONE);
+        rightEyeX.setVisibility(View.GONE); rightEyeY.setVisibility(View.GONE);
+        rightEyeXRes.setVisibility(View.GONE); rightEyeYRes.setVisibility(View.GONE);
     }
 
     public void returnToLive(View view) {

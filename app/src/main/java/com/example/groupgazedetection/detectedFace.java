@@ -22,8 +22,8 @@ public class detectedFace {
     Rect eyeRightCords;
     double[] rightPupilCenter;
     double[] leftPupilCenter;
-    private String[] leftEyeRes;
-    private String[] rightEyeRes;
+    public String[] leftEyeRes;
+    public String[] rightEyeRes;
     boolean validGaze;
     Mat face;
     Mat eyeLeft;
