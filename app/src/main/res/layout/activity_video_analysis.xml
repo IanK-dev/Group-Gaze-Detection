@@ -7,15 +7,6 @@
     android:background="#202020"
     tools:context=".VideoAnalysisActivity">
 
-    <ImageView
-        android:id="@+id/capturedFrameView"
-        android:layout_width="698dp"
-        android:layout_height="300dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="92dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <ImageButton
         android:id="@+id/returnVideoButton"
         android:layout_width="wrap_content"
@@ -45,11 +36,34 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
+        android:id="@+id/rightEyeY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="400dp"
+        android:layout_marginBottom="176dp"
+        android:text="Right Eye Vertical Direction: "
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visible="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/capturedFrameView"
+        android:layout_width="698dp"
+        android:layout_height="300dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="76dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
         android:id="@+id/totalFrames"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:layout_marginBottom="336dp"
+        android:layout_marginBottom="320dp"
         android:text="Total Frames: 0"
         android:textColor="@color/white"
         android:textSize="20sp"
@@ -63,7 +77,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:layout_marginBottom="312dp"
+        android:layout_marginBottom="296dp"
         android:text="Left Eye Horizontal Direction: "
         android:textColor="@color/white"
         android:textSize="20sp"
@@ -77,82 +91,68 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:layout_marginBottom="288dp"
+        android:layout_marginTop="4dp"
         android:maxLines="3"
         android:text="Results Here"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
         android:visible="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/leftEyeX" />
 
     <TextView
         android:id="@+id/rightEyeXRes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="400dp"
-        android:layout_marginBottom="288dp"
+        android:layout_marginTop="4dp"
         android:maxLines="3"
         android:text="Results Here"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
         android:visible="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rightEyeX" />
 
     <TextView
         android:id="@+id/rightEyeYRes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="400dp"
-        android:layout_marginBottom="168dp"
+        android:layout_marginTop="4dp"
         android:maxLines="3"
         android:text="Results Here"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
         android:visible="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rightEyeY" />
 
     <TextView
         android:id="@+id/leftEyeYRes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:layout_marginBottom="168dp"
+        android:layout_marginTop="4dp"
         android:maxLines="3"
         android:text="Results Here"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
         android:visible="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/leftEyeY" />
 
     <TextView
         android:id="@+id/rightEyeX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="400dp"
-        android:layout_marginBottom="312dp"
+        android:layout_marginBottom="296dp"
         android:text="Right Eye Horizontal Direction: "
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:visible="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/rightEyeY"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="400dp"
-        android:layout_marginBottom="192dp"
-        android:text="Right Eye Vertical Direction: "
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -165,7 +165,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:layout_marginBottom="192dp"
+        android:layout_marginBottom="176dp"
         android:text="Left Eye Vertical  Direction: "
         android:textColor="@color/white"
         android:textSize="20sp"
@@ -178,7 +178,7 @@
         android:id="@+id/gazeDirectionStats"
         android:layout_width="168dp"
         android:layout_height="48dp"
-        android:layout_marginStart="280dp"
+        android:layout_marginStart="100dp"
         android:layout_marginBottom="28dp"
         android:background="@drawable/ic_bluebutton"
         android:onClick="viewStats"
@@ -194,7 +194,7 @@
         android:id="@+id/returnToImages"
         android:layout_width="168dp"
         android:layout_height="48dp"
-        android:layout_marginStart="280dp"
+        android:layout_marginStart="100dp"
         android:layout_marginBottom="28dp"
         android:background="@drawable/ic_bluebutton"
         android:onClick="viewFrames"
@@ -205,6 +205,29 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="DuplicateClickableBoundsCheck" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/processingLivePhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_marginBottom="28dp"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/processingText" />
+
+    <TextView
+        android:id="@+id/processingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="280dp"
+        android:layout_marginBottom="40dp"
+        android:text="Processing Gaze..."
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

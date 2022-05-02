@@ -1,5 +1,6 @@
 package com.example.groupgazedetection;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -7,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -14,6 +16,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
@@ -23,6 +27,7 @@ import org.opencv.core.Mat;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class VideoAnalysisActivity extends AppCompatActivity {
@@ -36,7 +41,12 @@ public class VideoAnalysisActivity extends AppCompatActivity {
     TextView leftEyeXRes; TextView leftEyeYRes;
     TextView rightEyeX; TextView rightEyeY;
     TextView rightEyeXRes; TextView rightEyeYRes;
+    TextView processingText; CircularProgressIndicator progInd;
     Button gazeStats; Button frameInspector;
+    //private int[] rightXEyeQuantity; private int[] leftXEyeQuantity;
+    //private int[] rightYEyeQuantity; private int[] leftYEyeQuantity;
+    double[] rightXEyeSums; double[] rightYEyeSums;
+    double[] leftXEyeSums; double[] leftYEyeSums;
     cvManager openManager;
     Context currentAppContext;
     private int currentImageIndex;
@@ -72,12 +82,16 @@ public class VideoAnalysisActivity extends AppCompatActivity {
         rightEyeX = findViewById(R.id.rightEyeX); rightEyeY = findViewById(R.id.rightEyeY);
         rightEyeXRes = findViewById(R.id.rightEyeXRes); rightEyeYRes = findViewById(R.id.rightEyeYRes);
         gazeStats = findViewById(R.id.gazeDirectionStats); frameInspector = findViewById(R.id.returnToImages);
+        processingText = findViewById(R.id.processingText); progInd = findViewById(R.id.processingLivePhoto);
         //Visibility Declaration
         totalFrames.setVisibility(View.GONE); frameInspector.setVisibility(View.GONE);
         leftEyeX.setVisibility(View.GONE); leftEyeY.setVisibility(View.GONE);
         leftEyeXRes.setVisibility(View.GONE); leftEyeYRes.setVisibility(View.GONE);
         rightEyeX.setVisibility(View.GONE); rightEyeY.setVisibility(View.GONE);
         rightEyeXRes.setVisibility(View.GONE); rightEyeYRes.setVisibility(View.GONE);
+        processingText.setVisibility(View.GONE); progInd.setVisibility(View.GONE);
+        rightXEyeSums = new double[3]; rightYEyeSums = new double[3];
+        leftXEyeSums= new double[3]; leftYEyeSums= new double[3];
         globalStorage getFaces = (globalStorage) getApplication();
         recievedMats = getFaces.compareFrames;
         Mat refMat = recievedMats.get(0);
@@ -128,6 +142,7 @@ public class VideoAnalysisActivity extends AppCompatActivity {
     public class analyzeFrame extends AsyncTask<ArrayList<Bitmap>, Void, ArrayList<Bitmap>> {
         @Override
         protected  void onPreExecute(){
+            processingText.setVisibility(View.VISIBLE); progInd.setVisibility(View.VISIBLE);
             Log.d("VideoAnalysisActivity", "Beginning Detection");
         }
         @Override
@@ -142,29 +157,35 @@ public class VideoAnalysisActivity extends AppCompatActivity {
             }
             return inputBitmaps;
         }
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected void onPostExecute(ArrayList<Bitmap> inputBitmaps) {
             convertedFrames = inputBitmaps;
             for(List<detectedFace> faceList : faceInformation){
                 for(detectedFace face : faceList){
                     //LEFT EYE HORIZONTAL RESULTS
-                    if(face.leftEyeRes[0].equals("Left")){}
-                    else if(face.leftEyeRes[0].equals("Right")){}
-                    else{}
-                    //LEFT EYE VERTICAL RESULTS
-                    if(face.leftEyeRes[1].equals("Up")){}
-                    else if(face.leftEyeRes[1].equals("Down")){}
-                    else{}
-                    //RIGHT EYE HORIZONTAL RESULTS
-                    if(face.rightEyeRes[0].equals("Left")){}
-                    else if(face.rightEyeRes[0].equals("Right")){}
-                    else{}
-                    //RIGHT EYE VERTICAL RESULTS
-                    if(face.rightEyeRes[1].equals("Up")){}
-                    else if(face.rightEyeRes[1].equals("Down")){}
-                    else{}
+                    for(int i = 0; i < 3; i++){
+                        rightXEyeSums[i] = face.rightEyeVals[i];
+                        leftXEyeSums[i] = face.leftEyeVals[i];
+                    }
+                    for(int i = 3; i < 6; i++){
+                        rightYEyeSums[i - 3] = face.rightEyeVals[i];
+                        leftYEyeSums[i - 3] = face.leftEyeVals[i];
+                    }
                 }
             }
+            double labelSum = Arrays.stream(rightXEyeSums).sum();
+            String rightXLabel = "Left: " + (rightXEyeSums[0]/labelSum)*100 + "%\nRight: " + (rightXEyeSums[1]/labelSum) + "%\nCenter: " + (rightXEyeSums[2]/labelSum)*100 + "%";
+            rightEyeXRes.setText(rightXLabel);
+            labelSum = Arrays.stream(rightYEyeSums).sum();
+            String rightYLabel = "Left: " + (rightYEyeSums[0]/labelSum)*100 + "%\nRight: " + (rightYEyeSums[1]/labelSum) + "%\nCenter: " + (rightYEyeSums[2]/labelSum)*100 + "%";
+            rightEyeYRes.setText(rightYLabel);
+            labelSum = Arrays.stream(leftXEyeSums).sum();
+            String leftXLabel = "Left: " + (leftXEyeSums[0]/labelSum)*100 + "%\nRight: " + (leftXEyeSums[1]/labelSum) + "%\nCenter: " + (leftXEyeSums[2]/labelSum)*100 + "%";
+            leftEyeXRes.setText(leftXLabel);
+            String leftYLabel = "Left: " + (leftYEyeSums[0]/labelSum)*100 + "%\nRight: " + (leftYEyeSums[1]/labelSum) + "%\nCenter: " + (leftYEyeSums[2]/labelSum)*100 + "%";
+            leftEyeYRes.setText(leftYLabel);
+            processingText.setVisibility(View.GONE); progInd.setVisibility(View.GONE);
             Log.d("LiveDetectionActivity", "Completed Detection");
         }
     }

@@ -25,6 +25,8 @@ public class detectedFace {
     public String[] leftEyeRes;
     public String[] rightEyeRes;
     boolean validGaze;
+    double[] rightEyeVals;
+    double[] leftEyeVals;
     Mat face;
     Mat eyeLeft;
     Mat eyeRight;
@@ -33,11 +35,14 @@ public class detectedFace {
     private double thresholdIntensity;
     SharedPreferences thesePreferences;
 
+    //TODO Forgot to add case when pupil DNE
     public detectedFace(Mat inputFace, Context calledContext){
         face = inputFace;
         validGaze = true;
         rightPupilCenter = new double[2];
         leftPupilCenter = new double[2];
+        rightEyeVals = new double[6];
+        leftEyeVals = new double[6];
         leftEyeRes = new String[2];
         rightEyeRes = new String[2];
         thresholdIntensity = 0.4;
@@ -47,46 +52,46 @@ public class detectedFace {
     private void leftEyeResults(){
         //Determine Horizontal Results
         if(leftPupilCenter[0] < (eyeLeft.width()*thresholdIntensity)){
-            leftEyeRes[0] = "Left";
+            leftEyeRes[0] = "Left"; leftEyeVals[0] = 1.0;
         }
         else if(leftPupilCenter[0] > (eyeLeft.width()*(1-thresholdIntensity))){
-            leftEyeRes[0] = "Right";
+            leftEyeRes[0] = "Right"; leftEyeVals[1] = 1.0;
         }
         else{
-            leftEyeRes[0] = "Forward";
+            leftEyeRes[0] = "Forward"; leftEyeVals[2] = 1.0;
         }
         //Determine Vertical Results
         if(leftPupilCenter[1] < (eyeLeft.height()*thresholdIntensity)){
-            leftEyeRes[1] = "Up";
+            leftEyeRes[1] = "Up"; leftEyeVals[3] = 1.0;
         }
         else if(leftPupilCenter[1] > (eyeLeft.height()*(1 - thresholdIntensity))){
-            leftEyeRes[1] = "Down";
+            leftEyeRes[1] = "Down"; leftEyeVals[4] = 1.0;
         }
         else{
-            leftEyeRes[1] = "Center";
+            leftEyeRes[1] = "Center"; leftEyeVals[5] = 1.0;
         }
     }
 
     private void rightEyeResults(){
         //Determine Horizontal Results
         if(rightPupilCenter[0] < (eyeRight.width()*thresholdIntensity)){
-            rightEyeRes[0] = "Left";
+            rightEyeRes[0] = "Left"; rightEyeVals[0] = 1.0;
         }
         else if(rightPupilCenter[0] > (eyeRight.width()*(1-thresholdIntensity))){
-            rightEyeRes[0] = "Right";
+            rightEyeRes[0] = "Right"; rightEyeVals[1] = 1.0;
         }
         else{
-            rightEyeRes[0] = "Forward";
+            rightEyeRes[0] = "Forward"; rightEyeVals[2] = 1.0;
         }
         //Determine Vertical Results
         if(rightPupilCenter[1] < (eyeRight.height()*thresholdIntensity)){
-            rightEyeRes[1] = "Up";
+            rightEyeRes[1] = "Up"; rightEyeVals[3] = 1.0;
         }
         else if(rightPupilCenter[1] > (eyeRight.height()*(1 - thresholdIntensity))){
-            rightEyeRes[1] = "Down";
+            rightEyeRes[1] = "Down"; rightEyeVals[4] = 1.0;
         }
         else{
-            rightEyeRes[1] = "Center";
+            rightEyeRes[1] = "Center"; rightEyeVals[5] = 1.0;
         }
     }
 
@@ -113,7 +118,14 @@ public class detectedFace {
     public  String printDirection(){
         //Temp testing text
         //determineGaze();
-        outputLabel = confirmGaze();
+        if(eyeLeft == null || eyeRight == null || (rightPupilCenter[0] == 0.0 && rightPupilCenter[1] == 0.0) || (leftPupilCenter[0] == 0.0 && leftPupilCenter[1] == 0.0)){
+            outputLabel = "Gaze: Inconclusive";
+            validGaze = false;
+        }
+        else{
+            outputLabel = confirmGaze();
+            validGaze = true;
+        }
         //Return
         return outputLabel;
     }
