@@ -76,7 +76,7 @@ public class FaceCameraView extends JavaCameraView implements Camera.PictureCall
         try {
             FileOutputStream fos = new FileOutputStream(mFileName);
             picture.compress(Bitmap.CompressFormat.JPEG, 90, fos);
-            picture.recycle();
+            //picture.recycle();
             fos.close();
         } catch (java.io.IOException e) {
             Log.e("PictureDemo", "Exception in photoCallback", e);

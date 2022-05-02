@@ -61,7 +61,6 @@ public class cvManager extends AppCompatActivity {
         faceMat = new Mat();
         greyMat = new Mat();
         subFace = new Mat();
-        detectedFaces = new ArrayList<>();
         faceDetections = new MatOfRect();
         classifierType = classParams[0];
         //Create color blob detection
@@ -87,8 +86,6 @@ public class cvManager extends AppCompatActivity {
         Log.d("cvManager", "Min Circularity: " + blobParams.get_minCircularity());
         Log.d("cvManager", "Max Circularity: " + blobParams.get_maxCircularity());
         blobDetector = SimpleBlobDetector.create(blobParams);
-        pupilLeftKeys = new MatOfKeyPoint();
-        pupilRightKeys = new MatOfKeyPoint();
         //Receive and update settings preferences from menu
         SharedPreferences thesePreferences = PreferenceManager.getDefaultSharedPreferences(appContext);
         Rect[][] results;
@@ -146,6 +143,9 @@ public class cvManager extends AppCompatActivity {
             Imgproc.cvtColor(cvManager.faceMat, greyMat, Imgproc.COLOR_BGR2GRAY);
             cvFaceClassifier.detectMultiScale(greyMat, faceDetections);
             Rect[] theseFaces = faceDetections.toArray();
+            detectedFaces = new ArrayList<>();
+            pupilLeftKeys = new MatOfKeyPoint();
+            pupilRightKeys = new MatOfKeyPoint();
             int i = 0;
             for (Rect face : theseFaces) {
                 //Mat inputFace = new Mat();

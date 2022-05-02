@@ -29,8 +29,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_video" />
-                            <entry key="sourceFile" value="E:\GDAssetDesign\video.svg" />
+                            <entry key="outputName" value="ic_next" />
+                            <entry key="sourceFile" value="E:\GDAssetDesign\next.svg" />
                           </map>
                         </option>
                       </PersistentState>

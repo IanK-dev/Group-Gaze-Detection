@@ -22,6 +22,7 @@
         android:required="false" />
 
     <application
+        android:name=".globalStorage"
         android:allowBackup="true"
         android:icon="@mipmap/app_icon"
         android:label="Gaze-Ex"

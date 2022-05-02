@@ -41,7 +41,7 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
     //Global Objects
     private Mat mRgba;
     private Mat mGray;
-    private List<Mat> collectedFrames = new ArrayList<Mat>();
+    private ArrayList<Mat> collectedFrames = new ArrayList<Mat>();
     private long[] collectedLongs = new long[50];
     private Mat grayscaleImage;
     private Mat overlaySize;
@@ -161,8 +161,8 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
     }
 
     public void onCameraViewStopped() {
-        mGray.release();
-        mRgba.release();
+        //mGray.release();
+        //mRgba.release();
     }
     @Override
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
@@ -235,20 +235,21 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
     public void takeVideo(View view){
         videoCaptureState = true;
         Intent videoIntent = new Intent(this, VideoAnalysisActivity.class);
+        globalStorage saveFrames = (globalStorage) getApplication();
         takeVideoTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 Log.d("LiveDetectionActivity", "Finished Timer");
                 Log.d("LiveDetectionActivity", "Number of Frames Collected: " + collectedFrames.size());
-                //Log.d("LiveDetectionActivity", "Frame One: " + collectedFrames[0]);
-                //Log.d("LiveDetectionActivity", "Frame Two: " + collectedFrames[1]);
-                //Log.d("LiveDetectionActivity", "Frame One: " + collectedFrames[0]);
-                //Log.d("LiveDetectionActivity", "First Frame Size: " + (collectedFrames.get(0)));
+                saveFrames.compareFrames = collectedFrames;
+                /*
                 for(int i = 0; i < collectedFrames.size(); i++){
                     Log.d("LiveDetectionActivity", "Loop: " + i);
                     collectedLongs[i] = collectedFrames.get(i).getNativeObjAddr();
                 }
-                videoIntent.putExtra("listframes", collectedLongs);
+                faceCameraView.disableView();
+                videoIntent.putExtra("listframes", collectedLongs);*/
+                faceCameraView.disableView();
                 startActivity(videoIntent);
             }
         }, videoDuration*1000);
