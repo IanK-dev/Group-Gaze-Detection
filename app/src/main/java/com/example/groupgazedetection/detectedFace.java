@@ -17,46 +17,37 @@ public class detectedFace {
     Rect eyeRightCords;
     double[] rightPupilCenter;
     double[] leftPupilCenter;
+    private String[] leftEyeRes;
+    private String[] rightEyeRes;
     boolean validGaze;
     Mat face;
     Mat eyeLeft;
     Mat eyeRight;
-    Mat eyeUp;
-    Mat eyeDown;
-    Mat eyeLeftUp;
-    Mat eyeLeftDown;
     //Assign this variable to the text you want to be on the label
     String outputLabel;
     String leftEyeStatusText;
     String rightEyeStatusText;
-    String whatssssss = String.valueOf(10);
+    private double thresholdIntensity;
+
     enum gazeDirection{
         LEFT,
         CENTER,
         RIGHT,
         INDETERMINATE
     }
-    //For Deshawn Tuesday (I helped you w/t some basic setup, here's some to-do for gaze algo).
-    //TODO Make and adjust gaze direction from eye coordinates
-    //TODO Make visual representation of the current gaze direction on the image/detection screen ----
-    //TODO Make more gaze directions (ex, up, down, centerleft, ect.) ---
-    //TODO Handle cases where both eyes are not looking the same direction (Inconclusive? Or could do center/left?) ---
-    //TODO Help Sal hone in on pupils for all edge cases
-    //TODO Download more sample images that look in different directions, that we can find the eyes for ---
+    //Alright some of this is pretty rough and needs to be rewritten
+    //Group Right Eye and Left Eye, actually discern if they are different, don't try to calculate seperately
+    //Add Forward Group
+    //Tune Intervals because they're always wrong right now.
 
     public detectedFace(Mat inputFace){
         face = inputFace;
         validGaze = true;
         rightPupilCenter = new double[2];
         leftPupilCenter = new double[2];
-    }
-
-    /**
-     * This is to run determineGaze to make the public
-     * variables set to what they need to be for other function
-     */
-    public void cycle(){
-        gazeDirection tempCycle = determineGaze();
+        leftEyeRes = new String[2];
+        rightEyeRes = new String[2];
+        thresholdIntensity = 0.4;
     }
 
     public gazeDirection determineGaze(){
@@ -64,12 +55,10 @@ public class detectedFace {
         //Text View variables
         leftEyeStatusText = "";
         rightEyeStatusText = "";
-        String tempLeftRight;
         int leftEyeLR,rightEyeLR,leftEyeUD, rightEyeUD;
         //Left Eye -- Looking left or right
         double elLeftLook = eyeLeft.width()*0.25;
         double elRightLook = eyeLeft.width()*0.75;
-
         leftEyeLR = leftPupilGaze(elLeftLook, elRightLook);
 
         //Left Eye -- Looking Up or Down
@@ -89,38 +78,79 @@ public class detectedFace {
         double erDownLook = eyeRight.height()*0.75;
 
         rightEyeUD = rightPupilGaze(erUpLook, erDownLook);
-
-        /**
-         * Get the String for the left eye for
-         * {Left-Up, Left-Down,Left-Center}
-         * {Right-Up, Right-Down, Right-Center}
-         * {Center-Up, Center-Down, Center-Center}
-         */
         leftEyeStatusText = widthEyeGaze(leftEyeLR);
         leftEyeStatusText += heightEyeGaze(leftEyeUD);
-
-        /** Get the String for the right eye for
-         * Options Above ^^
-         */
         rightEyeStatusText = widthEyeGaze(rightEyeLR);
         rightEyeStatusText += heightEyeGaze(rightEyeUD);
-
-        /**
-         * If will check to make sure the eyes are looking the same way
-         * If eyes are not looking the same way, then both will never look center at same time
-         * Will set @String rightEyeStatusText to "PASS"(temp) so that it's known that
-         * both eyes don't need to be looking center to be fine
-         */
 
         if(leftEyeLR != rightEyeLR || leftEyeUD != rightEyeUD){
             //rightEyeStatusText = "Exception";
         }
-
-
-
         return gazeDirection.INDETERMINATE;
     }
+    private void leftEyeResults(){
+        //Determine Horizontal Results
+        if(leftPupilCenter[0] < (eyeLeft.width()*thresholdIntensity)){
+            leftEyeRes[0] = "Left";
+        }
+        else if(leftPupilCenter[0] > (eyeLeft.width()*(1-thresholdIntensity))){
+            leftEyeRes[0] = "Right";
+        }
+        else{
+            leftEyeRes[0] = "Forward";
+        }
+        //Determine Vertical Results
+        if(leftPupilCenter[1] < (eyeLeft.height()*thresholdIntensity)){
+            leftEyeRes[1] = "Down";
+        }
+        else if(leftPupilCenter[1] > (eyeLeft.height()*(1 - thresholdIntensity))){
+            leftEyeRes[1] = "Up";
+        }
+        else{
+            leftEyeRes[1] = "Center";
+        }
+    }
 
+    private void rightEyeResults(){
+        //Determine Horizontal Results
+        if(rightPupilCenter[0] < (eyeRight.width()*thresholdIntensity)){
+            rightEyeRes[0] = "Left";
+        }
+        else if(rightPupilCenter[0] > (eyeRight.width()*(1-thresholdIntensity))){
+            rightEyeRes[0] = "Right";
+        }
+        else{
+            rightEyeRes[0] = "Forward";
+        }
+        //Determine Vertical Results
+        if(rightPupilCenter[1] < (eyeRight.height()*thresholdIntensity)){
+            rightEyeRes[1] = "Down";
+        }
+        else if(rightPupilCenter[1] > (eyeRight.height()*(1 - thresholdIntensity))){
+            rightEyeRes[1] = "Up";
+        }
+        else{
+            rightEyeRes[1] = "Center";
+        }
+    }
+
+    private String confirmGaze(){
+        leftEyeResults(); rightEyeResults();
+        String direction = "Gaze: ";
+        if(leftEyeRes[0].equals(rightEyeRes[0])){
+            direction += (leftEyeRes[0] + " ");
+        }
+        else{
+            direction += (leftEyeRes[0] + "/" + rightEyeRes[0] + " ");
+        }
+        if(leftEyeRes[1].equals(rightEyeRes[1])){
+            direction += (leftEyeRes[1]);
+        }
+        else{
+            direction += (leftEyeRes[1] + "/" + rightEyeRes[1]);
+        }
+        return direction;
+    }
     /**
      * The method will check to see if eyes are not equal == Exception
      * Check if Center-Center to condense it to Center
@@ -233,8 +263,8 @@ public class detectedFace {
      */
     public  String printDirection(){
         //Temp testing text
-        cycle();
-        outputLabel = getGaze();
+        //determineGaze();
+        outputLabel = confirmGaze();
         //Return
         return outputLabel;
     }

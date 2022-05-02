@@ -148,6 +148,10 @@ public class VideoAnalysisActivity extends AppCompatActivity {
         }
     }
 
+    public void viewStats(View view){
+        frameDisplay.setVisibility(View.GONE);
+    }
+
     public void returnToLive(View view) {
         Intent intent = new Intent(this, LiveDetectionActivity.class);
         startActivity(intent);

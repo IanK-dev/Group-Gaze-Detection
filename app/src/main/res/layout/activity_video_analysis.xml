@@ -44,5 +44,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/gazeDirectionStats"
+        android:layout_width="168dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="332dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/ic_bluebutton"
+        android:onClick="viewStats"
+        android:text="Average Gaze Stats"
+        android:textColor="@android:color/background_light"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="DuplicateClickableBoundsCheck" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
