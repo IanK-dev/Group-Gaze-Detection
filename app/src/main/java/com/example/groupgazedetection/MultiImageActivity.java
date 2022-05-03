@@ -4,9 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,7 +19,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
+
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
 
 public class MultiImageActivity extends AppCompatActivity {
@@ -26,6 +36,10 @@ public class MultiImageActivity extends AppCompatActivity {
     TextView totalFrames;
     TextView currentFrame;
     ArrayList<Uri> imageUris;
+    ArrayList<Bitmap> processedImages;
+    cvManager multiManager;
+    Context currentAppContext;
+    boolean processStatus = false;
     int position = 0;
     private int currentIndex = 0;
 
@@ -39,7 +53,8 @@ public class MultiImageActivity extends AppCompatActivity {
         currentFrame = findViewById(R.id.multiCurrentFrame);
         imageDisplay = findViewById(R.id.imageDisplay);
         imageUris = new ArrayList<Uri>();
-
+        processedImages = new ArrayList<Bitmap>();
+        currentAppContext = this;
         selectImages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +74,11 @@ public class MultiImageActivity extends AppCompatActivity {
             public void onSwipeRight() {
                 if(currentIndex > 0){
                     currentIndex = currentIndex - 1;
-                    imageDisplay.setImageURI(imageUris.get(currentIndex));
+                    if(processStatus == true){
+                        imageDisplay.setImageBitmap(processedImages.get(currentIndex));
+                    }else{
+                        imageDisplay.setImageURI(imageUris.get(currentIndex));
+                    }
                     currentFrame.setText("Current Image: " + (currentIndex + 1));
                 }
                 Log.d("MultiImageActivity", "Swiped right");
@@ -68,7 +87,11 @@ public class MultiImageActivity extends AppCompatActivity {
             public void onSwipeLeft() {
                 if(currentIndex < imageUris.size() - 1){
                     currentIndex = currentIndex + 1;
-                    imageDisplay.setImageURI(imageUris.get(currentIndex));
+                    if(processStatus == true){
+                        imageDisplay.setImageBitmap(processedImages.get(currentIndex));
+                    }else{
+                        imageDisplay.setImageURI(imageUris.get(currentIndex));
+                    }
                     currentFrame.setText("Current Image: " + (currentIndex + 1));
                 }
                 Log.d("MultiImageActivity", "Swiped left");
@@ -80,6 +103,32 @@ public class MultiImageActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (!OpenCVLoader.initDebug()) {
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+        } else {
+            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+        }
+    }
+
+    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            if (status == LoaderCallbackInterface.SUCCESS) {
+                try {
+                    multiManager = new cvManager(currentAppContext, "haar");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                super.onManagerConnected(status);
+            }
+        }
+    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -116,4 +165,13 @@ public class MultiImageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void processAllImages(View view) throws IOException {
+        for(Uri image : imageUris){
+            //Log.d("MultiImage", "Looping");
+            Bitmap tempMap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image);
+            processedImages.add(multiManager.detect(tempMap));
+        }
+        processStatus = true;
+        imageDisplay.setImageBitmap(processedImages.get(currentIndex));
+    }
 }
