@@ -272,7 +272,6 @@ public class LiveDetectionActivity extends CameraActivity implements CvCameraVie
             Log.d(TAG, res);
         }*/
         //Log.d(TAG, faceCameraView.getFlashMode());
-
     }
 
     public void takePicture(View v) {

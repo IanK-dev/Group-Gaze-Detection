@@ -22,11 +22,11 @@
         app:srcCompat="@drawable/ic_undo"
         tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
-    <ImageSwitcher
-        android:id="@+id/image"
+    <ImageView
+        android:id="@+id/imageDisplay"
         android:layout_width="411dp"
         android:layout_height="494dp"
-        android:layout_marginTop="104dp"
+        android:layout_marginTop="80dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,20 +47,39 @@
         android:layout_width="168dp"
         android:layout_height="48dp"
         android:layout_marginStart="120dp"
-        android:layout_marginBottom="648dp"
+        android:layout_marginBottom="664dp"
         android:background="@drawable/ic_bluebutton"
         android:text="Select Multiple Images"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/text"
-        android:layout_width="match_parent"
+        android:id="@+id/multiTotalFrames"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#000"
-        android:textSize="22sp"
+        android:layout_marginStart="240dp"
+        android:layout_marginBottom="108dp"
+        android:text="Current Image: 0"
+        android:textColor="@color/white"
+        android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:visible="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/multiCurrentFrame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="108dp"
+        android:text="Total Images: 0"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visible="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/settings_button"
