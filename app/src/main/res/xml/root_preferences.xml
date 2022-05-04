@@ -33,10 +33,6 @@
             app:title="Live Photo Duration"
             app:dialogTitle="@string/live_title"
             app:useSimpleSummaryProvider="true" />
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/auto_light"
-            app:summary="The live detection will adjust to the current light levels" />
 
     </PreferenceCategory>
 
