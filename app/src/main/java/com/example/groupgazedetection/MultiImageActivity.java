@@ -169,6 +169,18 @@ public class MultiImageActivity extends AppCompatActivity {
         for(Uri image : imageUris){
             //Log.d("MultiImage", "Looping");
             Bitmap tempMap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image);
+            if(tempMap.getWidth() > 4000 || tempMap.getHeight() > 4000){
+                tempMap = Bitmap.createScaledBitmap(tempMap, tempMap.getWidth()/4, tempMap.getHeight()/4, true);
+            }
+            else if(tempMap.getWidth() > 3000 || tempMap.getHeight() > 3000){
+                tempMap = Bitmap.createScaledBitmap(tempMap, tempMap.getWidth()/3, tempMap.getHeight()/3, true);
+            }
+            else if(tempMap.getWidth() > 2000 || tempMap.getHeight() > 2000){
+                tempMap = Bitmap.createScaledBitmap(tempMap, tempMap.getWidth()/2, tempMap.getHeight()/2, true);
+            }
+            else if(tempMap.getWidth() < 500 || tempMap.getHeight() < 500){
+                tempMap = Bitmap.createScaledBitmap(tempMap, tempMap.getWidth()*2, tempMap.getHeight()*2, true);
+            }
             processedImages.add(multiManager.detect(tempMap));
         }
         processStatus = true;

@@ -29,10 +29,7 @@
     "intermediatesFolder": "E:\\School Files\\GazeLivePhoto\\opencv455\\build\\intermediates\\cxx\\Debug\\2o6p321g",
     "isDebuggableEnabled": true,
     "validAbiList": [
-      "ARMEABI_V7A",
-      "ARM64_V8A",
-      "X86",
-      "X86_64"
+      "X86"
     ],
     "buildTargetSet": [
       "opencv_jni_shared"
@@ -133,6 +130,7 @@
         "rootBuildGradleFolder": "E:\\School Files\\GazeLivePhoto",
         "sdkFolder": "C:\\Users\\ikerr\\AppData\\Local\\Android\\Sdk",
         "isBuildOnlyTargetAbiEnabled": true,
+        "ideBuildTargetAbi": "x86",
         "isCmakeBuildCohabitationEnabled": false,
         "isPrefabEnabled": false
       },
