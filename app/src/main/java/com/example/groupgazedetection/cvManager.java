@@ -34,6 +34,8 @@ public class cvManager extends AppCompatActivity {
     private Mat subFace;
     private MatOfKeyPoint pupilLeftKeys;
     private MatOfKeyPoint pupilRightKeys;
+    private int maxHeads;
+    private SharedPreferences thesePreferences;
     //Turn true if testing
     public boolean testGaze = false;
     public static MatOfRect faceDetections;
@@ -82,7 +84,7 @@ public class cvManager extends AppCompatActivity {
         //Log.d("cvManager", "Max Circularity: " + blobParams.get_maxCircularity());
         blobDetector = SimpleBlobDetector.create(blobParams);
         //Receive and update settings preferences from menu
-        SharedPreferences thesePreferences = PreferenceManager.getDefaultSharedPreferences(appContext);
+        thesePreferences = PreferenceManager.getDefaultSharedPreferences(appContext);
         Rect[][] results;
         String findFont = thesePreferences.getString("fontsize", "Medium");
         if(findFont.equals("Small")){ fontSize = 1.0f;}
@@ -137,6 +139,11 @@ public class cvManager extends AppCompatActivity {
 
     public Bitmap detect(Bitmap inputImage) {
         Log.d("OpenCV", "Attempting Detection");
+        try{
+            maxHeads = Integer.parseInt(thesePreferences.getString("signature", "4"));
+        }catch (NumberFormatException e){
+            maxHeads = 4;
+        }
         if (classifierType == "haar") {
             Utils.bitmapToMat(inputImage, cvManager.faceMat);
             Imgproc.cvtColor(cvManager.faceMat, greyMat, Imgproc.COLOR_BGR2GRAY);
@@ -149,20 +156,24 @@ public class cvManager extends AppCompatActivity {
             for (Rect face : theseFaces) {
                 //Mat inputFace = new Mat();
                 //Mat croppedFace = inputFace(Range(1, 1), Range(1, 1));
-                Mat inputFace = new Mat(greyMat, face);
-                //greyMat.submat(face).copyTo(inputFace);
-                detectedFace newFace = new detectedFace(inputFace, passedContext);
-                newFace.faceCords = face;
-                detectedFaces.add(newFace);
-                Log.d("OpenCV", "Face Detected");
-                Imgproc.rectangle(
-                        faceMat,
-                        new Point(face.x, face.y),
-                        new Point(face.x + face.width, face.y + face.height),
-                        new Scalar(255, 0, 0, 255),
-                        2
-                );
+                if(i < maxHeads){
+                    Mat inputFace = new Mat(greyMat, face);
+                    //greyMat.submat(face).copyTo(inputFace);
+                    detectedFace newFace = new detectedFace(inputFace, passedContext);
+                    newFace.faceCords = face;
+                    detectedFaces.add(newFace);
+                    Log.d("OpenCV", "Face Detected");
+                    Imgproc.rectangle(
+                            faceMat,
+                            new Point(face.x, face.y),
+                            new Point(face.x + face.width, face.y + face.height),
+                            new Scalar(255, 0, 0, 255),
+                            2
+                    );
+                }
+                i++;
             }
+            i = 0;
             Log.d("cvManager", String.valueOf(detectedFaces.size()));
             for(detectedFace dFace : detectedFaces){
                 MatOfRect eyeDetections = new MatOfRect();
