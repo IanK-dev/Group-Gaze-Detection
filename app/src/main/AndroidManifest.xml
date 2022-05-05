@@ -71,6 +71,7 @@
             android:name=".HomeActivity"
             android:exported="false"
             android:label="Home"
+            android:theme="@style/Theme.GroupGazeDetection.NoActionBar.Fullscreen"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
