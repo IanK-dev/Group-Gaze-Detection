@@ -7,6 +7,32 @@
     android:background="#1E1E1E"
     tools:context=".MultiImageActivity">
 
+    <RelativeLayout
+        android:id="@+id/multiRelative"
+        android:layout_width="388dp"
+        android:layout_height="688dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="494dp"
+            android:layout_marginTop="70dp" />
+
+        <ImageView
+            android:id="@+id/multiImageDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:translationZ="1dp"
+            app:srcCompat="@drawable/ic_multiimagegui" />
+    </RelativeLayout>
+
     <ImageButton
         android:id="@+id/returnCamButton3"
         android:layout_width="wrap_content"
@@ -21,14 +47,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_undo"
         tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
-
-    <ImageView
-        android:id="@+id/imageDisplay"
-        android:layout_width="411dp"
-        android:layout_height="494dp"
-        android:layout_marginTop="80dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/processImages"

@@ -7,68 +7,99 @@
     android:background="#202020"
     tools:context=".SingleImageActivity">
 
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="388dp"
+        android:layout_height="668dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/single_image_preview"
+            android:layout_width="match_parent"
+            android:layout_height="562dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginBottom="70dp"
+            android:translationZ="2dp" />
+
+        <ImageView
+            android:id="@+id/singleImageDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:translationZ="1dp"
+            app:srcCompat="@drawable/ic_imagegui" />
+    </RelativeLayout>
+
     <ImageButton
         android:id="@+id/returnCamButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="44dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="12dp"
         android:background="@drawable/ic_undo"
+        android:backgroundTint="@color/light_blue_600"
+        android:foregroundTint="@color/light_blue_600"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:onClick="goToHome"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/relativeLayout"
+        app:layout_constraintStart_toStartOf="@id/relativeLayout"
         app:srcCompat="@drawable/ic_undo"
+        app:tint="@color/light_blue_600"
         tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
     <Button
         android:id="@+id/find_sin_image_button"
-        android:layout_width="168dp"
+        android:layout_width="200dp"
         android:layout_height="48dp"
-        android:layout_marginStart="120dp"
-        android:layout_marginBottom="648dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="100dp"
         android:background="@drawable/ic_bluebutton"
         android:onClick="selectImage"
         android:text="Select Image"
         android:textColor="#FFFFFF"
         android:textColorHighlight="#1E1E1E"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/single_image_preview"
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:layout_marginTop="104dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/relativeLayout"
+        app:layout_constraintStart_toStartOf="@id/relativeLayout"
+        app:layout_constraintTop_toTopOf="@+id/relativeLayout" />
 
     <Button
         android:id="@+id/process_sin_image"
-        android:layout_width="168dp"
+        android:layout_width="200dp"
         android:layout_height="48dp"
-        android:layout_marginStart="120dp"
-        android:layout_marginBottom="44dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/ic_bluebutton"
         android:onClick="processImage"
         android:text="Evaluate Image"
         android:textColor="@android:color/background_light"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/relativeLayout"
+        app:layout_constraintEnd_toEndOf="@+id/relativeLayout"
+        app:layout_constraintStart_toStartOf="@id/relativeLayout" />
 
     <Button
         android:id="@+id/settings_button"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="44dp"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/ic_settings"
-        android:backgroundTint="@color/light_blue_900"
+        android:backgroundTint="@color/light_blue_600"
         android:contentDescription="Brings user to the settings menu"
         android:onClick="gotoSettings"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@id/relativeLayout"
+        app:layout_constraintEnd_toEndOf="@id/relativeLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
