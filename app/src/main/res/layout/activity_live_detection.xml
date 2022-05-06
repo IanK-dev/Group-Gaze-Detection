@@ -15,22 +15,35 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@android:color/transparent"
-        android:scaleType="fitXY" />
+        android:scaleType="fitXY"
+        android:translationZ="0dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/cameraOverlay"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginEnd="-35dp"
+            android:layout_marginBottom="-105dp"
+            android:translationZ="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_cameraoverlayone" />
+
         <ImageButton
             android:id="@+id/pictureButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/ic_camera"
-            android:minWidth="60dp"
-            android:minHeight="60dp"
+            android:minWidth="65dp"
+            android:minHeight="65dp"
             android:onClick="takePicture"
+            android:translationZ="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,DuplicateClickableBoundsCheck" />
@@ -39,11 +52,11 @@
             android:id="@+id/videoButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/ic_video"
-            android:minWidth="60dp"
-            android:minHeight="60dp"
+            android:minWidth="65dp"
+            android:minHeight="65dp"
             android:onClick="takeVideo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -94,14 +107,17 @@
 
         <ImageButton
             android:id="@+id/changeCamType"
-            android:layout_width="46dp"
-            android:layout_height="55dp"
-            android:layout_marginStart="535dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/ic_next"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/ic_swap"
+            android:backgroundTint="@color/white"
             android:onClick="toggleRecord"
+            android:translationZ="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/returnCamButton"
+            app:layout_constraintStart_toStartOf="@+id/cameraOverlay"
+            app:tint="@color/light_blue_600"
             tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

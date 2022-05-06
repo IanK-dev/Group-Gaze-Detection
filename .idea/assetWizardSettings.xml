@@ -34,8 +34,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_previous" />
-                            <entry key="sourceFile" value="E:\AUSED\previous.svg" />
+                            <entry key="outputName" value="ic_picturetakengui" />
+                            <entry key="sourceFile" value="E:\AUSED\picturetakengui.svg" />
                           </map>
                         </option>
                       </PersistentState>

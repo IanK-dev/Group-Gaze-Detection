@@ -9,11 +9,11 @@
 
     <RelativeLayout
         android:id="@+id/multiRelative"
-        android:layout_width="388dp"
+        android:layout_width="384dp"
         android:layout_height="688dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="14dp"
         android:layout_marginTop="28dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginEnd="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
