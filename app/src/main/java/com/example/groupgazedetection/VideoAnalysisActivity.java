@@ -42,6 +42,7 @@ public class VideoAnalysisActivity extends AppCompatActivity {
     TextView rightEyeX; TextView rightEyeY;
     TextView rightEyeXRes; TextView rightEyeYRes;
     TextView processingText; CircularProgressIndicator progInd;
+    ImageView resultBackground;
     Button gazeStats; Button frameInspector;
     //private int[] rightXEyeQuantity; private int[] leftXEyeQuantity;
     //private int[] rightYEyeQuantity; private int[] leftYEyeQuantity;
@@ -83,6 +84,7 @@ public class VideoAnalysisActivity extends AppCompatActivity {
         rightEyeXRes = findViewById(R.id.rightEyeXRes); rightEyeYRes = findViewById(R.id.rightEyeYRes);
         gazeStats = findViewById(R.id.gazeDirectionStats); frameInspector = findViewById(R.id.returnToImages);
         processingText = findViewById(R.id.processingText); progInd = findViewById(R.id.processingLivePhoto);
+        resultBackground = findViewById(R.id.videoResults);
         //Visibility Declaration
         totalFrames.setVisibility(View.GONE); frameInspector.setVisibility(View.GONE);
         leftEyeX.setVisibility(View.GONE); leftEyeY.setVisibility(View.GONE);
@@ -90,6 +92,7 @@ public class VideoAnalysisActivity extends AppCompatActivity {
         rightEyeX.setVisibility(View.GONE); rightEyeY.setVisibility(View.GONE);
         rightEyeXRes.setVisibility(View.GONE); rightEyeYRes.setVisibility(View.GONE);
         processingText.setVisibility(View.GONE); progInd.setVisibility(View.GONE);
+        resultBackground.setVisibility(View.GONE);
         rightXEyeSums = new double[3]; rightYEyeSums = new double[3];
         leftXEyeSums= new double[3]; leftYEyeSums= new double[3];
         globalStorage getFaces = (globalStorage) getApplication();
@@ -197,6 +200,7 @@ public class VideoAnalysisActivity extends AppCompatActivity {
         leftEyeXRes.setVisibility(View.VISIBLE); leftEyeYRes.setVisibility(View.VISIBLE);
         rightEyeX.setVisibility(View.VISIBLE); rightEyeY.setVisibility(View.VISIBLE);
         rightEyeXRes.setVisibility(View.VISIBLE); rightEyeYRes.setVisibility(View.VISIBLE);
+        resultBackground.setVisibility(View.VISIBLE);
     }
 
     public void viewFrames(View view){
@@ -206,6 +210,7 @@ public class VideoAnalysisActivity extends AppCompatActivity {
         leftEyeXRes.setVisibility(View.GONE); leftEyeYRes.setVisibility(View.GONE);
         rightEyeX.setVisibility(View.GONE); rightEyeY.setVisibility(View.GONE);
         rightEyeXRes.setVisibility(View.GONE); rightEyeYRes.setVisibility(View.GONE);
+        resultBackground.setVisibility(View.GONE);
     }
 
     public void returnToLive(View view) {
