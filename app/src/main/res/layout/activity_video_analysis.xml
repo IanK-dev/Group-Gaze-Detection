@@ -7,25 +7,78 @@
     android:background="#202020"
     tools:context=".VideoAnalysisActivity">
 
+    <RelativeLayout
+        android:id="@+id/videoAnalStats"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/videoResults"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:translationZ="-1dp"
+            app:srcCompat="@drawable/ic_videostatsgui" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/videoAnalFrames"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/capturedFrameView"
+            android:layout_width="698dp"
+            android:layout_height="290dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="76dp"
+            android:translationZ="2sp" />
+
+        <ImageView
+            android:id="@+id/videoAnalFramesGUI"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:translationZ="1dp"
+            app:srcCompat="@drawable/ic_videotakenframesgui" />
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/frameNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="92dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="65dp"
         android:text="Frame:1"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@id/videoAnalFrames"
+        app:layout_constraintStart_toStartOf="@id/videoAnalFrames" />
 
     <TextView
         android:id="@+id/rightEyeY"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="400dp"
-        android:layout_marginTop="105dp"
+        android:layout_marginTop="90dp"
         android:text="Right Eye Vertical Direction: "
         android:textColor="@color/white"
         android:textSize="20sp"
@@ -34,15 +87,6 @@
         android:visible="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rightEyeX" />
-
-    <ImageView
-        android:id="@+id/capturedFrameView"
-        android:layout_width="698dp"
-        android:layout_height="300dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="76dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/leftEyeX"
@@ -112,7 +156,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="105dp"
+        android:layout_marginTop="90dp"
         android:text="Left Eye Vertical  Direction: "
         android:textColor="@color/white"
         android:textSize="20sp"
@@ -143,7 +187,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="400dp"
-        android:layout_marginTop="66dp"
+        android:layout_marginTop="74dp"
         android:text="Right Eye Horizontal Direction: "
         android:textColor="@color/white"
         android:textSize="20sp"
@@ -155,65 +199,68 @@
 
     <Button
         android:id="@+id/gazeDirectionStats"
-        android:layout_width="168dp"
+        android:layout_width="320dp"
         android:layout_height="48dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/ic_bluebutton"
         android:onClick="viewStats"
         android:text="Average Gaze Stats"
         android:textColor="@android:color/background_light"
-        android:textSize="14sp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:visible="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/videoAnalFrames"
+        app:layout_constraintStart_toStartOf="@id/videoAnalFrames"
         tools:ignore="DuplicateClickableBoundsCheck" />
 
     <Button
         android:id="@+id/returnToImages"
-        android:layout_width="168dp"
+        android:layout_width="320dp"
         android:layout_height="48dp"
-        android:layout_marginStart="38dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/ic_bluebutton"
         android:onClick="viewFrames"
         android:text="Return to Frames"
         android:textColor="@android:color/background_light"
-        android:textSize="14sp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:visible="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/videoAnalStats"
+        app:layout_constraintStart_toStartOf="@id/videoAnalStats"
         tools:ignore="DuplicateClickableBoundsCheck" />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/processingLivePhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="11dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginEnd="26dp"
+        android:layout_marginBottom="12dp"
         android:indeterminate="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/processingText" />
+        app:layout_constraintBottom_toBottomOf="@id/videoAnalFrames"
+        app:layout_constraintEnd_toEndOf="@id/videoAnalFrames" />
 
     <TextView
         android:id="@+id/processingText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="280dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginStart="300dp"
+        android:layout_marginBottom="16dp"
         android:text="Processing Gaze..."
         android:textColor="@color/white"
-        android:textSize="20sp"
+        android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@id/videoAnalFrames"
+        app:layout_constraintEnd_toEndOf="@id/videoAnalFrames"
+        app:layout_constraintStart_toStartOf="@id/videoAnalFrames" />
 
     <TextView
         android:id="@+id/totalFrames"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="2dp"
         android:text="Total Frames: 0"
         android:textColor="@color/white"
         android:textSize="40sp"
@@ -221,23 +268,23 @@
         android:translationZ="1dp"
         android:visible="false"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/videoAnalStats" />
 
     <ImageButton
         android:id="@+id/returnVideoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="36dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="28dp"
         android:background="@drawable/ic_undo"
         android:backgroundTint="@android:color/white"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:onClick="returnToLive"
-        android:tint="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/frameLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_undo"
+        app:tint="@color/white"
         tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
     <FrameLayout
@@ -245,13 +292,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:translationZ="-1dp">
-
-        <ImageView
-            android:id="@+id/videoResults"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:translationZ="-1dp"
-            app:srcCompat="@drawable/ic_videosubmenu" />
 
     </FrameLayout>
 
