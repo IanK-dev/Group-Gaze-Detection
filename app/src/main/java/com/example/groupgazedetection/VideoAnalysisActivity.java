@@ -168,27 +168,30 @@ public class VideoAnalysisActivity extends AppCompatActivity {
                 for(detectedFace face : faceList){
                     //LEFT EYE HORIZONTAL RESULTS
                     for(int i = 0; i < 3; i++){
-                        rightXEyeSums[i] = face.rightEyeVals[i];
-                        leftXEyeSums[i] = face.leftEyeVals[i];
+                        rightXEyeSums[i] = rightXEyeSums[i] + face.rightEyeVals[i];
+                        leftXEyeSums[i] = leftXEyeSums[i] + face.leftEyeVals[i];
                     }
                     for(int i = 3; i < 6; i++){
-                        rightYEyeSums[i - 3] = face.rightEyeVals[i];
-                        leftYEyeSums[i - 3] = face.leftEyeVals[i];
+                        rightYEyeSums[i - 3] = rightYEyeSums[i - 3]+ face.rightEyeVals[i];
+                        leftYEyeSums[i - 3] = leftYEyeSums[i - 3] + face.leftEyeVals[i];
                     }
                 }
             }
+            Log.d("VideoAnalysisActivity", "Left Eye Direction Vals: " + leftXEyeSums[1] + ", " + leftXEyeSums[2] + ", " + leftYEyeSums[1] + ", " + leftYEyeSums[2]);
+            Log.d("VideoAnalysisActivity", "Right Eye Direction Vals: " + rightXEyeSums[1] + ", " + rightXEyeSums[2] + ", " + rightYEyeSums[1] + ", " + rightYEyeSums[2]);
             double labelSum = Arrays.stream(rightXEyeSums).sum();
-            String rightXLabel = "Left: " + (rightXEyeSums[0]/labelSum)*100 + "%\nRight: " + (rightXEyeSums[1]/labelSum) + "%\nCenter: " + (rightXEyeSums[2]/labelSum)*100 + "%";
+            String rightXLabel = "Left: " + (rightXEyeSums[0]/labelSum)*100 + "%\nRight: " + (rightXEyeSums[1]/labelSum) + "%\nForward: " + (rightXEyeSums[2]/labelSum)*100 + "%";
             rightEyeXRes.setText(rightXLabel);
             labelSum = Arrays.stream(rightYEyeSums).sum();
             String rightYLabel = "Left: " + (rightYEyeSums[0]/labelSum)*100 + "%\nRight: " + (rightYEyeSums[1]/labelSum) + "%\nCenter: " + (rightYEyeSums[2]/labelSum)*100 + "%";
             rightEyeYRes.setText(rightYLabel);
             labelSum = Arrays.stream(leftXEyeSums).sum();
-            String leftXLabel = "Left: " + (leftXEyeSums[0]/labelSum)*100 + "%\nRight: " + (leftXEyeSums[1]/labelSum) + "%\nCenter: " + (leftXEyeSums[2]/labelSum)*100 + "%";
+            String leftXLabel = "Left: " + (leftXEyeSums[0]/labelSum)*100 + "%\nRight: " + (leftXEyeSums[1]/labelSum) + "%\nForward: " + (leftXEyeSums[2]/labelSum)*100 + "%";
             leftEyeXRes.setText(leftXLabel);
             String leftYLabel = "Left: " + (leftYEyeSums[0]/labelSum)*100 + "%\nRight: " + (leftYEyeSums[1]/labelSum) + "%\nCenter: " + (leftYEyeSums[2]/labelSum)*100 + "%";
             leftEyeYRes.setText(leftYLabel);
             processingText.setText("Processing Complete"); progInd.setVisibility(View.GONE);
+            totalFrames.setText("Total Frames: " + recievedMats.size());
             Log.d("LiveDetectionActivity", "Completed Detection");
         }
     }

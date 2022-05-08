@@ -217,7 +217,7 @@
     <Button
         android:id="@+id/returnToImages"
         android:layout_width="320dp"
-        android:layout_height="48dp"
+        android:layout_height="44dp"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/ic_bluebutton"

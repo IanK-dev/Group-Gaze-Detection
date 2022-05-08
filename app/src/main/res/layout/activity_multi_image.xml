@@ -22,7 +22,8 @@
             android:id="@+id/imageDisplay"
             android:layout_width="match_parent"
             android:layout_height="494dp"
-            android:layout_marginTop="70dp" />
+            android:layout_marginTop="70dp"
+            android:translationZ="2dp" />
 
         <ImageView
             android:id="@+id/multiImageDisplay"

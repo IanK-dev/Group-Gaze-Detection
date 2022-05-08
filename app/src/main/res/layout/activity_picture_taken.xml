@@ -24,7 +24,7 @@
         <ImageView
             android:id="@+id/demoGaze"
             android:layout_width="707dp"
-            android:layout_height="290dp"
+            android:layout_height="240dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
@@ -33,7 +33,7 @@
         <ImageView
             android:id="@+id/demoPicture"
             android:layout_width="707dp"
-            android:layout_height="250dp"
+            android:layout_height="240dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
