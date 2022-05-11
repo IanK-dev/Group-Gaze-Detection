@@ -11,7 +11,7 @@ output.json
 .idea/
 misc.xml
 render.experimental.xml
-*.ap_
+*/app/*/.ap_
 *.dex
 *.class
 bin/
