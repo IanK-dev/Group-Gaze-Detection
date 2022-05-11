@@ -3,7 +3,7 @@
 Group photos are difficult, and there’s no quick and easy way to determine what pictures are worth keeping
 
 ## Introducing… Gaze-Ex!
-![Imgur](https://i.imgur.com/uCwvQ6Q.png)
+![Imgur](https://i.imgur.com/EdQythB.png)
 
 Bringing cutting edge computer vision models to your fingertips, right on your mobile device!
 
