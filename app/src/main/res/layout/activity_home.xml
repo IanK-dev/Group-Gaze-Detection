@@ -45,7 +45,7 @@
         android:layout_height="150dp"
         android:layout_marginStart="-25dp"
         android:layout_marginTop="165dp"
-        android:background="@drawable/ic_livedetectionbuttondark"
+        android:background="@drawable/ic_cameramodedark"
         android:fontFamily="@font/nexalight"
         android:includeFontPadding="false"
         android:onClick="gotoLiveDetection"
